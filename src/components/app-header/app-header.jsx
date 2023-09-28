@@ -1,19 +1,37 @@
 import React from 'react';
-import headerStyles from "./app-header.module.css"
+// import headerStyles from "./app-header.module.css"
+import styles from './app-header.module.css'
 import {BurgerIcon, ListIcon, Logo, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 
-function AppHeader() {
+const AppHeader = () => {
 
     return (
-        <header className={headerStyles.header}>
-            <p className="text text_type_main-default;p-1" style={{display: 'flex'}}>
+        <header className={styles.header}>
+            {/*<nav className={styles.left_menu}>*/}
+                <a href="#" className="pt-4 pb-4 pl-5 pr-5">
+                    <BurgerIcon type="primary"/>
+                    <p className="text_type_main-default pl-2">
+                        Конструктор
+                    </p>
+                </a>
+                <a href="#" className="pt-4 pb-4 pl-5 pr-5">
+                    <ListIcon type="secondary"/>
+                    <p className="text_type_main-default text_color_inactive pl-2">
+                        Лента зазаов
+                    </p>
+                </a>
+            {/*</nav>*/}
+            <a href="#" className="pt-4 pb-4 pl-5 pr-5">
+                <Logo/>
+            </a>
+            <p className="text text_type_main-default p-4 m-4" style={{display: 'flex'}}>
                 <BurgerIcon/> Конструктор
             </p>
-            <p className="text text_type_main-default;p-1" style={{display: 'flex'}}>
+            <p className="text text_type_main-default p-4 m-4"  style={{display: 'flex'}}>
                 <ListIcon/> Лента заказов
             </p>
             <Logo></Logo>
-            <p className="text text_type_main-default;p-1" style={{display: 'flex'}}>
+            <p className="text text_type_main-default;p-4 m-4" style={{display: 'flex'}}>
                 <ProfileIcon/> Личный кабинет
             </p>
             {/*<img className={headerStyles.logo} src={headerLogo} alt={"logo"}/>*/}

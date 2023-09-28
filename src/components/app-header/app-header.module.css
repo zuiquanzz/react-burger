@@ -1,8 +1,23 @@
 .header {
-  width: 100%;
+  grid-row: 1/span 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--background);
+}
+
+.header_content {
+  width: 1280px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.left_menu {
+  grid-column: 1/span 1;
   display: flex;
   align-items: center;
 }
+
 
 .logo {
   width: 50px;
