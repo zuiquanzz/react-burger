@@ -4,6 +4,8 @@ import mainImage from '../../images/main.jpg';
 
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
+import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
 
 function App() {
 
@@ -17,7 +19,11 @@ function App() {
     return (
         <div className={appStyles.app}>
             <AppHeader/>
-            <Main mainData={mainData}/>
+            <div style={{display:'flex'}} >
+                <BurgerIngredients/>
+                <BurgerConstructor/>
+            </div>
+            {/*<Main mainData={mainData}/>*/}
         </div>
     );
 }
