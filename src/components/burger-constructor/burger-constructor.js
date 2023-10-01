@@ -69,7 +69,6 @@ function BurgerConstructor({burgerData}) {
                     isLocked={true}
                 />
             </div>
-            {/*//todo style*/}
             <div className={`${styles.order} mt-10`}>
 
                 <p className="text text_type_digits-medium mr-2">{price}</p>

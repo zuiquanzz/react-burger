@@ -1,5 +1,4 @@
 import React from 'react';
-// import headerStyles from "./app-header.module.css"
 import styles from './app-header.module.css'
 import {BurgerIcon, ListIcon, Logo, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -20,13 +19,10 @@ const AppHeader = () => {
             <Logo classname={styles.logo}/>
             <nav className={styles.right_menu}>
                 <div className={styles.button}>
-                        <ProfileIcon type="primary"/>
-                        <p className="text_type_main-default ml-2">Личный кабинет</p>
+                    <ProfileIcon type="primary"/>
+                    <p className="text_type_main-default ml-2">Личный кабинет</p>
                 </div>
             </nav>
-
-            {/*<img className={headerStyles.logo} src={headerLogo} alt={"logo"}/>*/}
-            {/*<h1 className={headerStyles.logo}>Собачки, следящие за тобой, пока ты изучаешь React</h1>*/}
         </header>
     );
 }

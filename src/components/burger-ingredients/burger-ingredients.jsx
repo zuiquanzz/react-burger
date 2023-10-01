@@ -1,39 +1,19 @@
 import React from 'react';
-import {CurrencyIcon, Tab} from '@ya.praktikum/react-developer-burger-ui-components'
+import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-ingredients.module.css'
 import Ingredient from "../ingredient/ingredient";
 
-function BurgerIngredients() {
+function BurgerIngredients({ingredients}) {
     const [current, setCurrent] = React.useState('one');
     const [mains, setMains] = React.useState([]);
     const [buns, setBuns] = React.useState([]);
     const [sauces, setSauces] = React.useState([]);
 
-    const [state, setState] = React.useState({
-        isLoading: false,
-        hasError: false,
-        data: {}
-    });
-
     React.useEffect(() => {
-        getIngredients()
-    }, [])
-    //todo try-catch && move to app
-    const getIngredients = () => {
-        setState({...state, hasError: false, isLoading: true});
-        fetch('https://norma.nomoreparties.space/api/ingredients')
-            .then(res => res.json())
-            .then(data => {
-                    setState({...state, data, isLoading: false})
-                    setMains(data.data.filter((i) => i.type === 'main'))
-                    setBuns(data.data.filter((i) => i.type === 'bun'))
-                    setSauces(data.data.filter((i) => i.type === 'sauce'))
-                }
-            )
-            .catch(e => {
-                setState({...state, hasError: true, isLoading: false});
-            });
-    };
+        setMains(ingredients.filter((i) => i.type === 'main'))
+        setBuns(ingredients.filter((i) => i.type === 'bun'))
+        setSauces(ingredients.filter((i) => i.type === 'sauce'))
+    }, [ingredients])
 
     return (
         <div>
@@ -53,7 +33,7 @@ function BurgerIngredients() {
                 <div>
                     <h2 className="text_type_main-medium">Булки</h2>
                     <ul className={styles.container}>
-                        {buns.map((bun, id) =>  <Ingredient key={id} ingredient={bun}/>)}
+                        {buns.map((bun, id) => <Ingredient key={id} ingredient={bun}/>)}
                     </ul>
                 </div>
                 <div>

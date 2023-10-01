@@ -5,9 +5,6 @@ function ModalOverlay({modalClose}){
 
     return(
         <div className={styles.pop} onClick={modalClose}>
-            {/*<div className={styles.modal}>*/}
-            {/**/}
-            {/*</div>*/}
         </div>
     )
 }
