@@ -1,0 +1,8 @@
+.scroll_box {
+    padding-right: 16px;
+    height: 600px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

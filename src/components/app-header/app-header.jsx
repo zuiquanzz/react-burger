@@ -7,22 +7,21 @@ const AppHeader = () => {
 
     return (
         <header className={styles.header}>
-            {/*<nav className={styles.left_menu}>*/}
-                <a href="#" className="text_type_main-default pl-2 p-4 pt-4 pb-4 pl-5 pr-5">
-
+            <nav className={styles.left_menu}>
+                <p className="text_type_main-default pl-2 p-4 pt-4 pb-4 pl-5 pr-5" style={{display: 'flex'}}>
                     {/*<p className="text_type_main-default pl-2">*/}
-                        <BurgerIcon type="primary"/>Конструктор
+                    <BurgerIcon type="primary"/>
                     {/*</p>*/}
-                </a>
-                <a href="#" className="p-4  pt-4 pb-4 pl-5 pr-5">
-                    <p className="text_type_main-default text_color_inactive pl-2 ">
-                        <ListIcon type="primary"/>Лента зазаов
-                    </p>
-                </a>
-            {/*</nav>*/}
-            <a href="#" className="pt-4 pb-4 pl-5 pr-5">
-                <Logo/>
-            </a>
+                    <p> Конструктор</p>
+                </p>
+                <p className="p-4  pt-4 pb-4 pl-5 pr-5" style={{display: 'flex'}}>
+                    <ListIcon type="secondary"/>
+                    <p className="text_type_main-default text_color_inactive pl-2 "> Лента заказов</p>
+                </p>
+            </nav>
+            {/*<a href="#" className="pt-4 pb-4 pl-5 pr-5">*/}
+            <Logo classname={styles.logo}/>
+            {/*</a>*/}
             {/*<p className="text text_type_main-default p-4 m-4" style={{display: 'flex'}}>*/}
             {/*    <BurgerIcon/> Конструктор*/}
             {/*</p>*/}
@@ -30,9 +29,13 @@ const AppHeader = () => {
             {/*    <ListIcon/> Лента заказов*/}
             {/*</p>*/}
             {/*<Logo></Logo>*/}
-            <p className="text text_type_main-default;p-4 m-4" style={{display: 'flex'}}>
-                <ProfileIcon/> Личный кабинет
-            </p>
+            <nav className={styles.right_menu}>
+                <p className="text text_type_main-default p-4 m-4" style={{display: 'flex'}}>
+                    <ProfileIcon/>
+                    <p>Личный кабинет </p>
+                </p>
+            </nav>
+
             {/*<img className={headerStyles.logo} src={headerLogo} alt={"logo"}/>*/}
             {/*<h1 className={headerStyles.logo}>Собачки, следящие за тобой, пока ты изучаешь React</h1>*/}
         </header>

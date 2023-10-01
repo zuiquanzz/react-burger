@@ -1,6 +1,13 @@
 .app {
-  width: 100%;
-  max-width: 1920px;
-  height: 780px;
-  margin: 0 auto;
+  height:100vh;
+  /*display: flex;*/
+  align-items: center;
+  /*margin-right: 10%;*/
+  /*margin-left: 10%;*/
+}
+
+.main {
+  display: flex;
+  /*margin-right: 10%;*/
+  margin-left: 20%;
 }

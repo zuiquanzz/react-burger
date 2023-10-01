@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tab,CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
+import {Tab, CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components'
 import {burgerData} from '../../utils/data.js'
 import styles from './burger-ingredients.module.css'
 
@@ -63,6 +63,7 @@ function BurgerIngredients() {
 
     return (
         <div>
+            <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
             <div style={{display: 'flex'}}>
                 <Tab value="one" active={current === 'one'} onClick={setCurrent}>
                     Булки
@@ -77,8 +78,8 @@ function BurgerIngredients() {
             {(current === 'one') &&
             <div>
                 <h2>Булки</h2>
-                <ul>
-                    {buns.map((bun,id) => <li>
+                <ul className={styles.container}>
+                    {buns.map((bun,id) => <li className={styles.card}>
                         <img src={bun.image} alt={bun.id}></img>
                         <p className="text text_type_digits-default">{bun.price} <CurrencyIcon/> </p>
                         <p> {bun.name}</p>
@@ -88,7 +89,7 @@ function BurgerIngredients() {
             {(current === 'two') &&
             <div>
                 <h2>Соусы</h2>
-                <ul>
+                <ul className={styles.container}>
                     {sauces.map((sauce,id) => <li>
                         <img src={sauce.image} alt={sauce.id}></img>
                         <p className="text text_type_digits-default">{sauce.price} <CurrencyIcon/> </p>
@@ -99,8 +100,9 @@ function BurgerIngredients() {
             {(current === 'three') &&
             <div>
                 <h2>Начинки</h2>
-                <ul className={styles.tab_box_wrap}>
+                <ul className={styles.container}>
                     {mains.map((main,id) => <li>
+                        {/*<Counter count={1}/>*/}
                         <img src={main.image} alt={main.id}></img>
                         <p className="text text_type_digits-default">{main.price} <CurrencyIcon/> </p>
                         <p> {main.name}</p>
