@@ -1,6 +1,5 @@
 import React from 'react';
 import {Tab, CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components'
-import {burgerData} from '../../utils/data.js'
 import styles from './burger-ingredients.module.css'
 
 function BurgerIngredients() {
@@ -27,7 +26,7 @@ function BurgerIngredients() {
         // setBuns(burgerData.filter((ingredient) => ingredient.type === 'bun'));
         // setSauces(burgerData.filter((ingredient) => ingredient.type === 'sauce'));
     }, [])
-    //todo try-catch
+    //todo try-catch && move to app
     const getIngredients = () => {
         setState({...state, hasError: false, isLoading: true});
         fetch('https://norma.nomoreparties.space/api/ingredients')
