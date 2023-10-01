@@ -3,6 +3,7 @@ import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/
 import styles from "../burger-constructor/burger-constructor.module.css"
 import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
+import PropTypes from "prop-types";
 
 function BurgerConstructor({burgerData}) {
     const [visible, setVisible] = React.useState(false);
@@ -84,4 +85,7 @@ function BurgerConstructor({burgerData}) {
     )
 }
 
+BurgerConstructor.propTypes = {
+    burgerData: PropTypes.array.isRequired
+}
 export default BurgerConstructor;

@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './order-details.module.css';
 import doneIcon from '../../../../images/done.svg'
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import PropTypes from "prop-types";
 
 function OrderDetails({orderPrice}) {
 
@@ -16,6 +18,10 @@ function OrderDetails({orderPrice}) {
                 на орбитальной станции</p>
         </>
     )
+}
+
+OrderDetails.propTypes = {
+    orderPrice: PropTypes.number.isRequired
 }
 
 export default OrderDetails;

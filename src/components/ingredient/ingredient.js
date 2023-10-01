@@ -3,6 +3,7 @@ import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
+import PropTypes from "prop-types";
 
 function Ingredient({ingredient}) {
     const [visible, setVisible] = React.useState(false);
@@ -37,6 +38,10 @@ function Ingredient({ingredient}) {
         </>
 
     )
+}
+
+Ingredient.propTypes = {
+    ingredient: PropTypes.object.isRequired
 }
 
 export default Ingredient;
