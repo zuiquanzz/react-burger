@@ -1,0 +1,33 @@
+
+.close{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: absolute;
+    right: 40px;
+    top: 60px;
+}
+.price{
+    width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    text-shadow: 0px 4px 32px rgba(51, 51, 255, 0.50), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 0px 16px rgba(51, 51, 255, 0.25);
+}
+.description{
+    width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.icon{
+    width: 120px;
+    height: 120px;
+    margin: 60px auto;
+}
+.text{
+    width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

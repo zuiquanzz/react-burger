@@ -8,18 +8,6 @@ function BurgerConstructor({burgerData}) {
     const [visible, setVisible] = React.useState(false);
     const [price, setPrice] = React.useState(0);
 
-    // let topBun;
-    // let bottomBun;
-    // useEffect(() =>{
-    //     burgerData.map((burger,id) => {
-    //         if (id ===0) {
-    //             topBun = burger;
-    //         }
-    //         if (id === burgerData.length){
-    //             bottomBun = burger;
-    //         }
-    //     })
-    // },[])
     useEffect(() => {
         getOrderPrice();
     }, [burgerData])
@@ -41,12 +29,10 @@ function BurgerConstructor({burgerData}) {
         setVisible(false);
     }
 
-    let modalEx;
-    if (visible) {
-        modalEx = <Modal modalClose={handleCloseModal}>
+    let modalShow =
+        <Modal modalClose={handleCloseModal}>
             <OrderDetails orderPrice={price}/>
-        </Modal>
-    }
+        </Modal>;
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
@@ -84,14 +70,17 @@ function BurgerConstructor({burgerData}) {
                 />
             </div>
             {/*//todo style*/}
-            <div className={styles.order}>
-                <p className="text text_type_digits-default">{price}
-                    <CurrencyIcon/></p>
+            <div className={`${styles.order} mt-10`}>
+
+                <p className="text text_type_digits-medium mr-2">{price}</p>
+                <div className={'mr-10'}>
+                    <CurrencyIcon type="primary"/>
+                </div>
                 <Button htmlType="button" type="primary" size="medium" onClick={handleOpenModal}>
                     Оформить заказ
                 </Button>
             </div>
-            {modalEx}
+            {visible && modalShow}
         </div>
     )
 }
