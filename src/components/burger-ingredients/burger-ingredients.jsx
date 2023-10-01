@@ -1,34 +1,65 @@
 import React from 'react';
 import {Tab,CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import {burgerData} from '../../utils/data.js'
+import styles from './burger-ingredients.module.css'
+
 function BurgerIngredients() {
     const [current, setCurrent] = React.useState('one');
+    const [mains,setMains] = React.useState([]);
+    const [buns,setBuns] = React.useState([]);
+    const [sauces,setSauces] = React.useState([]);
+
+
+
 
     const [state, setState] = React.useState({
         isLoading: false,
         hasError: false,
-        data: []
+        data: {}
     });
 
     React.useEffect(() => {
         getIngredients()
+        // const {data, isLoading, hasError} = state;
+        // console.log("bur", data)
+        // console.log(state.data)
+        // setMains(burgerData.filter((ingredient) => ingredient.type === 'main'))
+        // setBuns(burgerData.filter((ingredient) => ingredient.type === 'bun'));
+        // setSauces(burgerData.filter((ingredient) => ingredient.type === 'sauce'));
     }, [])
-
+    //todo try-catch
     const getIngredients = () => {
         setState({...state, hasError: false, isLoading: true});
         fetch('https://norma.nomoreparties.space/api/ingredients')
             .then(res => res.json())
-            .then(data => setState({...state, data, isLoading: false}))
+            .then(data => {
+                setState({...state, data, isLoading: false})
+                setMains(data.data.filter((i) => i.type === 'main'))
+                setBuns(data.data.filter((i) => i.type === 'bun'))
+                setSauces(data.data.filter((i) => i.type === 'sauce'))
+            }
+            )
             .catch(e => {
                 setState({...state, hasError: true, isLoading: false});
             });
     };
 
-    const {data, isLoading, hasError} = state;
+    // const {data, isLoading, hasError} = state;
+    // const burs = data.json()
+    // const parse = JSON.parse(data);
 
-    const mains = burgerData.filter((ingredient) => ingredient.type === 'main');
-    const buns = burgerData.filter((ingredient) => ingredient.type === 'bun');
-    const sauces = burgerData.filter((ingredient) => ingredient.type === 'sauce');
+    // console.log("bur", data)
+    // console.log(mains)
+    // const success = state.data.success;
+    // const burgers = state.data.data;
+
+    // console.log("success", success);
+    // console.log("bur",burgers);
+    // const mains = burgerData.filter((ingredient) => ingredient.type === 'main');
+    // setMains(state.data.filter((ingredient) => ingredient.type === 'main'))
+    // setBuns(burgerData.filter((ingredient) => ingredient.type === 'bun'));
+    // const sauces = burgerData.filter((ingredient) => ingredient.type === 'sauce');
+    // setSauces(burgerData.filter((ingredient) => ingredient.type === 'sauce'));
 
     return (
         <div>
@@ -46,49 +77,35 @@ function BurgerIngredients() {
             {(current === 'one') &&
             <div>
                 <h2>Булки</h2>
-                <ol>
+                <ul>
                     {buns.map((bun,id) => <li>
                         <img src={bun.image} alt={bun.id}></img>
                         <p className="text text_type_digits-default">{bun.price} <CurrencyIcon/> </p>
                         <p> {bun.name}</p>
                     </li>)}
-                </ol>
-                {/*<card>*/}
-                {/*    */}
-                {/*</card>*/}
-                {/*<div>*/}
-                {/*    {isLoading && 'Загрузка...'}*/}
-                {/*    {hasError && 'Произошла ошибка'}*/}
-                {/*    {!isLoading &&*/}
-                {/*    !hasError &&*/}
-                {/*    data.length &&*/}
-                {/*    data.map((bun, index) => <card>*/}
-                {/*        <p> {bun.name}</p>*/}
-                {/*        <img src={bun.image} alt={bun.id}></img>*/}
-                {/*    </card>)}*/}
-                {/*</div>*/}
+                </ul>
             </div>}
             {(current === 'two') &&
             <div>
                 <h2>Соусы</h2>
-                <ol>
+                <ul>
                     {sauces.map((sauce,id) => <li>
                         <img src={sauce.image} alt={sauce.id}></img>
                         <p className="text text_type_digits-default">{sauce.price} <CurrencyIcon/> </p>
                         <p> {sauce.name}</p>
                     </li>)}
-                </ol>
+                </ul>
             </div>}
             {(current === 'three') &&
             <div>
                 <h2>Начинки</h2>
-                <ol id="table">
+                <ul className={styles.tab_box_wrap}>
                     {mains.map((main,id) => <li>
                         <img src={main.image} alt={main.id}></img>
                         <p className="text text_type_digits-default">{main.price} <CurrencyIcon/> </p>
                         <p> {main.name}</p>
                     </li>)}
-                </ol>
+                </ul>
             </div>}
         </div>
     )
