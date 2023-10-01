@@ -8,32 +8,21 @@ const AppHeader = () => {
     return (
         <header className={styles.header}>
             <nav className={styles.left_menu}>
-                <p className="text_type_main-default pl-2 p-4 pt-4 pb-4 pl-5 pr-5" style={{display: 'flex'}}>
-                    {/*<p className="text_type_main-default pl-2">*/}
+                <div className={styles.button}>
                     <BurgerIcon type="primary"/>
-                    {/*</p>*/}
-                    <p> Конструктор</p>
-                </p>
-                <p className="p-4  pt-4 pb-4 pl-5 pr-5" style={{display: 'flex'}}>
+                    <p className="text_type_main-default ml-2"> Конструктор</p>
+                </div>
+                <div className={styles.button}>
                     <ListIcon type="secondary"/>
-                    <p className="text_type_main-default text_color_inactive pl-2 "> Лента заказов</p>
-                </p>
+                    <p className="text_type_main-default text_color_inactive ml-2">Лента заказов</p>
+                </div>
             </nav>
-            {/*<a href="#" className="pt-4 pb-4 pl-5 pr-5">*/}
             <Logo classname={styles.logo}/>
-            {/*</a>*/}
-            {/*<p className="text text_type_main-default p-4 m-4" style={{display: 'flex'}}>*/}
-            {/*    <BurgerIcon/> Конструктор*/}
-            {/*</p>*/}
-            {/*<p className="text text_type_main-default p-4 m-4"  style={{display: 'flex'}}>*/}
-            {/*    <ListIcon/> Лента заказов*/}
-            {/*</p>*/}
-            {/*<Logo></Logo>*/}
             <nav className={styles.right_menu}>
-                <p className="text text_type_main-default p-4 m-4" style={{display: 'flex'}}>
-                    <ProfileIcon/>
-                    <p>Личный кабинет </p>
-                </p>
+                <div className={styles.button}>
+                        <ProfileIcon type="primary"/>
+                        <p className="text_type_main-default ml-2">Личный кабинет</p>
+                </div>
             </nav>
 
             {/*<img className={headerStyles.logo} src={headerLogo} alt={"logo"}/>*/}
