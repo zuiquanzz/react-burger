@@ -7,6 +7,12 @@
     gap: 10px;
 }
 
+.table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .order {
     display: flex;
     align-items: center;

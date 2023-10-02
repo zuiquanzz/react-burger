@@ -19,6 +19,8 @@ function BurgerConstructor({burgerData}) {
                 pr = pr + item.price;
             }
         )
+        pr = pr + burgerData[0].price;
+        pr = pr - burgerData[burgerData.length -1].price;
         setPrice(pr);
     }
 
@@ -30,13 +32,13 @@ function BurgerConstructor({burgerData}) {
         setVisible(false);
     }
 
-    let modalShow =
+    const modalShow =
         <Modal modalClose={handleCloseModal}>
             <OrderDetails orderPrice={price}/>
         </Modal>;
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+        <div className={styles.table}>
             <div className="p-15"></div>
             <div className="ml-5">
                 <ConstructorElement
@@ -48,9 +50,9 @@ function BurgerConstructor({burgerData}) {
                 />
             </div>
             <div className={`${styles.scroll_box} custom-scroll`}>
-                {burgerData.map((burger, id) =>
+                {burgerData.map((burger) =>
                     burger.type !== 'bun' &&
-                    <div key={id}>
+                    <div key={burger._id}>
                         <DragIcon/>
                         <ConstructorElement
                             text={burger.name}
@@ -64,9 +66,9 @@ function BurgerConstructor({burgerData}) {
             <div className="ml-5">
                 <ConstructorElement
                     type="bottom"
-                    text={burgerData[burgerData.length - 1].name + '(низ)'}
-                    thumbnail={burgerData[burgerData.length - 1].image}
-                    price={burgerData[burgerData.length - 1].price}
+                    text={burgerData[0].name + '(низ)'}
+                    thumbnail={burgerData[0].image}
+                    price={burgerData[0].price}
                     isLocked={true}
                 />
             </div>

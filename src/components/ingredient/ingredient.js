@@ -16,7 +16,7 @@ function Ingredient({ingredient}) {
         setVisible(false);
     }
 
-    let modalIngredient =
+    const modalIngredient =
         <Modal modalClose={modalClose}>
             <IngredientDetails ingredient={ingredient} modalClose={modalClose}/>
         </Modal>;

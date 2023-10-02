@@ -15,7 +15,7 @@ function App() {
         data: null
     })
 
-    const [ingredients, setIngredients] = React.useState();
+    const [ingredients, setIngredients] = React.useState([]);
 
     React.useEffect(() => {
         getIngredients()
@@ -24,7 +24,12 @@ function App() {
     const getIngredients = () => {
         setState({...state, hasError: false, isLoading: true});
         fetch(ingredientApi)
-            .then(res => res.json())
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
             .then(data => {
                     setState({...state, data, isLoading: false})
                     setIngredients(data.data)
@@ -46,7 +51,8 @@ function App() {
                     <BurgerIngredients ingredients={ingredients}/>
                 </div>
                 <BurgerConstructor burgerData={burgerData}/>
-            </main>}
+            </main>
+            }
         </div>
     );
 }

@@ -7,3 +7,7 @@
     display: grid;
     grid-template-columns: repeat(2, 250px);
 }
+
+.tabs {
+    display: flex;
+}
