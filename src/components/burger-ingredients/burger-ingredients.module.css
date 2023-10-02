@@ -1,0 +1,13 @@
+.table {
+    overflow-y: scroll;
+    height: 680px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 250px);
+}
+
+.tabs {
+    display: flex;
+}

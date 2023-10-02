@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--background);
+}
+
+.left_menu {
+  display: flex;
+  flex-basis: 35%;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
+
+.logo {
+  margin: 0 auto;
+}
+
+.right_menu {
+  display: flex;
+  align-items: center;
+  flex-basis: 35%;
+  justify-content: flex-end;
+}

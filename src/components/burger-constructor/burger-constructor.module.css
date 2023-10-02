@@ -1,0 +1,20 @@
+.scroll_box {
+    padding-right: 16px;
+    height: 440px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.order {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
