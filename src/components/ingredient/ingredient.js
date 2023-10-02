@@ -1,22 +1,13 @@
 import React from 'react';
 import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal';
-import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
-import {useModal} from "../../hooks/use-modal";
 
-function Ingredient({ingredient}) {
-    const { isModalOpen, openModal, closeModal } = useModal();
-
-    const modalIngredient =
-        <Modal modalClose={closeModal}>
-            <IngredientDetails ingredient={ingredient}/>
-        </Modal>;
+function Ingredient({ingredient, getIngredientData}) {
 
     return (
         <>
-            <li className={`${styles.container} mb-8`} onClick={openModal}>
+            <li className={`${styles.container} mb-8`} onClick={() => getIngredientData(ingredient)}>
                 <div className={styles.counter}>
                     <Counter count={1} size="default" extraClass="m-1"/>
                 </div>
@@ -27,14 +18,14 @@ function Ingredient({ingredient}) {
                 </div>
                 <p className={`${styles.name} mt-1 text text_type_main-default`}>{ingredient.name}</p>
             </li>
-            {isModalOpen && modalIngredient}
         </>
 
     )
 }
 
 Ingredient.propTypes = {
-    ingredient: PropTypes.object.isRequired
+    ingredient: PropTypes.object.isRequired,
+    getIngredientData: PropTypes.func.isRequired
 }
 
 export default Ingredient;
