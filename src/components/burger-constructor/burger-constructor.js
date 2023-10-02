@@ -4,9 +4,11 @@ import styles from "../burger-constructor/burger-constructor.module.css"
 import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
 import PropTypes from "prop-types";
+import {useModal} from "../../hooks/use-modal";
 
 function BurgerConstructor({burgerData}) {
-    const [visible, setVisible] = React.useState(false);
+    const { isModalOpen, openModal, closeModal } = useModal();
+
     const [price, setPrice] = React.useState(0);
 
     useEffect(() => {
@@ -24,16 +26,8 @@ function BurgerConstructor({burgerData}) {
         setPrice(pr);
     }
 
-    function handleOpenModal() {
-        setVisible(true);
-    }
-
-    function handleCloseModal() {
-        setVisible(false);
-    }
-
     const modalShow =
-        <Modal modalClose={handleCloseModal}>
+        <Modal modalClose={closeModal}>
             <OrderDetails orderPrice={price}/>
         </Modal>;
 
@@ -78,11 +72,11 @@ function BurgerConstructor({burgerData}) {
                 <div className={'mr-10'}>
                     <CurrencyIcon type="primary"/>
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={handleOpenModal}>
+                <Button htmlType="button" type="primary" size="medium" onClick={openModal}>
                     Оформить заказ
                 </Button>
             </div>
-            {visible && modalShow}
+            {isModalOpen && modalShow}
         </div>
     )
 }

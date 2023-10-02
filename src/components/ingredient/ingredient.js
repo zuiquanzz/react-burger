@@ -4,26 +4,19 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 import Modal from '../modal/modal';
 import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
+import {useModal} from "../../hooks/use-modal";
 
 function Ingredient({ingredient}) {
-    const [visible, setVisible] = React.useState(false);
-
-    function modalOpen() {
-        setVisible(true);
-    }
-
-    function modalClose() {
-        setVisible(false);
-    }
+    const { isModalOpen, openModal, closeModal } = useModal();
 
     const modalIngredient =
-        <Modal modalClose={modalClose}>
-            <IngredientDetails ingredient={ingredient} modalClose={modalClose}/>
+        <Modal modalClose={closeModal}>
+            <IngredientDetails ingredient={ingredient}/>
         </Modal>;
 
     return (
         <>
-            <li className={`${styles.container} mb-8`} onClick={modalOpen}>
+            <li className={`${styles.container} mb-8`} onClick={openModal}>
                 <div className={styles.counter}>
                     <Counter count={1} size="default" extraClass="m-1"/>
                 </div>
@@ -34,7 +27,7 @@ function Ingredient({ingredient}) {
                 </div>
                 <p className={`${styles.name} mt-1 text text_type_main-default`}>{ingredient.name}</p>
             </li>
-            {visible && modalIngredient}
+            {isModalOpen && modalIngredient}
         </>
 
     )
