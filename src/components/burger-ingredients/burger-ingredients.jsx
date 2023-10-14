@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState,useEffect} from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-ingredients.module.css'
 import Ingredient from "./ingredient/ingredient";
@@ -16,12 +16,13 @@ function BurgerIngredients() {
 
     const dispatch = useDispatch();
 
-    const [current, setCurrent] = React.useState('one');
-    const [mains, setMains] = React.useState([]);
-    const [buns, setBuns] = React.useState([]);
-    const [sauces, setSauces] = React.useState([]);
+    const [current, setCurrent] = useState('one');
+    const [mains, setMains] = useState([]);
+    const [buns, setBuns] = useState([]);
+    const [sauces, setSauces] = useState([]);
+    // const [counters, setCounters] = useState([])
 
-    let [ingredient, setIngredient] = React.useState({});
+    const [ingredient, setIngredient] = useState({});
 
     const {isModalOpen, openModal, closeModal} = useModal();
 
@@ -37,12 +38,12 @@ function BurgerIngredients() {
         </Modal>;
 
 
-    React.useEffect(() => {
-        // console.log("ing", ingredients)
-        // const ingredientsWithCounter = ingredients.map(ingredient => ({...ingredient, counter: 0}));
+    useEffect(() => {
         setMains(ingredients.filter((i) => i.type === 'main'))
         setBuns(ingredients.filter((i) => i.type === 'bun'))
         setSauces(ingredients.filter((i) => i.type === 'sauce'))
+        //todo remove counter from ingredient to this
+        // setCounters(ingredients.map(ingredient => ({id: ingredient._id, counter: 0})))
     }, [ingredients])
 
     return (

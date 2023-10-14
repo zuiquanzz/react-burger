@@ -3,7 +3,7 @@ import styles from './order-details.module.css';
 import doneIcon from '../../../../images/done.svg'
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
-import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "../../../../services/Orders/actions";
+import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, getOrder} from "../../../../services/Orders/actions";
 import {orderApi} from "../../../../utils/api";
 import {getAllIngredients, getOrders} from "../../../../services/selectors";
 
@@ -16,37 +16,14 @@ function OrderDetails() {
     const dispatch = useDispatch();
 
     React.useEffect(() => {
-        getOrder()
-        console.log(order)
+        dispatch(getOrder(burgerData))
+        // console.log(order)
     }, [dispatch])
 
-    const getOrder = () => {
-        // setState({...state, hasError: false, isLoading: true});
-        // console.log(burgerData)
-        dispatch({type: GET_ORDER_REQUEST})
-        fetch(orderApi, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json;charset=utf-8'},
-            body: JSON.stringify({
-                "ingredients": burgerData
-            })
-        })
-            .then(res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`))
-            .then(data => {
-                    // setState({...state, data: data, isLoading: false})
-                    // setOrder(data.order.number);
-                    // console.log("state", state)
-                    // setIngredients(data.data)
-                    // console.log("data app", data.order.number)
-                    dispatch({type: GET_ORDER_SUCCESS, payload: data});
-                }
-            )
-            .catch(e => {
-                // setState({...state, hasError: true, isLoading: false});
-                dispatch({type: GET_ORDER_FAILURE})
-                console.error(e)
-            });
-    };
+    // const getOrder = () => {
+    //     // setState({...state, hasError: false, isLoading: true});
+    //     // console.log(burgerData)
+    // };
 
     return (
         <>
