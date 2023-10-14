@@ -5,7 +5,8 @@ import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "react-redux";
-import {DELETE_INGREDIENT} from "../../services/Ingredients/actions";
+import {DELETE_INGREDIENT, GET_INGREDIENTS_SUCCESS} from "../../services/Ingredients/actions";
+import {ingredientApi} from "../../utils/api";
 
 function BurgerConstructor() {
     const {burgerData} = useSelector(store => store.ingredients)
@@ -15,22 +16,28 @@ function BurgerConstructor() {
     const {isModalOpen, openModal, closeModal} = useModal();
 
     const [price, setPrice] = React.useState(0);
-    const [visible, setVisible] = React.useState(false);
+    const [burgerBun, setBurgerBun] = React.useState(null);
 
     useEffect(() => {
-
         if (burgerData.length) {
-            setVisible(true);
             getOrderPrice();
+            if (!burgerBun) {
+                if (burgerData.find(ing => ing.type === 'bun')) {
+                    setBurgerBun(burgerData.find(ing => ing.type === 'bun'))
+                }
+            }
         }
     }, [burgerData])
+
 
     function getOrderPrice() {
         let pr = 0;
         burgerData.map(item => {
+            if (item.type === 'bun') {
                 pr = pr + item.price;
             }
-        )
+            pr = pr + item.price;
+        })
         // pr = pr + burgerData[0].price;
         // pr = pr - burgerData[burgerData.length - 1].price;
         setPrice(pr);
@@ -49,16 +56,15 @@ function BurgerConstructor() {
         <div className={styles.table}>
             <div className="p-15"/>
             <div className="ml-5">
-                {burgerData.filter(ing => ing.type === 'bun').length &&
+                {burgerBun &&
                 <ConstructorElement
                     type="top"
-                    // text={burgerData[0].name + '(вверх)'}
-                    text={burgerData.filter(ing => ing.type === 'bun')[0].name + '(вверх)'}
-                    thumbnail={burgerData.filter(ing => ing.type === 'bun')[0].image}
-                    price={burgerData.filter(ing => ing.type === 'bun')[0].price}
+                    text={burgerBun.name + '(вверх)'}
+                    thumbnail={burgerBun.image}
+                    price={burgerData.find(ing => ing.type === 'bun').price}
                     isLocked={true}
                 />}
-                {!burgerData.find(ing => ing.type === 'bun') &&
+                {!burgerBun &&
                 <ConstructorElement
                     type="top"
                     text={'Добавьте булку'}
@@ -79,33 +85,16 @@ function BurgerConstructor() {
                     </div>
                 )}
             </div>
-            {/*<div className="ml-5">*/}
-            {/*    {visible &&*/}
-            {/*    <ConstructorElement*/}
-            {/*        type="bottom"*/}
-            {/*        text={burgerData[0].name + '(низ)'}*/}
-            {/*        thumbnail={burgerData[0].image}*/}
-            {/*        price={burgerData[0].price}*/}
-            {/*        isLocked={true}*/}
-            {/*    />}*/}
-            {/*    {!visible &&*/}
-            {/*    <ConstructorElement*/}
-            {/*        type="bottom"*/}
-            {/*        text={'Добавьте булку'}*/}
-            {/*    />*/}
-            {/*    }*/}
-            {/*</div>*/}
             <div className="ml-5">
-                {burgerData.filter(ing => ing.type === 'bun').length &&(
-                <ConstructorElement
-                    type="bottom"
-                    // text={burgerData[0].name + '(вверх)'}
-                    text={burgerData.filter(ing => ing.type === 'bun')[0].name + '(низ)'}
-                    thumbnail={burgerData.filter(ing => ing.type === 'bun')[0].image}
-                    price={burgerData.filter(ing => ing.type === 'bun')[0].price}
-                    isLocked={true}
-                />)}
-                {!burgerData.find(ing => ing.type === 'bun') &&
+                {burgerBun && (
+                    <ConstructorElement
+                        type="bottom"
+                        text={burgerBun.name + '(низ)'}
+                        thumbnail={burgerBun.image}
+                        price={burgerBun.price}
+                        isLocked={true}
+                    />)}
+                {!burgerBun &&
                 <ConstructorElement
                     type="bottom"
                     text={'Добавьте булку'}
@@ -125,8 +114,4 @@ function BurgerConstructor() {
         </div>
     )
 }
-
-// BurgerConstructor.propTypes = {
-//     burgerData: PropTypes.array.isRequired
-// }
 export default BurgerConstructor;

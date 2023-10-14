@@ -2,7 +2,6 @@ import React from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-ingredients.module.css'
 import Ingredient from "../ingredient/ingredient";
-import PropTypes from "prop-types";
 import {useModal} from "../../hooks/use-modal";
 import Modal from "../modal/modal";
 import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
@@ -26,13 +25,7 @@ function BurgerIngredients() {
 
     function handleModalOpen(ingredient) {
         setIngredient(ingredient);
-        if (ingredient.type === 'bun') {
-            dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
-            dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
-        } else {
-            dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
-        }
-
+        dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
         openModal();
     }
 
