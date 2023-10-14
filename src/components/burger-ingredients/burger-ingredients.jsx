@@ -6,18 +6,33 @@ import PropTypes from "prop-types";
 import {useModal} from "../../hooks/use-modal";
 import Modal from "../modal/modal";
 import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
+import {useDispatch, useSelector} from "react-redux";
+import {ADD_INGREDIENT} from "../../services/Ingredients/actions";
+import {nanoid} from "@reduxjs/toolkit";
 
-function BurgerIngredients({ingredients}) {
+function BurgerIngredients() {
+
+    const {ingredients} = useSelector(store => store.ingredients)
+
+    const dispatch = useDispatch();
+
     const [current, setCurrent] = React.useState('one');
     const [mains, setMains] = React.useState([]);
     const [buns, setBuns] = React.useState([]);
     const [sauces, setSauces] = React.useState([]);
-    const [ingredient, setIngredient] = React.useState({});
+    let [ingredient, setIngredient] = React.useState({});
 
     const {isModalOpen, openModal, closeModal} = useModal();
 
     function handleModalOpen(ingredient) {
         setIngredient(ingredient);
+        if (ingredient.type === 'bun') {
+            dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
+            dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
+        } else {
+            dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
+        }
+
         openModal();
     }
 
@@ -28,6 +43,8 @@ function BurgerIngredients({ingredients}) {
 
 
     React.useEffect(() => {
+        // console.log("ing", ingredients)
+        // const ingredientsWithCounter = ingredients.map(ingredient => ({...ingredient, counter: 0}));
         setMains(ingredients.filter((i) => i.type === 'main'))
         setBuns(ingredients.filter((i) => i.type === 'bun'))
         setSauces(ingredients.filter((i) => i.type === 'sauce'))
@@ -47,6 +64,8 @@ function BurgerIngredients({ingredients}) {
                     Начинки
                 </Tab>
             </div>
+
+            {/*//todo IngredientsList*/}
             <div className={`${styles.table} custom-scroll`}>
                 <div>
                     <h2 className="text_type_main-medium">Булки</h2>
@@ -75,7 +94,7 @@ function BurgerIngredients({ingredients}) {
     )
 }
 
-BurgerIngredients.propTypes = {
-    ingredients: PropTypes.array.isRequired
-}
+// BurgerIngredients.propTypes = {
+//     ingredients: PropTypes.array.isRequired
+// }
 export default BurgerIngredients;

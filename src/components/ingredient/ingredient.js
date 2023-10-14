@@ -2,14 +2,17 @@ import React from 'react';
 import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
+import {useSelector} from "react-redux";
 
 function Ingredient({ingredient, getIngredientData}) {
+
+    const {burgerData} = useSelector(store => store.ingredients)
 
     return (
         <>
             <li className={`${styles.container} mb-8`} onClick={() => getIngredientData(ingredient)}>
                 <div className={styles.counter}>
-                    <Counter count={1} size="default" extraClass="m-1"/>
+                    <Counter count={burgerData.filter(ing => ing._id === ingredient._id).length} size="default" extraClass="m-1"/>
                 </div>
                 <img src={ingredient.image} alt={ingredient._id}/>
                 <div className={`${styles.price} mt-1 mb-4`}>
