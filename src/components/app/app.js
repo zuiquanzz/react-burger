@@ -11,6 +11,7 @@ import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS
 } from "../../services/Ingredients/actions";
+import {getAllIngredients} from "../../services/selectors";
 
 function App() {
 
@@ -20,7 +21,7 @@ function App() {
         ingredients,
         isLoading,
         error,
-    } = useSelector(state => state.ingredients)
+    } = useSelector(getAllIngredients)
     //todo delete
     // const [state, setState] = useState({
     //     isLoading: false,

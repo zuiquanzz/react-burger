@@ -4,12 +4,14 @@ import doneIcon from '../../../../images/done.svg'
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "../../../../services/Orders/actions";
+import {orderApi} from "../../../../utils/api";
+import {getAllIngredients, getOrders} from "../../../../services/selectors";
 
 function OrderDetails() {
 
-    const {burgerData} = useSelector(state => state.ingredients);
+    const {burgerData} = useSelector(getAllIngredients);
 
-    const {order, isLoading, error} = useSelector(state => state.orders)
+    const {order, isLoading, error} = useSelector(getOrders)
 
     const dispatch = useDispatch();
 
@@ -22,7 +24,7 @@ function OrderDetails() {
         // setState({...state, hasError: false, isLoading: true});
         // console.log(burgerData)
         dispatch({type: GET_ORDER_REQUEST})
-        fetch('https://norma.nomoreparties.space/api/orders', {
+        fetch(orderApi, {
             method: 'POST',
             headers: {'Content-Type': 'application/json;charset=utf-8'},
             body: JSON.stringify({

@@ -1,17 +1,18 @@
 import React from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-ingredients.module.css'
-import Ingredient from "../ingredient/ingredient";
+import Ingredient from "./ingredient/ingredient";
 import {useModal} from "../../hooks/use-modal";
 import Modal from "../modal/modal";
 import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_INGREDIENT} from "../../services/Ingredients/actions";
 import {nanoid} from "@reduxjs/toolkit";
+import {getAllIngredients} from "../../services/selectors";
 
 function BurgerIngredients() {
 
-    const {ingredients} = useSelector(store => store.ingredients)
+    const {ingredients} = useSelector(getAllIngredients)
 
     const dispatch = useDispatch();
 
@@ -19,6 +20,7 @@ function BurgerIngredients() {
     const [mains, setMains] = React.useState([]);
     const [buns, setBuns] = React.useState([]);
     const [sauces, setSauces] = React.useState([]);
+
     let [ingredient, setIngredient] = React.useState({});
 
     const {isModalOpen, openModal, closeModal} = useModal();

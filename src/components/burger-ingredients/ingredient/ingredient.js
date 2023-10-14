@@ -3,10 +3,11 @@ import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
+import {getAllIngredients} from "../../../services/selectors";
 
 function Ingredient({ingredient, getIngredientData}) {
 
-    const {burgerData} = useSelector(store => store.ingredients)
+    const {burgerData} = useSelector(getAllIngredients)
 
     const counter = useMemo(() => {
         let length = burgerData.filter(ing => ing._id === ingredient._id).length;
@@ -20,8 +21,10 @@ function Ingredient({ingredient, getIngredientData}) {
         <>
             <li className={`${styles.container} mb-8`} onClick={() => getIngredientData(ingredient)}>
                 <div className={styles.counter}>
+                    {counter > 0 &&
                     <Counter count={counter} size="default"
                              extraClass="m-1"/>
+                    }
                 </div>
                 <img src={ingredient.image} alt={ingredient._id}/>
                 <div className={`${styles.price} mt-1 mb-4`}>

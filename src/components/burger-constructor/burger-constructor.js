@@ -7,9 +7,10 @@ import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "react-redux";
 import {DELETE_INGREDIENT, GET_INGREDIENTS_SUCCESS} from "../../services/Ingredients/actions";
 import {ingredientApi} from "../../utils/api";
+import {getAllIngredients} from "../../services/selectors";
 
 function BurgerConstructor() {
-    const {burgerData} = useSelector(store => store.ingredients)
+    const {burgerData} = useSelector(getAllIngredients)
 
     const dispatch = useDispatch()
 
