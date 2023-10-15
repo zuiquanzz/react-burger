@@ -17,7 +17,7 @@ function OrderDetails() {
 
     React.useEffect(() => {
         dispatch(getOrder(burgerData))
-        // console.log(order)
+        console.log(order)
     }, [dispatch])
 
     // const getOrder = () => {
@@ -34,8 +34,7 @@ function OrderDetails() {
             <div className={styles.icon}>
                 <img className={styles.icon} src={doneIcon} alt={'done'}/>
             </div>
-            {/*<p className={`${styles.text} mb-2 text text_type_main-default`}>{order.name}</p>*/}
-            <p className={`${styles.text} mb-2 text text_type_main-default`}>Ваш начали готовить</p>
+            <p className={`${styles.text} mb-2 text text_type_main-default`}>Ваш заказ начали готовить</p>
             <p className={`${styles.text} mb-30 text text_type_main-default text_color_inactive`}>Дождитесь готовности
                 на орбитальной станции</p>
         </>

@@ -4,6 +4,7 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import {getAllIngredients} from "../../../services/selectors";
+import {useDrag} from "react-dnd";
 
 function Ingredient({ingredient, getIngredientData}) {
 
@@ -17,9 +18,18 @@ function Ingredient({ingredient, getIngredientData}) {
         return length;
     }, [burgerData])
 
+    const [{isDrag}, dragRef] = useDrag({
+        type: "ingredient",
+        item: ingredient,
+        collect: monitor => ({
+            isDrag: monitor.isDragging()
+        })
+    });
+
     return (
+        !isDrag &&
         <>
-            <li className={`${styles.container} mb-8`} onClick={() => getIngredientData(ingredient)}>
+            <li className={`${styles.container} mb-8`} onClick={() => getIngredientData(ingredient)} ref={dragRef}>
                 <div className={styles.counter}>
                     {counter > 0 &&
                     <Counter count={counter} size="default"
@@ -34,7 +44,6 @@ function Ingredient({ingredient, getIngredientData}) {
                 <p className={`${styles.name} mt-1 text text_type_main-default`}>{ingredient.name}</p>
             </li>
         </>
-
     )
 }
 
