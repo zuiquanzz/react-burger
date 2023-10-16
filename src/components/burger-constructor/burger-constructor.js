@@ -1,74 +1,110 @@
-import React, {useEffect} from 'react';
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components'
-import styles from "../burger-constructor/burger-constructor.module.css"
+import React, {useEffect, useMemo} from 'react';
+import {BurgerIcon, Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
+import styles from "./burger-constructor.module.css"
 import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
-import PropTypes from "prop-types";
 import {useModal} from "../../hooks/use-modal";
+import {useDispatch, useSelector} from "react-redux";
+import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/Ingredients/actions";
+import {getAllIngredients} from "../../services/selectors";
+import {useDrop} from "react-dnd";
+import {nanoid} from "@reduxjs/toolkit";
+import BurgerStuff from "./burger-stuff/burger-stuff";
 
-function BurgerConstructor({burgerData}) {
-    const { isModalOpen, openModal, closeModal } = useModal();
+function BurgerConstructor() {
+    const {burgerData} = useSelector(getAllIngredients)
 
-    const [price, setPrice] = React.useState(0);
+    const dispatch = useDispatch()
+
+    const {isModalOpen, openModal, closeModal} = useModal();
+    const [burgerBun, setBurgerBun] = React.useState(null);
 
     useEffect(() => {
-        getOrderPrice();
+        if (burgerData.length) {
+            if (!burgerBun) {
+                if (burgerData.find(ing => ing.type === 'bun')) {
+                    setBurgerBun(burgerData.find(ing => ing.type === 'bun'))
+                }
+            }
+        }
+    }, [burgerData])
+
+    const orderPrice = useMemo(() => {
+        return burgerData.length ? getOrderPrice() : 0;
     }, [burgerData])
 
     function getOrderPrice() {
         let pr = 0;
         burgerData.map(item => {
+            if (item.type === 'bun') {
                 pr = pr + item.price;
             }
-        )
-        pr = pr + burgerData[0].price;
-        pr = pr - burgerData[burgerData.length -1].price;
-        setPrice(pr);
+            pr = pr + item.price;
+        })
+        return pr;
     }
+
+    const [, dropTarget] = useDrop({
+        accept: "ingredient",
+        drop(item) {
+            console.log('i', item)
+            if (item.type !== 'bun') {
+                dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+            } else {
+                if (burgerBun) {
+                    dispatch({type: DELETE_INGREDIENT, payload: burgerBun.uniqId})
+                    dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+                    setBurgerBun(item)
+                } else {
+                    dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+                }
+            }
+        },
+    });
 
     const modalShow =
         <Modal modalClose={closeModal}>
-            <OrderDetails orderPrice={price}/>
+            <OrderDetails orderPrice={orderPrice}/>
         </Modal>;
-
+    //todo хотел сделать пустой конструктор как есть , оставил как есть , могу доделать в рамках правок PR
     return (
-        <div className={styles.table}>
-            <div className="p-15"></div>
+        <div className={styles.table} ref={dropTarget}>
+            <div className="p-15"/>
             <div className="ml-5">
+                {burgerBun &&
                 <ConstructorElement
                     type="top"
-                    text={burgerData[0].name + '(вверх)'}
-                    thumbnail={burgerData[0].image}
-                    price={burgerData[0].price}
+                    text={burgerBun.name + '(вверх)'}
+                    thumbnail={burgerBun.image}
+                    price={burgerData.find(ing => ing.type === 'bun').price}
                     isLocked={true}
-                />
+                />}
+                {!burgerBun &&
+                <BurgerIcon/>
+                }
             </div>
             <div className={`${styles.scroll_box} custom-scroll`}>
-                {burgerData.map((burger) =>
-                    burger.type !== 'bun' &&
-                    <div key={burger._id}>
-                        <DragIcon/>
-                        <ConstructorElement
-                            text={burger.name}
-                            thumbnail={burger.image}
-                            price={burger.price}
-                            isLocked={false}
-                        />
-                    </div>
+                {burgerData.map((stuff, index) =>
+                    stuff.type !== 'bun' &&
+                    <BurgerStuff key={stuff.uniqId} ingredient={stuff} index={index}/>
                 )}
             </div>
             <div className="ml-5">
-                <ConstructorElement
-                    type="bottom"
-                    text={burgerData[0].name + '(низ)'}
-                    thumbnail={burgerData[0].image}
-                    price={burgerData[0].price}
-                    isLocked={true}
-                />
+                {burgerBun && (
+                    <ConstructorElement
+                        type="bottom"
+                        text={burgerBun.name + '(низ)'}
+                        thumbnail={burgerBun.image}
+                        price={burgerBun.price}
+                        isLocked={true}
+                    />)}
+                {!burgerBun &&
+                <BurgerIcon type="primary"/>
+                }
             </div>
             <div className={`${styles.order} mt-10`}>
 
-                <p className="text text_type_digits-medium mr-2">{price}</p>
+                <p className="text text_type_digits-medium mr-2">{orderPrice}</p>
                 <div className={'mr-10'}>
                     <CurrencyIcon type="primary"/>
                 </div>
@@ -81,7 +117,4 @@ function BurgerConstructor({burgerData}) {
     )
 }
 
-BurgerConstructor.propTypes = {
-    burgerData: PropTypes.array.isRequired
-}
 export default BurgerConstructor;
