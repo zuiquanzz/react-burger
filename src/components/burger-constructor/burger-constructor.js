@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo} from 'react';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components'
-import styles from "../burger-constructor/burger-constructor.module.css"
+import styles from "./burger-constructor.module.css"
 import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
@@ -10,6 +10,7 @@ import {ingredientApi} from "../../utils/api";
 import {getAllIngredients} from "../../services/selectors";
 import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
+import BurgerStuff from "./burger-stuff/burger-stuff";
 
 function BurgerConstructor() {
     const {burgerData} = useSelector(getAllIngredients)
@@ -53,13 +54,15 @@ function BurgerConstructor() {
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop(item) {
-            dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+            if (item.type !== 'bun' || !burgerBun) {
+                dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+            }
         },
     });
 
-    function onDelete(uniqId) {
-        dispatch({type: DELETE_INGREDIENT, payload: uniqId})
-    }
+    // function onDelete(uniqId) {
+    //     dispatch({type: DELETE_INGREDIENT, payload: uniqId})
+    // }
 
     const modalShow =
         <Modal modalClose={closeModal}>
@@ -85,18 +88,9 @@ function BurgerConstructor() {
                 />}
             </div>
             <div className={`${styles.scroll_box} custom-scroll`}>
-                {burgerData.map((burger) =>
-                    burger.type !== 'bun' &&
-                    <div key={burger.uniqId}>
-                        <DragIcon/>
-                        <ConstructorElement
-                            text={burger.name}
-                            thumbnail={burger.image}
-                            price={burger.price}
-                            isLocked={false}
-                            handleClose={() => onDelete(burger.uniqId)}
-                        />
-                    </div>
+                {burgerData.map((stuff,index) =>
+                    stuff.type !== 'bun' &&
+                    <BurgerStuff key={stuff.uniqId}   ingredient={stuff} index={index}/>
                 )}
             </div>
             <div className="ml-5">

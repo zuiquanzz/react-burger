@@ -5,17 +5,13 @@ import Ingredient from "./ingredient/ingredient";
 import {useModal} from "../../hooks/use-modal";
 import Modal from "../modal/modal";
 import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
-import {useDispatch, useSelector} from "react-redux";
-import {ADD_INGREDIENT} from "../../services/Ingredients/actions";
-import {nanoid} from "@reduxjs/toolkit";
+import {useSelector} from "react-redux";
 import {getAllIngredients} from "../../services/selectors";
 import {useInView} from "react-intersection-observer";
 
 function BurgerIngredients() {
 
     const {ingredients} = useSelector(getAllIngredients)
-
-    const dispatch = useDispatch();
 
     const [currentTab, setCurrentTab] = useState('bun');
 
@@ -33,7 +29,7 @@ function BurgerIngredients() {
 
     function handleModalOpen(ingredient) {
         setIngredient(ingredient);
-        dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
+        // dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
         openModal();
     }
 

@@ -3,9 +3,9 @@ import {
     DELETE_INGREDIENT,
     GET_INGREDIENTS_FAILURE,
     GET_INGREDIENTS_REQUEST,
-    GET_INGREDIENTS_SUCCESS
+    GET_INGREDIENTS_SUCCESS,
+    SORT_STUFF
 } from "./actions";
-import {ingredientApi} from "../../utils/api";
 
 const initialState = {
     ingredients: [],
@@ -15,8 +15,8 @@ const initialState = {
 }
 
 
-export default (state = initialState,action) => {
-    switch (action.type){
+export default (state = initialState, action) => {
+    switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {...state, isLoading: true, error: false}
         }
@@ -29,9 +29,16 @@ export default (state = initialState,action) => {
         case ADD_INGREDIENT: {
             return {...state, burgerData: [...state.burgerData, action.payload]}
         }
-        //todo check
         case DELETE_INGREDIENT: {
             return {...state, burgerData: state.burgerData.filter(({uniqId}) => uniqId !== action.payload)}
+        }
+        case SORT_STUFF: {
+            const stuff = [...state.burgerData];
+            stuff.splice(action.hoverIndex, 0, ...state.burgerData.splice(action.dragIndex, 1)[0]);
+            return {
+                ...state,
+                burgerData: stuff
+            }
         }
         default:
             return state;
