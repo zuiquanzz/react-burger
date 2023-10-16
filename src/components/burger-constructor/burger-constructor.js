@@ -90,7 +90,7 @@ function BurgerConstructor() {
             <div className={`${styles.scroll_box} custom-scroll`}>
                 {burgerData.map((stuff,index) =>
                     stuff.type !== 'bun' &&
-                    <BurgerStuff key={stuff.uniqId}   ingredient={stuff} index={index}/>
+                    <BurgerStuff key={stuff.uniqId} ingredient={stuff} index={index}/>
                 )}
             </div>
             <div className="ml-5">

@@ -34,7 +34,7 @@ export default (state = initialState, action) => {
         }
         case SORT_STUFF: {
             const stuff = [...state.burgerData];
-            stuff.splice(action.hoverIndex, 0, ...state.burgerData.splice(action.dragIndex, 1)[0]);
+            stuff.splice(action.hoverIndex, 0, stuff.splice(action.dragIndex, 1)[0]);
             return {
                 ...state,
                 burgerData: stuff
