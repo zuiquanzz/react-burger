@@ -5,7 +5,7 @@ import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "react-redux";
-import {ADD_INGREDIENT} from "../../services/Ingredients/actions";
+import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/Ingredients/actions";
 import {getAllIngredients} from "../../services/selectors";
 import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
@@ -47,8 +47,17 @@ function BurgerConstructor() {
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop(item) {
-            if (item.type !== 'bun' || !burgerBun) {
+            console.log('i', item)
+            if (item.type !== 'bun') {
                 dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+            } else {
+                if (burgerBun) {
+                    dispatch({type: DELETE_INGREDIENT, payload: burgerBun.uniqId})
+                    dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+                    setBurgerBun(item)
+                } else {
+                    dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+                }
             }
         },
     });
