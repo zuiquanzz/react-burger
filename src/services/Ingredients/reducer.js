@@ -32,6 +32,7 @@ export default (state = initialState, action) => {
         case DELETE_INGREDIENT: {
             return {...state, burgerData: state.burgerData.filter(({uniqId}) => uniqId !== action.payload)}
         }
+        //todo refactor
         case SORT_STUFF: {
             const stuff = [...state.burgerData];
             stuff.splice(action.hoverIndex, 0, stuff.splice(action.dragIndex, 1)[0]);
