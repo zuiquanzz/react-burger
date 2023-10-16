@@ -12,15 +12,9 @@ export const getIngredients = () => (dispatch) => {
     dispatch({type: GET_INGREDIENTS_REQUEST})
     fetch(ingredientApi)
         .then(res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`))
-        .then(data => {
-                // setState({...state, data, isLoading: false})
-                // setIngredients(data.data)
-                // console.log("data app", data)
-                dispatch({type: GET_INGREDIENTS_SUCCESS, payload: data.data})
-            }
+        .then(data => {dispatch({type: GET_INGREDIENTS_SUCCESS, payload: data.data})}
         )
         .catch(e => {
-            // setState({...state, hasError: true, isLoading: false});
             dispatch({type: GET_INGREDIENTS_FAILURE})
             console.error(e)
         });

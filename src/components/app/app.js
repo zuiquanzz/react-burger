@@ -19,23 +19,10 @@ function App() {
         isLoading,
         error,
     } = useSelector(getAllIngredients)
-    //todo delete
-    // const [state, setState] = useState({
-    //     isLoading: false,
-    //     hasError: false,
-    //     data: null
-    // })
-
-    // const [ingredients, setIngredients] = React.useState([]);
 
     useEffect(() => {
         dispatch(getIngredients())
     }, [dispatch])
-
-    // const getIngredients = () => {
-    //     setState({...state, hasError: false, isLoading: true});
-    //
-    // };
 
     return (
         <div className={appStyles.app}>
@@ -45,10 +32,8 @@ function App() {
                 <main className={appStyles.main}>
 
                     <div className={'mr-10'}>
-                        {/*<BurgerIngredients ingredients={ingredients}/>*/}
                         <BurgerIngredients/>
                     </div>
-                    {/*<BurgerConstructor burgerData={burgerData}/>*/}
                     <BurgerConstructor/>
                 </main>
                 }

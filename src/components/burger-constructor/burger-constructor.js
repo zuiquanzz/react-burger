@@ -1,12 +1,11 @@
 import React, {useEffect, useMemo} from 'react';
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components'
+import {BurgerIcon, Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from "./burger-constructor.module.css"
 import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "react-redux";
-import {ADD_INGREDIENT, DELETE_INGREDIENT, GET_INGREDIENTS_SUCCESS} from "../../services/Ingredients/actions";
-import {ingredientApi} from "../../utils/api";
+import {ADD_INGREDIENT} from "../../services/Ingredients/actions";
 import {getAllIngredients} from "../../services/selectors";
 import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
@@ -18,13 +17,10 @@ function BurgerConstructor() {
     const dispatch = useDispatch()
 
     const {isModalOpen, openModal, closeModal} = useModal();
-
-    // const [price, setPrice] = React.useState(0);
     const [burgerBun, setBurgerBun] = React.useState(null);
 
     useEffect(() => {
         if (burgerData.length) {
-            // getOrderPrice();
             if (!burgerBun) {
                 if (burgerData.find(ing => ing.type === 'bun')) {
                     setBurgerBun(burgerData.find(ing => ing.type === 'bun'))
@@ -45,9 +41,6 @@ function BurgerConstructor() {
             }
             pr = pr + item.price;
         })
-        // pr = pr + burgerData[0].price;
-        // pr = pr - burgerData[burgerData.length - 1].price;
-        // setPrice(pr);
         return pr;
     }
 
@@ -60,15 +53,11 @@ function BurgerConstructor() {
         },
     });
 
-    // function onDelete(uniqId) {
-    //     dispatch({type: DELETE_INGREDIENT, payload: uniqId})
-    // }
-
     const modalShow =
         <Modal modalClose={closeModal}>
             <OrderDetails orderPrice={orderPrice}/>
         </Modal>;
-
+    //todo хотел сделать пустой конструктор как есть , оставил как есть , могу доделать в рамках правок PR
     return (
         <div className={styles.table} ref={dropTarget}>
             <div className="p-15"/>
@@ -82,13 +71,11 @@ function BurgerConstructor() {
                     isLocked={true}
                 />}
                 {!burgerBun &&
-                <ConstructorElement
-                    type="top"
-                    text={'Добавьте булку'}
-                />}
+                <BurgerIcon/>
+                }
             </div>
             <div className={`${styles.scroll_box} custom-scroll`}>
-                {burgerData.map((stuff,index) =>
+                {burgerData.map((stuff, index) =>
                     stuff.type !== 'bun' &&
                     <BurgerStuff key={stuff.uniqId} ingredient={stuff} index={index}/>
                 )}
@@ -103,10 +90,8 @@ function BurgerConstructor() {
                         isLocked={true}
                     />)}
                 {!burgerBun &&
-                <ConstructorElement
-                    type="bottom"
-                    text={'Добавьте булку'}
-                />}
+                <BurgerIcon type="primary"/>
+                }
             </div>
             <div className={`${styles.order} mt-10`}>
 
@@ -122,4 +107,5 @@ function BurgerConstructor() {
         </div>
     )
 }
+
 export default BurgerConstructor;

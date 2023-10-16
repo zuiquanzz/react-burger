@@ -1,10 +1,8 @@
 import React from 'react';
 import styles from './order-details.module.css';
 import doneIcon from '../../../../images/done.svg'
-import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
-import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, getOrder} from "../../../../services/Orders/actions";
-import {orderApi} from "../../../../utils/api";
+import {getOrder} from "../../../../services/Orders/actions";
 import {getAllIngredients, getOrders} from "../../../../services/selectors";
 
 function OrderDetails() {
@@ -17,13 +15,7 @@ function OrderDetails() {
 
     React.useEffect(() => {
         dispatch(getOrder(burgerData))
-        console.log(order)
     }, [dispatch])
-
-    // const getOrder = () => {
-    //     // setState({...state, hasError: false, isLoading: true});
-    //     // console.log(burgerData)
-    // };
 
     return (
         <>

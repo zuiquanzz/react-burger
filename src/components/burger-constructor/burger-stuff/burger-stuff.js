@@ -18,7 +18,7 @@ function BurgerStuff({ingredient, index}) {
 
     const dndRef = useRef(null);
 
-    //todo refactoring это  взято из лекции, мне не нравиться семантика, переделаю, пока не знаю как)
+    //todo refactoring это  взято из лекции,  не нравиться семантика, переделаю, пока не знаю как)
     const [{handlerId}, drop] = useDrop({
         accept: 'stuff',
         collect(monitor) {
@@ -95,7 +95,7 @@ function BurgerStuff({ingredient, index}) {
     )
 }
 
-//todo
+
 BurgerStuff.propTypes = {
     ingredient: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired

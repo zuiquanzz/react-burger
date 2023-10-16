@@ -29,7 +29,6 @@ function BurgerIngredients() {
 
     function handleModalOpen(ingredient) {
         setIngredient(ingredient);
-        // dispatch({type: ADD_INGREDIENT, payload: {...ingredient, uniqId: nanoid()}})
         openModal();
     }
 
@@ -63,13 +62,14 @@ function BurgerIngredients() {
                 </Tab>
                 <Tab value="sauce" active={currentTab === 'sauce'} onClick={onChangeTab}>
                     Соусы
+
                 </Tab>
                 <Tab value="main" active={currentTab === 'main'} onClick={onChangeTab}>
                     Начинки
                 </Tab>
             </div>
 
-            {/*//todo IngredientsList*/}
+            {/*//todo IngredientsList can do after review*/}
             <div className={`${styles.table} custom-scroll`}>
                 <div>
                     <h2 id='bun' className="text_type_main-medium" ref={bunRef}>Булки</h2>
