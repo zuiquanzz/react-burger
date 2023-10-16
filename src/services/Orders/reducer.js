@@ -1,9 +1,4 @@
-import {
-    GET_ORDER_SUCCESS,
-    GET_ORDER_REQUEST,
-    GET_ORDER_FAILURE
-} from "./actions";
-import {ingredientApi} from "../../utils/api";
+import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "./actions";
 
 const initialState = {
     isLoading: false,
@@ -11,9 +6,8 @@ const initialState = {
     order: null
 }
 
-
-export default (state = initialState,action) => {
-    switch (action.type){
+export default (state = initialState, action) => {
+    switch (action.type) {
         case GET_ORDER_REQUEST: {
             return {...state, isLoading: true, error: false}
         }

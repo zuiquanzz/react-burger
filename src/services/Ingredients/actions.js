@@ -1,4 +1,5 @@
-import {ingredientApi} from "../../utils/api";
+import {serverUrl,requestType,ingredientsEndpoint} from "../../utils/urls";
+import {checkResponse} from "../../utils/urls";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST'
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS'
@@ -10,8 +11,8 @@ export const SORT_STUFF = 'SORT_STUFF'
 
 export const getIngredients = () => (dispatch) => {
     dispatch({type: GET_INGREDIENTS_REQUEST})
-    fetch(ingredientApi)
-        .then(res => res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`))
+    fetch(serverUrl.concat(requestType).concat(ingredientsEndpoint))
+        .then(checkResponse)
         .then(data => {dispatch({type: GET_INGREDIENTS_SUCCESS, payload: data.data})}
         )
         .catch(e => {
