@@ -9,9 +9,11 @@ export const ADD_INGREDIENT = 'ADD_INGREDIENT'
 export const DELETE_INGREDIENT = 'DELETE_INGREDIENT'
 export const SORT_STUFF = 'SORT_STUFF'
 
+const getIngredientsEndPoint = serverUrl.concat(requestType).concat(ingredientsEndpoint);
+
 export const getIngredients = () => (dispatch) => {
     dispatch({type: GET_INGREDIENTS_REQUEST})
-    fetch(serverUrl.concat(requestType).concat(ingredientsEndpoint))
+    fetch(getIngredientsEndPoint)
         .then(checkResponse)
         .then(data => {dispatch({type: GET_INGREDIENTS_SUCCESS, payload: data.data})}
         )

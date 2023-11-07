@@ -4,9 +4,11 @@ export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST'
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS'
 export const GET_ORDER_FAILURE = 'GET_ORDER_FAILURE'
 
+const getOrderEndPoint = serverUrl.concat(requestType).concat(orderEndpoint);
+
 export const getOrder = (burgerData) => (dispatch) => {
     dispatch({type: GET_ORDER_REQUEST})
-    fetch(serverUrl.concat(requestType).concat(orderEndpoint), {
+    fetch(getOrderEndPoint, {
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body: JSON.stringify({

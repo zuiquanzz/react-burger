@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './order-details.module.css';
 import doneIcon from '../../../../images/done.svg'
 import {useDispatch, useSelector} from "react-redux";
-import {getOrder} from "../../../../services/Orders/actions";
+import {getOrder} from "../../../../services/orders/actions";
 import {getAllIngredients, getOrders} from "../../../../services/selectors";
 
 function OrderDetails() {

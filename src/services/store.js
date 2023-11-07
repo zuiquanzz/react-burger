@@ -1,11 +1,13 @@
 import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
-import ingredientsReducer from "./Ingredients/reducer";
-import ordersReducer from "./Orders/reducer";
+import ingredientsReducer from "./ingredients/reducer";
+import ordersReducer from "./orders/reducer";
+import authReducer from "./authorization/reducer";
 
 const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
-    orders: ordersReducer
+    orders: ordersReducer,
+    auth: authReducer,
 })
 
 export const store = configureStore({

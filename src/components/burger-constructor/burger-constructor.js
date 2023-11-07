@@ -5,7 +5,7 @@ import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "react-redux";
-import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/Ingredients/actions";
+import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/ingredients/actions";
 import {getAllIngredients} from "../../services/selectors";
 import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
@@ -66,7 +66,6 @@ function BurgerConstructor() {
         <Modal modalClose={closeModal}>
             <OrderDetails orderPrice={orderPrice}/>
         </Modal>;
-    //todo хотел сделать пустой конструктор как есть , оставил как есть , могу доделать в рамках правок PR
     return (
         <div className={styles.table} ref={dropTarget}>
             <div className="p-15"/>
