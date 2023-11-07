@@ -1,13 +1,14 @@
-import styles from "./sign-in-page.module.css";
+import styles from "./registration-page.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useRef, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {getAuthLogin} from "../../services/authorization/actions";
+import {getAuthRegister} from '../../services/authorization/actions';
 
 
-export const SignInPage = () => {
+export const RegistrationPage = () => {
 
+    const [valueName, setValueName] = useState('');
     const [valueEmail, setValueEmail] = useState('');
     const [valuePassword, setValuePassword] = useState('');
 
@@ -19,23 +20,34 @@ export const SignInPage = () => {
         inputRef.current.type === 'text' ? inputRef.current.type = 'password' : inputRef.current.type = 'text'
     }
 
-    const loginCheck = (e) => {
-        if (valueEmail !== '' && valuePassword !== '') {
-            e.preventDefault();
-            dispatch(getAuthLogin(valueEmail, valuePassword))
+    const handleRegister = (e) => {
+        e.preventDefault();
+        if (valueName !== '' && valueEmail !== '' && valuePassword !== '') {
+                dispatch(getAuthRegister(valueName, valueEmail, valuePassword))
         }
     }
 
     return (
         <>
             <div className={styles.box}>
-                <div className={styles.head}>Вход</div>
-                <form onSubmit={loginCheck}>
+                <div className={styles.headling}>Регистрация</div>
+                <form onSubmit={handleRegister}>
+                    <Input
+                        type={'text'}
+                        placeholder={'Имя'}
+                        onChange={e => setValueName(e.target.value)}
+                        name={'name'}
+                        error={false}
+                        errorText={'Ошибка'}
+                        size={'default'}
+                        extraClass="mt-6"
+                        value={valueName}
+                    />
                     <Input
                         type={'text'}
                         placeholder={'E-mail'}
                         onChange={e => setValueEmail(e.target.value)}
-                        name={'name'}
+                        name={'email'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
@@ -49,7 +61,7 @@ export const SignInPage = () => {
                         onChange={e => setValuePassword(e.target.value)}
                         ref={inputRef}
                         onIconClick={onIconClick}
-                        name={'name'}
+                        name={'password'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
@@ -58,20 +70,14 @@ export const SignInPage = () => {
                     />
                     <div className={`${styles.button} mt-6`}>
                         <Button htmlType="submit" type="primary" size="medium">
-                            Войти
+                            Зарегистрироваться
                         </Button>
                     </div>
                 </form>
                 <div className={`${styles.register} mt-20`}>
-                    <p className={`${styles.text} `}>Новый пользователь?</p>
-                    <Link to='/register' className={styles.link}>
-                        <p className={`${styles.link} ml-2`}>Зарегистрироваться</p>
-                    </Link>
-                </div>
-                <div className={`${styles.register} mt-2`}>
-                    <p className={`${styles.text} `}>Забыли пароль?</p>
-                    <Link to='/forgot-password' className={styles.link}>
-                        <p className={`${styles.link} ml-2`}>Восстановить пароль</p>
+                    <p className={`${styles.text} `}>Уже зарегистрированы?</p>
+                    <Link to='/sign-in' className={styles.link}>
+                        <p className={`${styles.link} ml-2`}>Войти</p>
                     </Link>
                 </div>
             </div>

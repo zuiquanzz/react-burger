@@ -1,5 +1,4 @@
-import styles from "./profile-edit-page.module.css";
-import {Input, Box, EditIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {editUserByToken} from '../../services/authorization/actions';
@@ -10,9 +9,11 @@ export const ProfileEditPage = () => {
     const {name, email, password} = useSelector(getUser);
 
 
-    const [value, setValue] = useState(name);
-    const [valueP, setValueP] = useState('');
-    const [valueM, setValueM] = useState(email);
+    const [valueName, setValueName] = useState(name);
+    const [valuePassword, setValuePassword] = useState('');
+    const [valueEmail, setValueEmail] = useState(email);
+    const [valueChanged, setValueChanged] = useState(false);
+
 
     const inputRefName = useRef(null);
     const inputRefEmail = useRef(null);
@@ -34,23 +35,24 @@ export const ProfileEditPage = () => {
     }
 
     let display = 'none';
-    if (value !== name || valueM !== email) {
+    if (valueName !== name || valueEmail !== email) {
         display = 'block';
     }
 
     const handleEdit = (e) => {
         e.preventDefault();
-        if (valueP !== '') {
-            dispatch(editUserByToken(value, valueM, valueP, token))
+        if (valuePassword !== '') {
+            dispatch(editUserByToken(valueName, valueEmail, valuePassword, token))
         } else {
-            dispatch(editUserByToken(value, valueM, password, token))
+            dispatch(editUserByToken(valueName, valueEmail, password, token))
         }
     }
 
     const handleReset = () => {
-        setValue(name);
-        setValueM(email);
-        setValueP('');
+        setValueName(name);
+        setValueEmail(email);
+        setValuePassword('');
+        setValueChanged(false);
     }
 
     return (
@@ -59,7 +61,10 @@ export const ProfileEditPage = () => {
                 <Input
                     type={'text'}
                     placeholder={'Имя'}
-                    onChange={e => setValue(e.target.value)}
+                    onChange={e => {
+                        setValueName(e.target.value)
+                        setValueChanged(true)
+                    }}
                     icon={'EditIcon'}
                     ref={inputRefName}
                     onIconClick={onIconClickName}
@@ -67,12 +72,15 @@ export const ProfileEditPage = () => {
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
-                    value={value}
+                    value={valueName}
                 />
                 <Input
                     type={'text'}
                     placeholder={'Email'}
-                    onChange={e => setValueM(e.target.value)}
+                    onChange={e => {
+                        setValueEmail(e.target.value)
+                        setValueChanged(true)
+                    }}
                     icon={'EditIcon'}
                     ref={inputRefEmail}
                     onIconClick={onIconClickEmail}
@@ -81,13 +89,16 @@ export const ProfileEditPage = () => {
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass="mt-6"
-                    value={valueM}
+                    value={valueEmail}
                 />
                 <Input
                     type={'text'}
                     placeholder={'Пароль'}
                     icon={'EditIcon'}
-                    onChange={e => setValueP(e.target.value)}
+                    onChange={e => {
+                        setValuePassword(e.target.value)
+                        setValueChanged(true)
+                    }}
                     ref={inputRefPassword}
                     onIconClick={onIconClickPassword}
                     name={'name'}
@@ -95,17 +106,19 @@ export const ProfileEditPage = () => {
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass="mt-6"
-                    value={valueP}
+                    value={valuePassword}
                 />
 
-                <div className={`${styles.hidden_button} mt-6`} style={{display}}>
-                    <Button htmlType="submit" type="primary" size="medium">
-                        Сохранить
-                    </Button>
-                    <Button htmlType="reset" type="primary" size="medium" extraClass="ml-6" onClick={handleReset}>
-                        Отмена
-                    </Button>
-                </div>
+                {valueChanged &&
+                    <div className="mt-6">
+                        <Button htmlType="submit" type="primary" size="medium">
+                            Сохранить
+                        </Button>
+                        <Button htmlType="reset" type="primary" size="medium" extraClass="ml-6" onClick={handleReset}>
+                            Отмена
+                        </Button>
+                    </div>
+                }
             </form>
         </>
     )

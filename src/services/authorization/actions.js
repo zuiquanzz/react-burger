@@ -1,9 +1,25 @@
-import {authEndpoint, authLogin, authLogout, authRegister, authToken, authUser, checkResponse, requestType, serverUrl} from "../../utils/urls";
+import {
+    authEndpoint,
+    authLogin,
+    authLogout,
+    authRegister,
+    authToken,
+    authUser,
+    checkResponse,
+    passwordResetEndpoint,
+    passwordResetReset,
+    requestType,
+    serverUrl
+} from "../../utils/urls";
 
 export const GET_AUTH_REQUEST = 'GET_AUTH_REQUEST'
 export const GET_AUTH_SUCCESS = 'GET_AUTH_SUCCESS'
 export const GET_AUTH_USER_SUCCESS = 'GET_AUTH_USER_SUCCESS'
 export const GET_AUTH_REFRESH_TOKEN_SUCCESS = 'GET_AUTH_REFRESH_TOKEN_SUCCESS'
+export const GET_AUTH_FORGOT_PASSWORD_SUCCESS = 'GET_AUTH_FORGOT_PASSWORD_SUCCESS'
+export const GET_AUTH_RESET_PASSWORD_SUCCESS = 'GET_AUTH_RESET_PASSWORD_SUCCESS'
+
+
 export const GET_AUTH_LOGOUT_SUCCESS = 'GET_AUTH_LOGOUT_SUCCESS'
 export const GET_AUTH_FAILURE = 'GET_AUTH_FAILURE'
 
@@ -12,6 +28,9 @@ const getAuthRegisterEndPoint = serverUrl.concat(requestType).concat(authEndpoin
 const getAuthLogOutEndPoint = serverUrl.concat(requestType).concat(authEndpoint).concat(authLogout);
 const getAuthUserEndPoint = serverUrl.concat(requestType).concat(authEndpoint).concat(authUser);
 const getAuthRefreshTokenEndPoint = serverUrl.concat(requestType).concat(authEndpoint).concat(authToken);
+const getPasswordResetEndPoint = serverUrl.concat(requestType).concat(passwordResetEndpoint);
+const getPasswordResetConfirmEndPoint = serverUrl.concat(requestType).concat(passwordResetEndpoint).concat(passwordResetReset);
+
 
 export const getAuthLogin = (email, password) => (dispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
@@ -32,6 +51,42 @@ export const getAuthLogin = (email, password) => (dispatch) => {
             console.error(e)
         });
 }
+
+export const getForgotPassword = (email) => (dispatch) => {
+    dispatch({type: GET_AUTH_REQUEST})
+    return fetch(getPasswordResetEndPoint, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json;charset=utf-8'},
+        body: JSON.stringify({
+            "email": email
+        })
+    }).then(checkResponse)
+        .then(data => {
+            dispatch({type: GET_AUTH_FORGOT_PASSWORD_SUCCESS, payload: data})
+        }).catch(e => {
+            dispatch({type: GET_AUTH_FAILURE})
+            console.error(e)
+        });
+}
+
+export const getResetPassword = (password, confirmPass) => (dispatch) => {
+    dispatch({type: GET_AUTH_REQUEST})
+    return fetch(getPasswordResetConfirmEndPoint, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json;charset=utf-8'},
+        body: JSON.stringify({
+            "password": password,
+            "token": confirmPass
+        })
+    }).then(checkResponse)
+        .then(data => {
+            dispatch({type: GET_AUTH_RESET_PASSWORD_SUCCESS, payload: data})
+        }).catch(e => {
+            dispatch({type: GET_AUTH_FAILURE})
+            console.error(e)
+        });
+}
+
 
 export const getAuthRegister = (name, email, password) => (dispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
@@ -135,7 +190,7 @@ const refreshToken = (type, name, email, password) => (dispatch) => {
             if (type === 'get') {
                 getUserByToken(localStorage.getItem("accessToken"))
             } else {
-                editUserByToken(localStorage.getItem("accessToken"),name, email, password)
+                editUserByToken(localStorage.getItem("accessToken"), name, email, password)
             }
         })
         .catch(e => {

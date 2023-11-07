@@ -32,6 +32,10 @@ export const MainPage = () => {
                         <BurgerConstructor/>
                     </main>
                 }
+                {isLoading &&
+                    <>
+                        <p>Загрузка..</p>
+                    </>}
             </DndProvider>
         </>
     );
