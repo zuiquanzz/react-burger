@@ -30,7 +30,7 @@ export const RegistrationPage = () => {
     return (
         <>
             <div className={styles.box}>
-                <div className={styles.headling}>Регистрация</div>
+                <div className={styles.header}>Регистрация</div>
                 <form onSubmit={handleRegister}>
                     <Input
                         type={'text'}
@@ -74,7 +74,7 @@ export const RegistrationPage = () => {
                         </Button>
                     </div>
                 </form>
-                <div className={`${styles.register} mt-20`}>
+                <div className={`${styles.register} mt-10`}>
                     <p className={`${styles.text} `}>Уже зарегистрированы?</p>
                     <Link to='/sign-in' className={styles.link}>
                         <p className={`${styles.link} ml-2`}>Войти</p>

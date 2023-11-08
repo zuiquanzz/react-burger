@@ -5,6 +5,11 @@ import {NavLink, useMatch} from "react-router-dom";
 
 const AppHeader = () => {
 
+    const isProfile = useMatch('/profile/*')
+    const isForgotPass = useMatch('/forgot-password')
+    const isResetPass = useMatch('/reset-password')
+    const isSignIn = useMatch('/sign-in')
+    const isRegister = useMatch('/register')
 
     return (
         <header className={styles.header}>
@@ -31,18 +36,18 @@ const AppHeader = () => {
             <Logo classname={styles.logo}/>
             <nav className={styles.right_menu}>
                 <NavLink to="/profile" className={styles.button}>
-                    {({isActive}) => isActive ? (
-                            <>
-                                <ProfileIcon type="secondary"/>
-                                <p className="text_type_main-default ml-2">Личный кабинет</p>
-                            </>
-                        ) :
-                        (
-                            <>
-                                <ProfileIcon type="primary"/>
-                                <p className="text_type_main-default ml-2">Личный кабинет</p>
-                            </>
-                        )}
+                    {(isProfile || isSignIn || isForgotPass || isResetPass || isRegister) &&
+                        <>
+                            <ProfileIcon type="secondary"/>
+                            <p className="text_type_main-default text_color_inactive ml-2">Личный кабинет</p>
+                        </>
+                    }
+                    {(!isProfile && !isSignIn && !isForgotPass && !isResetPass && !isRegister) &&
+                        <>
+                            <ProfileIcon type="primary"/>
+                            <p className="text_type_main-default ml-2">Личный кабинет</p>
+                        </>
+                    }
                 </NavLink>
             </nav>
         </header>
