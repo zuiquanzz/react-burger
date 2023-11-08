@@ -47,7 +47,6 @@ function BurgerConstructor() {
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop(item) {
-            console.log('i', item)
             if (item.type !== 'bun') {
                 dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
             } else {
