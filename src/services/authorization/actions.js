@@ -109,89 +109,17 @@ export const getAuthRegister = (name, email, password) => (dispatch) => {
         });
 }
 
-
 export const getUserSession = () => (dispatch) => {
     if (localStorage.getItem("accessToken")) {
         dispatch(getUserByToken(localStorage.getItem("accessToken")));
     }
 }
 
-//todo
 const getUserByToken = (token) => (dispatch) => {
-    const type = 'get';
     dispatch({type: GET_AUTH_REQUEST})
-    fetch(getAuthUserEndPoint, {
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            authorization: token
-        },
-    })
-        .then(checkResponse)
-        .then(data => {
-            dispatch({type: GET_AUTH_USER_SUCCESS, payload: data})
-        })
-        .catch(e => {
-            if (e.message === "jwt expired") {
-                console.log("jwt expired")
-                dispatch(refreshToken(type, null, null, null));
-            } else {
-                dispatch({type: GET_AUTH_FAILURE})
-                console.error(e)
-            }
-        });
-};
-
-//todo
-export const editUserByToken = (name, email, password, token) => (dispatch) => {
-    const type = 'patch';
-    dispatch({type: GET_AUTH_REQUEST})
-    fetch(getAuthUserEndPoint, {
-        method: "PATCH",
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            authorization: token
-        },
-        body: JSON.stringify({
-            "email": email,
-            "password": password,
-            "name": name
-        })
-    })
-        .then(checkResponse)
-        .then(data => {
-            dispatch({type: GET_AUTH_USER_SUCCESS, payload: data})
-        })
-        .catch(e => {
-            if (e.message === "jwt expired") {
-                console.log("jwt expired")
-                dispatch(refreshToken(type, name, email, password));
-            } else {
-                dispatch({type: GET_AUTH_FAILURE})
-                console.error(e)
-            }
-        });
-};
-
-
-const refreshToken = (type, name, email, password) => (dispatch) => {
-    dispatch({type: GET_AUTH_REQUEST})
-    fetch(getAuthRefreshTokenEndPoint, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
-            token: localStorage.getItem("refreshToken"),
-        })
-    })
-        .then(checkResponse)
-        .then(data => {
-            dispatch({type: GET_AUTH_REFRESH_TOKEN_SUCCESS, payload: data})
-            if (type === 'get') {
-                getUserByToken(localStorage.getItem("accessToken"))
-            } else {
-                editUserByToken(localStorage.getItem("accessToken"), name, email, password)
-            }
+    getOrRefresh(token)
+        .then(res => {
+            dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
         })
         .catch(e => {
             dispatch({type: GET_AUTH_FAILURE})
@@ -199,6 +127,17 @@ const refreshToken = (type, name, email, password) => (dispatch) => {
         });
 }
 
+export const editUserByToken = (name, email, password, token) => (dispatch) => {
+    dispatch({type: GET_AUTH_REQUEST})
+    editOrRefresh(token)
+        .then(res => {
+            dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
+        })
+        .catch(e => {
+            dispatch({type: GET_AUTH_FAILURE})
+            console.error(e)
+        });
+}
 
 export const logout = (token) => (dispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
@@ -217,4 +156,93 @@ export const logout = (token) => (dispatch) => {
             dispatch({type: GET_AUTH_FAILURE})
             console.error(e)
         });
+};
+
+const getOrRefresh = async (token) => {
+    try {
+        const res = await fetch(getAuthUserEndPoint, {
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                authorization: token
+            }
+        });
+        return await checkResponse(res);
+    } catch (err) {
+        if (err.message === "jwt expired") {
+            const refreshData = await refreshToken();
+            if (!refreshData.success) {
+                return Promise.reject(refreshData);
+            }
+            localStorage.setItem("refreshToken", refreshData.refreshToken);
+            localStorage.setItem("accessToken", refreshData.accessToken);
+            token.headers.authorization = refreshData.accessToken;
+            const res = await fetch(getAuthUserEndPoint, {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    authorization: token
+                }
+            });
+            return await checkResponse(res);
+        } else {
+            return Promise.reject(err);
+        }
+    }
+};
+
+const editOrRefresh = async (token, name, email, password) => {
+    try {
+        const res = await fetch(getAuthUserEndPoint, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                authorization: token
+            },
+            body: JSON.stringify({
+
+                "name": name,
+                "email": email,
+                "password": password
+            })
+        });
+
+        return await checkResponse(res);
+    } catch (err) {
+        if (err.message === "jwt expired") {
+            const refreshData = await refreshToken();
+            if (!refreshData.success) {
+                return Promise.reject(refreshData);
+            }
+            localStorage.setItem("refreshToken", refreshData.refreshToken);
+            localStorage.setItem("accessToken", refreshData.accessToken);
+            token.headers.authorization = refreshData.accessToken;
+            const res = await fetch(getAuthUserEndPoint, {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    authorization: token
+                },
+                body: JSON.stringify({
+                    "name": name,
+                    "email": email,
+                    "password": password
+                })
+            });
+            return await checkResponse(res);
+        } else {
+            return Promise.reject(err);
+        }
+    }
+};
+
+
+const refreshToken = () => {
+    return fetch(getAuthRefreshTokenEndPoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem("refreshToken"),
+        }),
+    }).then(checkResponse);
 };

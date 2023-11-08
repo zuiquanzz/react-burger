@@ -6,17 +6,7 @@ export const ProtectedRoutes = ({onlyUnAuth = false, page}) => {
     const {
         user,
         isLoading,
-        // isAuth,
-        error,
     } = useSelector(getAuth)
-
-    // const user = {
-    //     name: "mixa",
-    //     email: "mixa@m.ru",
-    //     password : "mixa"
-    // }
-
-    // const user = null;
 
     const location = useLocation();
 
