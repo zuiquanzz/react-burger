@@ -34,11 +34,6 @@ export const ProfileEditPage = () => {
         setTimeout(() => inputRefPassword.current.focus(), 0)
     }
 
-    let display = 'none';
-    if (valueName !== name || valueEmail !== email) {
-        display = 'block';
-    }
-
     const handleEdit = (e) => {
         e.preventDefault();
         if (valuePassword !== '') {
