@@ -16,7 +16,7 @@ function OrderDetails() {
 
     React.useEffect(() => {
         dispatch(getOrder(burgerData))
-        dispatch({type:CLEAR_STUFF})
+        dispatch({type: CLEAR_STUFF})
     }, [dispatch])
 
     return (
@@ -24,7 +24,7 @@ function OrderDetails() {
             {!isLoading && !error && order &&
             <div className={`${styles.price} mt-30 mb-8 text text_type_digits-large`}>{order.order.number}</div>
             }
-            {isLoading && <p mt-30 mb-8 text text_type_digits-large>Загрузка...</p>}
+            {isLoading && <p className={`${styles.description} text text_type_main-medium`}>Загрузка...</p>}
             <div className={`${styles.description} text text_type_main-medium`}>идентификатор заказа</div>
             <div className={styles.icon}>
                 <img className={styles.icon} src={doneIcon} alt={'done'}/>
