@@ -1,16 +1,17 @@
 import styles from "./registration-page.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useRef, useState} from 'react';
+import {useRef} from 'react';
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {getAuthRegister} from '../../services/authorization/actions';
+import {useForm} from "../../hooks/use-form";
 
 
 export const RegistrationPage = () => {
 
-    const [valueName, setValueName] = useState('');
-    const [valueEmail, setValueEmail] = useState('');
-    const [valuePassword, setValuePassword] = useState('');
+    const {values, handleChange} = useForm({name: '', email: '', password: ''})
+    const {name, email, password} = values;
+
 
     const inputRef = useRef(null)
     const dispatch = useDispatch();
@@ -22,8 +23,8 @@ export const RegistrationPage = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        if (valueName !== '' && valueEmail !== '' && valuePassword !== '') {
-                dispatch(getAuthRegister(valueName, valueEmail, valuePassword))
+        if (name !== '' && email !== '' && password !== '') {
+            dispatch(getAuthRegister(name, email, password))
         }
     }
 
@@ -35,30 +36,30 @@ export const RegistrationPage = () => {
                     <Input
                         type={'text'}
                         placeholder={'Имя'}
-                        onChange={e => setValueName(e.target.value)}
+                        onChange={handleChange}
                         name={'name'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={valueName}
+                        value={name}
                     />
                     <Input
                         type={'text'}
                         placeholder={'E-mail'}
-                        onChange={e => setValueEmail(e.target.value)}
+                        onChange={handleChange}
                         name={'email'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={valueEmail}
+                        value={email}
                     />
                     <Input
                         type={'text'}
                         placeholder={'Пароль'}
                         icon={'ShowIcon'}
-                        onChange={e => setValuePassword(e.target.value)}
+                        onChange={handleChange}
                         ref={inputRef}
                         onIconClick={onIconClick}
                         name={'password'}
@@ -66,7 +67,7 @@ export const RegistrationPage = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={valuePassword}
+                        value={password}
                     />
                     <div className={`${styles.button} mt-6`}>
                         <Button htmlType="submit" type="primary" size="medium">

@@ -1,15 +1,16 @@
 import styles from "./sign-in-page.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useRef, useState} from 'react';
+import {useRef} from 'react';
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {getAuthLogin} from "../../services/authorization/actions";
+import {useForm} from "../../hooks/use-form";
 
 
 export const SignInPage = () => {
 
-    const [valueEmail, setValueEmail] = useState('');
-    const [valuePassword, setValuePassword] = useState('');
+    const {values, handleChange} = useForm({email: '', password: ''})
+    const {email, password} = values;
 
     const inputRef = useRef(null)
     const dispatch = useDispatch();
@@ -20,9 +21,9 @@ export const SignInPage = () => {
     }
 
     const loginCheck = (e) => {
-        if (valueEmail !== '' && valuePassword !== '') {
+        if (email !== '' && password !== '') {
             e.preventDefault();
-            dispatch(getAuthLogin(valueEmail, valuePassword))
+            dispatch(getAuthLogin(email, password))
         }
     }
 
@@ -34,27 +35,27 @@ export const SignInPage = () => {
                     <Input
                         type={'text'}
                         placeholder={'E-mail'}
-                        onChange={e => setValueEmail(e.target.value)}
-                        name={'name'}
+                        onChange={handleChange}
+                        name={'email'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={valueEmail}
+                        value={email}
                     />
                     <Input
                         type={'text'}
                         placeholder={'Пароль'}
                         icon={'ShowIcon'}
-                        onChange={e => setValuePassword(e.target.value)}
+                        onChange={handleChange}
                         ref={inputRef}
                         onIconClick={onIconClick}
-                        name={'name'}
+                        name={'password'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={valuePassword}
+                        value={password}
                     />
                     <div className={`${styles.button} mt-6`}>
                         <Button htmlType="submit" type="primary" size="medium">

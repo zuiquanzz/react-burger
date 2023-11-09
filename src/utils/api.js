@@ -72,11 +72,11 @@ export const postRefreshToken = () => {
 }
 
 export const userOrRefresh = (token) => {
-    return normaRequest(getAuthUserEndPoint,tokenOptions(token))
+    return normaRequest(getAuthUserEndPoint, tokenOptions(token))
 }
 
-export const editUserOrRefresh = (name, email,password, token) => {
-    return normaRequest(getAuthUserEndPoint,editTokenOptions(name, email,password,token))
+export const editUserOrRefresh = (name, email, password, token) => {
+    return normaRequest(getAuthUserEndPoint, editTokenOptions(name, email, password, token))
 }
 
 const postOptions = (body) => {
@@ -96,7 +96,7 @@ const tokenOptions = (token) => {
     }
 }
 
-const editTokenOptions = (name, email,password,token) => {
+const editTokenOptions = (name, email, password, token) => {
     return {
         method: "PATCH",
         headers: {

@@ -1,18 +1,17 @@
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useRef, useState} from 'react';
+import {useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {editUserByToken} from '../../services/authorization/actions';
 import {getUser} from "../../services/selectors";
+import {useForm} from "../../hooks/use-form";
 
 
 export const ProfileEditPage = () => {
     const {name, email, password} = useSelector(getUser);
 
 
-    const [valueName, setValueName] = useState(name);
-    const [valuePassword, setValuePassword] = useState('');
-    const [valueEmail, setValueEmail] = useState(email);
-    const [valueChanged, setValueChanged] = useState(false);
+    const {values, handleChange, formChanged, setFormChanged, setValues} = useForm({profileName: name, profileEmail: email, profilePassword: ''})
+    const {profileName, profileEmail, profilePassword} = values;
 
 
     const inputRefName = useRef(null);
@@ -36,18 +35,16 @@ export const ProfileEditPage = () => {
 
     const handleEdit = (e) => {
         e.preventDefault();
-        if (valuePassword !== '') {
-            dispatch(editUserByToken(valueName, valueEmail, valuePassword, token))
+        if (profilePassword !== '') {
+            dispatch(editUserByToken(profileName, profileEmail, profilePassword, token))
         } else {
-            dispatch(editUserByToken(valueName, valueEmail, password, token))
+            dispatch(editUserByToken(profileName, profileEmail, password, token))
         }
     }
 
     const handleReset = () => {
-        setValueName(name);
-        setValueEmail(email);
-        setValuePassword('');
-        setValueChanged(false);
+        setValues({profileName: name, profileEmail: email, profilePassword: ''})
+        setFormChanged(false)
     }
 
     return (
@@ -56,55 +53,46 @@ export const ProfileEditPage = () => {
                 <Input
                     type={'text'}
                     placeholder={'Имя'}
-                    onChange={e => {
-                        setValueName(e.target.value)
-                        setValueChanged(true)
-                    }}
+                    onChange={handleChange}
                     icon={'EditIcon'}
                     ref={inputRefName}
                     onIconClick={onIconClickName}
-                    name={'name'}
+                    name={'profileName'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
-                    value={valueName}
+                    value={profileName}
                 />
                 <Input
                     type={'text'}
                     placeholder={'Email'}
-                    onChange={e => {
-                        setValueEmail(e.target.value)
-                        setValueChanged(true)
-                    }}
+                    onChange={handleChange}
                     icon={'EditIcon'}
                     ref={inputRefEmail}
                     onIconClick={onIconClickEmail}
-                    name={'name'}
+                    name={'profileEmail'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass="mt-6"
-                    value={valueEmail}
+                    value={profileEmail}
                 />
                 <Input
                     type={'text'}
                     placeholder={'Пароль'}
                     icon={'EditIcon'}
-                    onChange={e => {
-                        setValuePassword(e.target.value)
-                        setValueChanged(true)
-                    }}
+                    onChange={handleChange}
                     ref={inputRefPassword}
                     onIconClick={onIconClickPassword}
-                    name={'name'}
+                    name={'profilePassword'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass="mt-6"
-                    value={valuePassword}
+                    value={profilePassword}
                 />
 
-                {valueChanged &&
+                {formChanged &&
                     <div className="mt-6">
                         <Button htmlType="submit" type="primary" size="medium">
                             Сохранить

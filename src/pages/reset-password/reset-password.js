@@ -1,10 +1,11 @@
 import styles from "./reset-password.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getAuth} from "../../services/selectors";
 import {getResetPassword} from "../../services/authorization/actions";
+import {useForm} from "../../hooks/use-form";
 
 
 export const ResetPassword = () => {
@@ -22,8 +23,8 @@ export const ResetPassword = () => {
     }, []);
 
 
-    const [valueNewPass, setValueNewPass] = useState('');
-    const [valueConfirmCode, setValueConfirmCode] = useState('');
+    const {values, handleChange} = useForm({newPass: '', confirmCode: ''})
+    const {newPass, confirmCode} = values;
 
     const inputRef = useRef(null)
 
@@ -34,8 +35,8 @@ export const ResetPassword = () => {
 
     const resetPassword = (e) => {
         e.preventDefault();
-        if (valueNewPass !== '' && valueConfirmCode !== '') {
-            dispatch(getResetPassword(valueNewPass, valueConfirmCode))
+        if (newPass !== '' && confirmCode !== '') {
+            dispatch(getResetPassword(newPass, confirmCode))
             if (!forgotPassword) {
                 navigate('/');
             }
@@ -50,8 +51,8 @@ export const ResetPassword = () => {
                     <Input
                         type={'text'}
                         placeholder={'Введите новый пароль'}
-                        onChange={e => setValueNewPass(e.target.value)}
-                        name={'name'}
+                        onChange={handleChange}
+                        name={'newPass'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
@@ -59,18 +60,18 @@ export const ResetPassword = () => {
                         ref={inputRef}
                         icon={'ShowIcon'}
                         onIconClick={onIconClick}
-                        value={valueNewPass}
+                        value={newPass}
                     />
                     <Input
                         type={'text'}
                         placeholder={'Введите код из письма'}
-                        onChange={e => setValueConfirmCode(e.target.value)}
-                        name={'name'}
+                        onChange={handleChange}
+                        name={'confirmCode'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={valueConfirmCode}
+                        value={confirmCode}
                     />
                     <div className={`${styles.button} mt-6`}>
                         <Button htmlType="submit" type="primary" size="medium">
