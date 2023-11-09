@@ -1,27 +1,29 @@
-export const serverUrl = "https://norma.nomoreparties.space"
+const serverUrl = "https://norma.nomoreparties.space/api"
 
-export const api = '/api'
+const ingredientsEndpoint = "/ingredients"
+const orderEndpoint = "/orders"
 
-export const ingredientsEndpoint = "/ingredients"
-export const orderEndpoint = "/orders"
-export const authEndpoint = "/auth"
-export const passwordResetEndpoint = "/password-reset"
+const authEndpoint = "/auth"
+const authLogin = "/login"
+const authRegister = "/register"
+const authLogout = "/logout"
+const authUser = "/user"
+const authToken = "/token"
 
-export const authLogin = "/login"
-export const authRegister = "/register"
-export const authLogout = "/logout"
-export const authUser = "/user"
-export const authToken = "/token"
+const passwordResetEndpoint = "/password-reset"
+const passwordResetReset = "/reset"
 
-export const passwordResetReset = "/reset"
+const getIngredientsEndPoint = ingredientsEndpoint;
+const getOrderEndPoint = orderEndpoint;
 
-const getIngredientsEndPoint = api.concat(ingredientsEndpoint);
-const getOrderEndPoint = api.concat(orderEndpoint);
-const getAuthLoginEndPoint = api.concat(authEndpoint).concat(authLogin);
-const getPasswordResetEndPoint = api.concat(passwordResetEndpoint);
-const getAuthRegisterEndPoint = api.concat(authEndpoint).concat(authRegister);
-const getAuthLogOutEndPoint = api.concat(authEndpoint).concat(authLogout);
-const getAuthRefreshTokenEndPoint = api.concat(authEndpoint).concat(authToken);
+const getForgotPasswordEndPoint = passwordResetEndpoint;
+const getResetPasswordEndPoint = passwordResetEndpoint.concat(passwordResetReset);
+
+const getAuthRegisterEndPoint = authEndpoint.concat(authRegister);
+const getAuthLoginEndPoint = authEndpoint.concat(authLogin);
+const getAuthLogOutEndPoint = authEndpoint.concat(authLogout);
+const getAuthRefreshTokenEndPoint = authEndpoint.concat(authToken);
+const getAuthUserEndPoint = authEndpoint.concat(authUser);
 
 export const getAllIngredients = () => {
     const options = {
@@ -49,11 +51,11 @@ export const postOrder = (burgerData) => {
 }
 
 export const postForgotPassword = (email) => {
-    return normaRequest(getPasswordResetEndPoint, postOptions({"email": email}))
+    return normaRequest(getForgotPasswordEndPoint, postOptions({"email": email}))
 }
 
 export const postResetPassword = (password, confirmPass) => {
-    return normaRequest(getPasswordResetEndPoint, postOptions({
+    return normaRequest(getResetPasswordEndPoint, postOptions({
         "password": password,
         "token": confirmPass
     }))
@@ -69,8 +71,12 @@ export const postRefreshToken = () => {
     }))
 }
 
-export const getOnRefresh = (token) => {
-    return normaRequest(getAuthRefreshTokenEndPoint,tokenOptions(token))
+export const userOrRefresh = (token) => {
+    return normaRequest(getAuthUserEndPoint,tokenOptions(token))
+}
+
+export const editUserOrRefresh = (name, email,password, token) => {
+    return normaRequest(getAuthUserEndPoint,editTokenOptions(name, email,password,token))
 }
 
 const postOptions = (body) => {
@@ -90,11 +96,25 @@ const tokenOptions = (token) => {
     }
 }
 
+const editTokenOptions = (name, email,password,token) => {
+    return {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            authorization: token
+        },
+        body: JSON.stringify({
+            "name": name,
+            "email": email,
+            "password": password
+        })
+    }
+}
+
 const normaRequest = (url, options) => {
     return fetch(serverUrl.concat(url), options).then(checkResponse)
 }
 
-//todo delete export
-export const checkResponse = (res) => {
+const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }

@@ -1,15 +1,12 @@
 import {
-    api,
-    authEndpoint,
-    authToken,
-    authUser,
-    checkResponse,
+    editUserOrRefresh,
     postForgotPassword,
     postLogin,
-    postLogout, postRefreshToken,
+    postLogout,
+    postRefreshToken,
     postRegistration,
     postResetPassword,
-    serverUrl
+    userOrRefresh
 } from "../../utils/api";
 
 export const GET_AUTH_REQUEST = 'GET_AUTH_REQUEST'
@@ -22,9 +19,6 @@ export const GET_AUTH_RESET_PASSWORD_SUCCESS = 'GET_AUTH_RESET_PASSWORD_SUCCESS'
 
 export const GET_AUTH_LOGOUT_SUCCESS = 'GET_AUTH_LOGOUT_SUCCESS'
 export const GET_AUTH_FAILURE = 'GET_AUTH_FAILURE'
-
-
-const getAuthUserEndPoint = serverUrl.concat(api).concat(authEndpoint).concat(authUser);
 
 export const getUserSession = () => (dispatch) => {
     if (localStorage.getItem("accessToken")) {
@@ -92,7 +86,7 @@ const getUserByToken = (token) => (dispatch) => {
 
 export const editUserByToken = (name, email, password, token) => (dispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
-    editOrRefresh(token)
+    editOrRefresh(name, email, password, token)
         .then(res => {
             dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
         })
@@ -116,13 +110,7 @@ export const logout = (token) => (dispatch) => {
 
 const getOrRefresh = async (token) => {
     try {
-        const res = await fetch(getAuthUserEndPoint, {
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                authorization: token
-            }
-        });
-        return await checkResponse(res);
+        return await userOrRefresh(token)
     } catch (err) {
         if (err.message === "jwt expired") {
             const refreshData = await postRefreshToken();
@@ -132,35 +120,16 @@ const getOrRefresh = async (token) => {
             localStorage.setItem("accessToken", refreshData.accessToken);
             localStorage.setItem("refreshToken", refreshData.refreshToken);
             token = refreshData.accessToken;
-            const res = await fetch(getAuthUserEndPoint, {
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    authorization: token
-                }
-            });
-            return await checkResponse(res);
+            return await userOrRefresh(token);
         } else {
             return Promise.reject(err);
         }
     }
 };
 
-const editOrRefresh = async (token, name, email, password) => {
+const editOrRefresh = async (name, email, password,token) => {
     try {
-        const res = await fetch(getAuthUserEndPoint, {
-            method: "PATCH",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                authorization: token
-            },
-            body: JSON.stringify({
-                "name": name,
-                "email": email,
-                "password": password
-            })
-        });
-
-        return await checkResponse(res);
+        return await editUserOrRefresh(name, email, password, token)
     } catch (err) {
         if (err.message === "jwt expired") {
             const refreshData = await postRefreshToken();
@@ -170,19 +139,7 @@ const editOrRefresh = async (token, name, email, password) => {
             localStorage.setItem("refreshToken", refreshData.refreshToken);
             localStorage.setItem("accessToken", refreshData.accessToken);
             token.headers.authorization = refreshData.accessToken;
-            const res = await fetch(getAuthUserEndPoint, {
-                method: "PATCH",
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    authorization: token
-                },
-                body: JSON.stringify({
-                    "name": name,
-                    "email": email,
-                    "password": password
-                })
-            });
-            return await checkResponse(res);
+            return  editUserOrRefresh(name, email, password,token)
         } else {
             return Promise.reject(err);
         }
