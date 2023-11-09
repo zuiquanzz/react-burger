@@ -20,14 +20,18 @@ function BurgerConstructor() {
 
     const {isModalOpen, openModal, closeModal} = useModal();
     const [burgerBun, setBurgerBun] = React.useState(null);
+    const [tooltip,setTooltip] = React.useState(false);
 
     useEffect(() => {
         if (burgerData.length) {
             if (!burgerBun) {
                 if (burgerData.find(ing => ing.type === 'bun')) {
                     setBurgerBun(burgerData.find(ing => ing.type === 'bun'))
+                    setTooltip(false);
                 }
             }
+        } else {
+            setBurgerBun(null);
         }
     }, [burgerData])
 
@@ -63,9 +67,13 @@ function BurgerConstructor() {
         },
     });
 
-    const handleOffer = ()  => {
-        if (user){
-            openModal()
+    const handleOffer = () => {
+        if (user) {
+            if (burgerBun) {
+                openModal()
+            } else {
+                setTooltip(true)
+            }
         } else {
             navigate("/sign-in")
         }
@@ -81,15 +89,15 @@ function BurgerConstructor() {
             <div className="p-15"/>
             <div className="ml-5">
                 {burgerBun &&
-                <ConstructorElement
-                    type="top"
-                    text={burgerBun.name + '(вверх)'}
-                    thumbnail={burgerBun.image}
-                    price={burgerData.find(ing => ing.type === 'bun').price}
-                    isLocked={true}
-                />}
+                    <ConstructorElement
+                        type="top"
+                        text={burgerBun.name + '(вверх)'}
+                        thumbnail={burgerBun.image}
+                        price={burgerBun.price}
+                        isLocked={true}
+                    />}
                 {!burgerBun &&
-                <BurgerIcon/>
+                    <BurgerIcon/>
                 }
             </div>
             <div className={`${styles.scroll_box} custom-scroll`}>
@@ -108,7 +116,7 @@ function BurgerConstructor() {
                         isLocked={true}
                     />)}
                 {!burgerBun &&
-                <BurgerIcon type="primary"/>
+                    <BurgerIcon type="primary"/>
                 }
             </div>
             <div className={`${styles.order} mt-10`}>
@@ -120,7 +128,9 @@ function BurgerConstructor() {
                 <Button htmlType="button" type="primary" size="medium" onClick={handleOffer}>
                     Оформить заказ
                 </Button>
+
             </div>
+            {tooltip && <p>Добавьте булку</p>}
             {isModalOpen && modalShow}
         </div>
     )
