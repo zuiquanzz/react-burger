@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
-import {DELETE_INGREDIENT, SORT_STUFF} from "../../../services/Ingredients/actions";
+import {DELETE_INGREDIENT, SORT_STUFF} from "../../../services/ingredients/actions";
 import styles from "./burger-stuff.module.css"
 import {useDrag, useDrop} from "react-dnd";
 

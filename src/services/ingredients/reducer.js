@@ -1,5 +1,5 @@
 import {
-    ADD_INGREDIENT,
+    ADD_INGREDIENT, CLEAR_STUFF,
     DELETE_INGREDIENT,
     GET_INGREDIENTS_FAILURE,
     GET_INGREDIENTS_REQUEST,
@@ -32,7 +32,9 @@ export default (state = initialState, action) => {
         case DELETE_INGREDIENT: {
             return {...state, burgerData: state.burgerData.filter(({uniqId}) => uniqId !== action.payload)}
         }
-        //todo refactor
+        case CLEAR_STUFF:{
+            return {...state, burgerData: []}
+        }
         case SORT_STUFF: {
             const stuff = [...state.burgerData];
             stuff.splice(action.hoverIndex, 0, stuff.splice(action.dragIndex, 1)[0]);

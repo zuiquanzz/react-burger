@@ -5,27 +5,33 @@ import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "react-redux";
-import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/Ingredients/actions";
-import {getAllIngredients} from "../../services/selectors";
+import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/ingredients/actions";
+import {getAllIngredients, getAuth, getUser} from "../../services/selectors";
 import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
 import BurgerStuff from "./burger-stuff/burger-stuff";
+import {useNavigate} from "react-router-dom";
 
 function BurgerConstructor() {
     const {burgerData} = useSelector(getAllIngredients)
-
+    const {user} = useSelector(getAuth)
+    const navigate = useNavigate();
     const dispatch = useDispatch()
 
     const {isModalOpen, openModal, closeModal} = useModal();
     const [burgerBun, setBurgerBun] = React.useState(null);
+    const [tooltip,setTooltip] = React.useState(false);
 
     useEffect(() => {
         if (burgerData.length) {
             if (!burgerBun) {
                 if (burgerData.find(ing => ing.type === 'bun')) {
                     setBurgerBun(burgerData.find(ing => ing.type === 'bun'))
+                    setTooltip(false);
                 }
             }
+        } else {
+            setBurgerBun(null);
         }
     }, [burgerData])
 
@@ -47,7 +53,6 @@ function BurgerConstructor() {
     const [, dropTarget] = useDrop({
         accept: "ingredient",
         drop(item) {
-            console.log('i', item)
             if (item.type !== 'bun') {
                 dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
             } else {
@@ -62,25 +67,37 @@ function BurgerConstructor() {
         },
     });
 
+    const handleOffer = () => {
+        if (user) {
+            if (burgerBun) {
+                openModal()
+            } else {
+                setTooltip(true)
+            }
+        } else {
+            navigate("/sign-in")
+        }
+    }
+
     const modalShow =
         <Modal modalClose={closeModal}>
             <OrderDetails orderPrice={orderPrice}/>
         </Modal>;
-    //todo хотел сделать пустой конструктор как есть , оставил как есть , могу доделать в рамках правок PR
+
     return (
         <div className={styles.table} ref={dropTarget}>
             <div className="p-15"/>
             <div className="ml-5">
                 {burgerBun &&
-                <ConstructorElement
-                    type="top"
-                    text={burgerBun.name + '(вверх)'}
-                    thumbnail={burgerBun.image}
-                    price={burgerData.find(ing => ing.type === 'bun').price}
-                    isLocked={true}
-                />}
+                    <ConstructorElement
+                        type="top"
+                        text={burgerBun.name + '(вверх)'}
+                        thumbnail={burgerBun.image}
+                        price={burgerBun.price}
+                        isLocked={true}
+                    />}
                 {!burgerBun &&
-                <BurgerIcon/>
+                    <BurgerIcon/>
                 }
             </div>
             <div className={`${styles.scroll_box} custom-scroll`}>
@@ -99,7 +116,7 @@ function BurgerConstructor() {
                         isLocked={true}
                     />)}
                 {!burgerBun &&
-                <BurgerIcon type="primary"/>
+                    <BurgerIcon type="primary"/>
                 }
             </div>
             <div className={`${styles.order} mt-10`}>
@@ -108,10 +125,12 @@ function BurgerConstructor() {
                 <div className={'mr-10'}>
                     <CurrencyIcon type="primary"/>
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={openModal}>
+                <Button htmlType="button" type="primary" size="medium" onClick={handleOffer}>
                     Оформить заказ
                 </Button>
+
             </div>
+            {tooltip && <p>Добавьте булку</p>}
             {isModalOpen && modalShow}
         </div>
     )

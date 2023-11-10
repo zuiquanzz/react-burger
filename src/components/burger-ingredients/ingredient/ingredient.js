@@ -5,8 +5,9 @@ import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import {getAllIngredients} from "../../../services/selectors";
 import {useDrag} from "react-dnd";
+import {Link, useLocation} from "react-router-dom";
 
-function Ingredient({ingredient, getIngredientData}) {
+function Ingredient({ingredient}) {
 
     const {burgerData} = useSelector(getAllIngredients)
 
@@ -26,30 +27,39 @@ function Ingredient({ingredient, getIngredientData}) {
         })
     });
 
+    const location = useLocation();
+    const ingredientId = ingredient._id;
+
     return (
         !isDrag &&
         <>
-            <li className={`${styles.container} mb-8`} onClick={() => getIngredientData(ingredient)} ref={dragRef}>
-                <div className={styles.counter}>
-                    {counter > 0 &&
-                    <Counter count={counter} size="default"
-                             extraClass="m-1"/>
-                    }
-                </div>
-                <img src={ingredient.image} alt={ingredient._id}/>
-                <div className={`${styles.price} mt-1 mb-4`}>
-                    <p className={'text text_type_digits-default mr-2'}>{ingredient.price}</p>
-                    <CurrencyIcon type="primary"/>
-                </div>
-                <p className={`${styles.name} mt-1 text text_type_main-default`}>{ingredient.name}</p>
-            </li>
+            <Link
+                key={ingredientId}
+                to={`/ingredients/${ingredientId}`}
+                state={{background: location}}
+                className={styles.link}
+            >
+                <li className={`${styles.container} mb-8`} ref={dragRef}>
+                    <div className={styles.counter}>
+                        {counter > 0 &&
+                            <Counter count={counter} size="default"
+                                     extraClass="m-1"/>
+                        }
+                    </div>
+                    <img src={ingredient.image} alt={ingredient._id}/>
+                    <div className={`${styles.price} mt-1 mb-4`}>
+                        <p className={'text text_type_digits-default mr-2'}>{ingredient.price}</p>
+                        <CurrencyIcon type="primary"/>
+                    </div>
+                    <p className={`${styles.name} mt-1 text text_type_main-default`}>{ingredient.name}</p>
+                </li>
+            </Link>
         </>
     )
 }
 
 Ingredient.propTypes = {
     ingredient: PropTypes.object.isRequired,
-    getIngredientData: PropTypes.func.isRequired
 }
 
 export default Ingredient;

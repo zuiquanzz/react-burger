@@ -2,9 +2,6 @@ import {useEffect, useMemo, useState} from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-ingredients.module.css'
 import Ingredient from "./ingredient/ingredient";
-import {useModal} from "../../hooks/use-modal";
-import Modal from "../modal/modal";
-import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
 import {useSelector} from "react-redux";
 import {getAllIngredients} from "../../services/selectors";
 import {useInView} from "react-intersection-observer";
@@ -22,20 +19,6 @@ function BurgerIngredients() {
     const [bunRef, bunInView] = useInView({threshold: 0.1});
     const [sauceRef, sauceNnView] = useInView({threshold: 0.1});
     const [mainRef, mainInView] = useInView({threshold: 0.1});
-
-    const [ingredient, setIngredient] = useState({});
-
-    const {isModalOpen, openModal, closeModal} = useModal();
-
-    function handleModalOpen(ingredient) {
-        setIngredient(ingredient);
-        openModal();
-    }
-
-    const modalIngredient =
-        <Modal modalClose={closeModal}>
-            <IngredientDetails ingredient={ingredient}/>
-        </Modal>;
 
     useMemo(() => {
         setBuns(ingredients.filter((i) => i.type === 'bun'))
@@ -69,31 +52,26 @@ function BurgerIngredients() {
                 </Tab>
             </div>
 
-            {/*//todo IngredientsList can do after review*/}
             <div className={`${styles.table} custom-scroll`}>
                 <div>
                     <h2 id='bun' className="text_type_main-medium" ref={bunRef}>Булки</h2>
                     <ul className={styles.container}>
-                        {buns.map((bun) => <Ingredient key={bun._id} ingredient={bun}
-                                                       getIngredientData={handleModalOpen}/>)}
+                        {buns.map((bun) => <Ingredient key={bun._id} ingredient={bun}/>)}
                     </ul>
                 </div>
                 <div>
                     <h2 id='sauce' className="text_type_main-medium" ref={sauceRef}>Соусы</h2>
                     <ul className={styles.container}>
-                        {sauces.map((sauce) => <Ingredient key={sauce._id} ingredient={sauce}
-                                                           getIngredientData={handleModalOpen}/>)}
+                        {sauces.map((sauce) => <Ingredient key={sauce._id} ingredient={sauce}/>)}
                     </ul>
                 </div>
                 <div>
                     <h2 id='main' className="text_type_main-medium" ref={mainRef}>Начинки</h2>
                     <ul className={styles.container}>
-                        {mains.map((main) => <Ingredient key={main._id} ingredient={main}
-                                                         getIngredientData={handleModalOpen}/>)}
+                        {mains.map((main) => <Ingredient key={main._id} ingredient={main}/>)}
                     </ul>
                 </div>
             </div>
-            {isModalOpen && modalIngredient}
         </div>
     )
 }

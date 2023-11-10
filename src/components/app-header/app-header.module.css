@@ -17,6 +17,8 @@
   margin-right: 16px;
   margin-bottom: 16px;
   margin-top: 16px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .logo {

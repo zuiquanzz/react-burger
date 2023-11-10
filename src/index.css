@@ -4,3 +4,16 @@
     font-weight: 700;
     src: url("./fonts/spectral.woff") format("woff");
 }
+
+.active p{
+    color: var(--text-dark-grey-secondary-text, #8585AD);
+}
+.activeProfile, .noActiveProfile{
+    text-decoration: none;
+}
+.noActiveProfile p{
+    color: #8585AD;
+}
+.activeProfile p{
+    color: var(--text-primary-light-standart-text, #F2F2F3);
+}
