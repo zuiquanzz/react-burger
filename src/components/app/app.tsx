@@ -19,7 +19,7 @@ import {getAllIngredients} from "../../services/selectors";
 import {getIngredients} from "../../services/ingredients/actions";
 
 
-function App() {
+const App = () => {
 
     const dispatch = useDispatch();
     const {ingredients} = useSelector(getAllIngredients)
@@ -33,8 +33,8 @@ function App() {
     };
 
     useEffect(() => {
-        dispatch(getIngredients());
-        dispatch(getUserSession());
+        dispatch<any>(getIngredients());
+        dispatch<any>(getUserSession());
     }, [dispatch])
 
     if (ingredients.length > 0) {
