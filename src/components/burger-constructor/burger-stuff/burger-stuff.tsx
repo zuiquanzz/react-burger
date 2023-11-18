@@ -1,25 +1,42 @@
 import React, {useEffect, useMemo, useRef} from 'react';
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from "prop-types";
 import {useDispatch} from "react-redux";
 import {DELETE_INGREDIENT, SORT_STUFF} from "../../../services/ingredients/actions";
 import styles from "./burger-stuff.module.css"
 import {useDrag, useDrop} from "react-dnd";
+import {IingredientKey} from "../../../../types/types";
+import {Identifier} from 'dnd-core';
 
-function BurgerStuff({ingredient, index}) {
+interface IBurgerStuff {
+    ingredient: IingredientKey;
+    index: number;
+}
+
+const BurgerStuff = ({ingredient, index}: IBurgerStuff) => {
 
     const dispatch = useDispatch()
     const id = ingredient.uniqId;
 
 
-    function onDelete(uniqId) {
-        dispatch({type: DELETE_INGREDIENT, payload: uniqId})
+    function onDelete() {
+        dispatch({type: DELETE_INGREDIENT, payload: id})
     }
 
-    const dndRef = useRef(null);
+    type TDragObject = {
+        id: number;
+        index: number;
+    }
+    type TDragCollectedProps = {
+        isDragging: boolean;
+    }
 
-    //todo refactoring это  взято из лекции,  не нравиться семантика, переделаю, пока не знаю как)
-    const [{handlerId}, drop] = useDrop({
+    type TDropCollectedProps = {
+        handlerId: Identifier | null;
+    }
+
+    const dndRef = useRef<HTMLDivElement | null>(null);
+
+    const [{handlerId}, drop] = useDrop<TDragObject, unknown, TDropCollectedProps>({
         accept: 'stuff',
         collect(monitor) {
             return {
@@ -44,7 +61,7 @@ function BurgerStuff({ingredient, index}) {
 
             const clientOffset = monitor.getClientOffset()
 
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+            const hoverClientY = clientOffset!.y - hoverBoundingRect.top
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return
@@ -62,7 +79,7 @@ function BurgerStuff({ingredient, index}) {
         },
     })
 
-    const [{isDragging}, drag] = useDrag({
+    const [{isDragging}, drag] = useDrag<TDragObject, unknown, TDragCollectedProps>({
         type: 'stuff',
         item: () => {
             return {id, index}
@@ -89,16 +106,16 @@ function BurgerStuff({ingredient, index}) {
                 thumbnail={ingredient.image}
                 price={ingredient.price}
                 isLocked={false}
-                handleClose={() => onDelete(ingredient.uniqId)}
+                handleClose={onDelete}
             />
         </div>
     )
 }
 
 
-BurgerStuff.propTypes = {
-    ingredient: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired
-}
+// BurgerStuff.propTypes = {
+//     ingredient: PropTypes.object.isRequired,
+//     index: PropTypes.number.isRequired
+// }
 
 export default BurgerStuff;
