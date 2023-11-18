@@ -7,7 +7,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {getUserSession} from "../../services/authorization/actions";
 import {ProtectedRoutes} from "../../services/protected-routes/protected-routes";
-import appStyles from "./app.module.css";
 import {ProfileEditPage} from "../../pages/profile-edit-page/profile-edit-page";
 import {OrdersPage} from "../../pages/orders-page/orders-page";
 import {RegistrationPage} from "../../pages/registration-page/registration-page";
@@ -39,7 +38,7 @@ const App = () => {
 
     if (ingredients.length > 0) {
         return (
-            <div className={appStyles.app}>
+            <>
                 <AppHeader/>
                 <Routes location={background || location}>
                     <Route path='/' element={<MainPage/>}/>
@@ -65,9 +64,11 @@ const App = () => {
                         />
                     </Routes>
                 )}
-            </div>
+            </>
         )
+    } else {
+        return <p>Загрузка Ингредиентов...</p>
     }
 }
 
-export default App;
+export default App
