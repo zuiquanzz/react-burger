@@ -1,15 +1,19 @@
-import React, {useMemo} from 'react';
+import React, {FC, useMemo} from 'react';
 import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
-import {getAllIngredients} from "../../../services/selectors";
 import {useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
+import {Iingredient, IingredientKey} from "../../../../types/types";
+import {getBurgerData} from "../../../services/selector";
 
-function Ingredient({ingredient}) {
+interface IBurgerIngredientProps  {
+    ingredient: Iingredient;
+}
 
-    const {burgerData} = useSelector(getAllIngredients)
+const Ingredient: FC<IBurgerIngredientProps> = ({ingredient }) => {
+
+    const burgerData: IingredientKey[] = useSelector(getBurgerData)
 
     const counter = useMemo(() => {
         let length = burgerData.filter(ing => ing._id === ingredient._id).length;
@@ -23,7 +27,7 @@ function Ingredient({ingredient}) {
         type: "ingredient",
         item: ingredient,
         collect: monitor => ({
-            isDrag: monitor.isDragging()
+            isDrag: monitor.isDragging() ? 0.5 : 1
         })
     });
 
@@ -31,7 +35,6 @@ function Ingredient({ingredient}) {
     const ingredientId = ingredient._id;
 
     return (
-        !isDrag &&
         <>
             <Link
                 key={ingredientId}
@@ -39,7 +42,7 @@ function Ingredient({ingredient}) {
                 state={{background: location}}
                 className={styles.link}
             >
-                <li className={`${styles.container} mb-8`} ref={dragRef}>
+                <li className={`${styles.container} ${isDrag} mb-8`} ref={dragRef}>
                     <div className={styles.counter}>
                         {counter > 0 &&
                             <Counter count={counter} size="default"
@@ -56,10 +59,6 @@ function Ingredient({ingredient}) {
             </Link>
         </>
     )
-}
-
-Ingredient.propTypes = {
-    ingredient: PropTypes.object.isRequired,
 }
 
 export default Ingredient;
