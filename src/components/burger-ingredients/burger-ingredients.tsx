@@ -3,34 +3,35 @@ import {Tab} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-ingredients.module.css'
 import Ingredient from "./ingredient/ingredient";
 import {useSelector} from "react-redux";
-import {getAllIngredients} from "../../services/selectors";
 import {useInView} from "react-intersection-observer";
+import {Iingredient} from "../../../types/types";
+import {getIngredientsData} from "../../services/selector";
 
 function BurgerIngredients() {
 
-    const {ingredients} = useSelector(getAllIngredients)
+    const ingredients: Iingredient[] = useSelector(getIngredientsData)
 
     const [currentTab, setCurrentTab] = useState('bun');
 
-    const [mains, setMains] = useState([]);
-    const [buns, setBuns] = useState([]);
-    const [sauces, setSauces] = useState([]);
+    const [mains, setMains] = useState<Iingredient[]>([]);
+    const [buns, setBuns] = useState<Iingredient[]>([]);
+    const [sauces, setSauces] = useState<Iingredient[]>([]);
 
     const [bunRef, bunInView] = useInView({threshold: 0.1});
     const [sauceRef, sauceNnView] = useInView({threshold: 0.1});
     const [mainRef, mainInView] = useInView({threshold: 0.1});
 
     useMemo(() => {
-        setBuns(ingredients.filter((i) => i.type === 'bun'))
-        setSauces(ingredients.filter((i) => i.type === 'sauce'))
-        setMains(ingredients.filter((i) => i.type === 'main'))
+        setBuns(ingredients.filter(i => i.type === 'bun'))
+        setSauces(ingredients.filter(i => i.type === 'sauce'))
+        setMains(ingredients.filter(i => i.type === 'main'))
     }, [ingredients])
 
     useEffect(() => {
         bunInView ? setCurrentTab('bun') : sauceNnView ? setCurrentTab('sauce') : setCurrentTab('main')
     }, [bunInView, sauceNnView, mainInView])
 
-    const onChangeTab = (tab) => {
+    const onChangeTab = (tab: string) => {
         setCurrentTab(tab);
         const element = document.getElementById(tab);
         if (element) element.scrollIntoView({behavior: 'smooth'})

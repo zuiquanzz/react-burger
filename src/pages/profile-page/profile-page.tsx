@@ -1,7 +1,7 @@
 import styles from "./profile-page.module.css";
-import { Outlet, NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logout } from "../../services/authorization/actions";
+import {NavLink, Outlet} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {logout} from "../../services/authorization/actions";
 
 
 export const ProfilePage = () => {
@@ -9,7 +9,7 @@ export const ProfilePage = () => {
     const dispatch = useDispatch();
 
     const handleLogout = () =>{
-        dispatch(logout(localStorage.getItem("refreshToken")))
+        dispatch<any>(logout(localStorage.getItem("refreshToken")))
     }
 
     return (

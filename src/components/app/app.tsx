@@ -7,7 +7,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {getUserSession} from "../../services/authorization/actions";
 import {ProtectedRoutes} from "../../services/protected-routes/protected-routes";
-import appStyles from "./app.module.css";
 import {ProfileEditPage} from "../../pages/profile-edit-page/profile-edit-page";
 import {OrdersPage} from "../../pages/orders-page/orders-page";
 import {RegistrationPage} from "../../pages/registration-page/registration-page";
@@ -19,7 +18,7 @@ import {getAllIngredients} from "../../services/selectors";
 import {getIngredients} from "../../services/ingredients/actions";
 
 
-function App() {
+const App = () => {
 
     const dispatch = useDispatch();
     const {ingredients} = useSelector(getAllIngredients)
@@ -33,25 +32,25 @@ function App() {
     };
 
     useEffect(() => {
-        dispatch(getIngredients());
-        dispatch(getUserSession());
+        dispatch<any>(getIngredients());
+        dispatch<any>(getUserSession());
     }, [dispatch])
 
     if (ingredients.length > 0) {
         return (
-            <div className={appStyles.app}>
+            <>
                 <AppHeader/>
                 <Routes location={background || location}>
                     <Route path='/' element={<MainPage/>}/>
-                    <Route path='/register' element={<ProtectedRoutes onlyUnAuth page={<RegistrationPage/>}/>}/>
-                    <Route path='/forgot-password' element={<ProtectedRoutes onlyUnAuth page={<ForgotPassword/>}/>}/>
-                    <Route path='/reset-password' element={<ProtectedRoutes onlyUnAuth page={<ResetPassword/>}/>}/>
-                    <Route path='/profile' element={<ProtectedRoutes page={<ProfilePage/>}/>}>
-                        <Route index element={<ProtectedRoutes page={<ProfileEditPage/>}/>}/>
-                        <Route path='orders' element={<ProtectedRoutes page={<OrdersPage/>}/>}/>
+                    <Route path='/register' element={<ProtectedRoutes onlyUnAuth={true} page={<RegistrationPage/>}/>}/>
+                    <Route path='/forgot-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ForgotPassword/>}/>}/>
+                    <Route path='/reset-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ResetPassword/>}/>}/>
+                    <Route path='/profile' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfilePage/>}/>}>
+                        <Route index element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileEditPage/>}/>}/>
+                        <Route path='orders' element={<ProtectedRoutes onlyUnAuth={false} page={<OrdersPage/>}/>}/>
                     </Route>
                     <Route path='/ingredients/:ingredientId' element={<IngredientDetails/>}/>
-                    <Route path='/sign-in' element={<ProtectedRoutes onlyUnAuth page={<SignInPage/>}/>}/>
+                    <Route path='/sign-in' element={<ProtectedRoutes onlyUnAuth={true} page={<SignInPage/>}/>}/>
                 </Routes>
                 {background && (
                     <Routes>
@@ -65,9 +64,11 @@ function App() {
                         />
                     </Routes>
                 )}
-            </div>
+            </>
         )
+    } else {
+        return <p>Загрузка Ингредиентов...</p>
     }
 }
 
-export default App;
+export default App

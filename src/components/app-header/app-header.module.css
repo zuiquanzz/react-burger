@@ -21,10 +21,6 @@
   color: inherit;
 }
 
-.logo {
-  margin: 0 auto;
-}
-
 .right_menu {
   display: flex;
   align-items: center;

@@ -1,5 +1,5 @@
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useRef} from 'react';
+import {SyntheticEvent, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {editUserByToken} from '../../services/authorization/actions';
 import {getUser} from "../../services/selectors";
@@ -7,43 +7,44 @@ import {useForm} from "../../hooks/use-form";
 
 
 export const ProfileEditPage = () => {
-    const {name, email, password} = useSelector(getUser);
+    const userName = useSelector(getUser).name;
+    const userEmail = useSelector(getUser).email;
 
 
-    const {values, handleChange, formChanged, setFormChanged, setValues} = useForm({profileName: name, profileEmail: email, profilePassword: ''})
-    const {profileName, profileEmail, profilePassword} = values;
+    const {values, handleChange, formChanged, setFormChanged, setValues} = useForm({name: userName, email: userEmail, password: ''})
+    const {name, email, password} = values;
 
 
-    const inputRefName = useRef(null);
-    const inputRefEmail = useRef(null);
-    const inputRefPassword = useRef(null);
+    const inputRefName = useRef<HTMLInputElement>(null);
+    const inputRefEmail = useRef<HTMLInputElement>(null);
+    const inputRefPassword = useRef<HTMLInputElement>(null);
 
     const token = localStorage.getItem('accessToken');
     const dispatch = useDispatch();
 
     const onIconClickName = () => {
-        setTimeout(() => inputRefName.current.focus(), 0)
+        setTimeout(() => inputRefName.current!.focus(), 0)
 
     }
     const onIconClickEmail = () => {
-        setTimeout(() => inputRefEmail.current.focus(), 0)
+        setTimeout(() => inputRefEmail.current!.focus(), 0)
     }
 
     const onIconClickPassword = () => {
-        setTimeout(() => inputRefPassword.current.focus(), 0)
+        setTimeout(() => inputRefPassword.current!.focus(), 0)
     }
 
-    const handleEdit = (e) => {
+    const handleEdit = (e: SyntheticEvent) => {
         e.preventDefault();
-        if (profilePassword !== '') {
-            dispatch(editUserByToken(profileName, profileEmail, profilePassword, token))
+        if (password !== '') {
+            dispatch<any>(editUserByToken(name, email, password, token))
         } else {
-            dispatch(editUserByToken(profileName, profileEmail, password, token))
+            dispatch<any>(editUserByToken(name, email, password, token))
         }
     }
 
     const handleReset = () => {
-        setValues({profileName: name, profileEmail: email, profilePassword: ''})
+        setValues({name: name, email: email, password: ''})
         setFormChanged(false)
     }
 
@@ -57,11 +58,11 @@ export const ProfileEditPage = () => {
                     icon={'EditIcon'}
                     ref={inputRefName}
                     onIconClick={onIconClickName}
-                    name={'profileName'}
+                    name={'name'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
-                    value={profileName}
+                    value={name || ''}
                 />
                 <Input
                     type={'text'}
@@ -70,12 +71,12 @@ export const ProfileEditPage = () => {
                     icon={'EditIcon'}
                     ref={inputRefEmail}
                     onIconClick={onIconClickEmail}
-                    name={'profileEmail'}
+                    name={'email'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass="mt-6"
-                    value={profileEmail}
+                    value={email || ''}
                 />
                 <Input
                     type={'text'}
@@ -84,12 +85,12 @@ export const ProfileEditPage = () => {
                     onChange={handleChange}
                     ref={inputRefPassword}
                     onIconClick={onIconClickPassword}
-                    name={'profilePassword'}
+                    name={'password'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass="mt-6"
-                    value={profilePassword}
+                    value={password || ''}
                 />
 
                 {formChanged &&

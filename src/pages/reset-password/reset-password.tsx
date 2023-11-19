@@ -1,6 +1,6 @@
 import styles from "./reset-password.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useEffect, useRef} from 'react';
+import {SyntheticEvent, useEffect, useRef} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getAuth} from "../../services/selectors";
@@ -23,20 +23,22 @@ export const ResetPassword = () => {
     }, []);
 
 
-    const {values, handleChange} = useForm({newPass: '', confirmCode: ''})
-    const {newPass, confirmCode} = values;
+    const {values, handleChange} = useForm({password: '', confirmCode: ''})
+    const password = values.password;
+    const confirmCode = values.confirmCode;
 
-    const inputRef = useRef(null)
+
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        inputRef.current.type === 'text' ? inputRef.current.type = 'password' : inputRef.current.type = 'text'
+        setTimeout(() => inputRef.current!.focus(), 0)
+        inputRef.current!.type === 'text' ? inputRef.current!.type = 'password' : inputRef.current!.type = 'text'
     }
 
-    const resetPassword = (e) => {
+    const resetPassword = (e:SyntheticEvent) => {
         e.preventDefault();
-        if (newPass !== '' && confirmCode !== '') {
-            dispatch(getResetPassword(newPass, confirmCode))
+        if (password !== '' && confirmCode !== '') {
+            dispatch<any>(getResetPassword(password, confirmCode))
             if (!forgotPassword) {
                 navigate('/');
             }
@@ -52,7 +54,7 @@ export const ResetPassword = () => {
                         type={'text'}
                         placeholder={'Введите новый пароль'}
                         onChange={handleChange}
-                        name={'newPass'}
+                        name={'password'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
@@ -60,7 +62,7 @@ export const ResetPassword = () => {
                         ref={inputRef}
                         icon={'ShowIcon'}
                         onIconClick={onIconClick}
-                        value={newPass}
+                        value={password || ''}
                     />
                     <Input
                         type={'text'}
@@ -71,7 +73,7 @@ export const ResetPassword = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={confirmCode}
+                        value={confirmCode || ''}
                     />
                     <div className={`${styles.button} mt-6`}>
                         <Button htmlType="submit" type="primary" size="medium">

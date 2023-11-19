@@ -6,27 +6,30 @@ import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/ingredients/actions";
-import {getAllIngredients, getAuth, getUser} from "../../services/selectors";
+import {getAuth} from "../../services/selectors";
+import {getBurgerData} from "../../services/selector"
 import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
 import BurgerStuff from "./burger-stuff/burger-stuff";
 import {useNavigate} from "react-router-dom";
+import {Iingredient, IingredientKey} from "../../../types/types";
 
 function BurgerConstructor() {
-    const {burgerData} = useSelector(getAllIngredients)
+    const burgerData:IingredientKey[] = useSelector(getBurgerData)
     const {user} = useSelector(getAuth)
     const navigate = useNavigate();
     const dispatch = useDispatch()
 
     const {isModalOpen, openModal, closeModal} = useModal();
-    const [burgerBun, setBurgerBun] = React.useState(null);
-    const [tooltip,setTooltip] = React.useState(false);
+    const [burgerBun, setBurgerBun] = React.useState<IingredientKey | null>(null);
+    const [tooltip, setTooltip] = React.useState(false);
 
     useEffect(() => {
         if (burgerData.length) {
             if (!burgerBun) {
-                if (burgerData.find(ing => ing.type === 'bun')) {
-                    setBurgerBun(burgerData.find(ing => ing.type === 'bun'))
+                let bun = burgerData.find(ing => ing.type === 'bun');
+                if (bun) {
+                    setBurgerBun(bun)
                     setTooltip(false);
                 }
             }
@@ -52,16 +55,19 @@ function BurgerConstructor() {
 
     const [, dropTarget] = useDrop({
         accept: "ingredient",
-        drop(item) {
+        drop(item: Iingredient) {
+            let nano = nanoid();
             if (item.type !== 'bun') {
-                dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+                dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nano}})
             } else {
+
                 if (burgerBun) {
+
                     dispatch({type: DELETE_INGREDIENT, payload: burgerBun.uniqId})
-                    dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
-                    setBurgerBun(item)
+                    dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nano}})
+                    setBurgerBun({...item, uniqId: nano})
                 } else {
-                    dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nanoid()}})
+                    dispatch({type: ADD_INGREDIENT, payload: {...item, nano}})
                 }
             }
         },
@@ -81,7 +87,7 @@ function BurgerConstructor() {
 
     const modalShow =
         <Modal modalClose={closeModal}>
-            <OrderDetails orderPrice={orderPrice}/>
+            <OrderDetails/>
         </Modal>;
 
     return (
@@ -97,11 +103,11 @@ function BurgerConstructor() {
                         isLocked={true}
                     />}
                 {!burgerBun &&
-                    <BurgerIcon/>
+                    <BurgerIcon type="primary"/>
                 }
             </div>
             <div className={`${styles.scroll_box} custom-scroll`}>
-                {burgerData.map((stuff, index) =>
+                {burgerData.map((stuff: IingredientKey, index:number) =>
                     stuff.type !== 'bun' &&
                     <BurgerStuff key={stuff.uniqId} ingredient={stuff} index={index}/>
                 )}

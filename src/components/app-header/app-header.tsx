@@ -1,5 +1,5 @@
-import React from 'react';
 import styles from './app-header.module.css'
+import React from 'react';
 import {BurgerIcon, ListIcon, Logo, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import {NavLink, useMatch} from "react-router-dom";
 
@@ -33,7 +33,7 @@ const AppHeader = () => {
                     <p className="text_type_main-default ml-2">Лента заказов</p>
                 </div>
             </nav>
-            <Logo classname={styles.logo}/>
+            <Logo/>
             <nav className={styles.right_menu}>
                 <NavLink to="/profile" className={styles.button}>
                     {(isProfile || isSignIn || isForgotPass || isResetPass || isRegister) &&

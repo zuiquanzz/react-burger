@@ -1,8 +1,14 @@
 import {useSelector} from "react-redux";
 import {Navigate, useLocation} from "react-router-dom";
 import {getAuth} from "../selectors";
+import {FC, ReactElement} from "react";
 
-export const ProtectedRoutes = ({onlyUnAuth = false, page}) => {
+interface IProtectedRouteProps  {
+    onlyUnAuth: boolean;
+    page: ReactElement;
+}
+
+export const ProtectedRoutes:FC<IProtectedRouteProps> = ({onlyUnAuth = false, page}) => {
     const {
         user,
         isLoading,
