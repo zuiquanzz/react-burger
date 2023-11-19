@@ -13,5 +13,5 @@ export interface Iingredient {
 }
 
 export interface IingredientKey extends Iingredient{
-    uniqId: number;
+    uniqId: string;
 }

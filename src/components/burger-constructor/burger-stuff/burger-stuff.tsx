@@ -23,7 +23,7 @@ const BurgerStuff = ({ingredient, index}: IBurgerStuff) => {
     }
 
     type TDragObject = {
-        id: number;
+        id: string;
         index: number;
     }
     type TDragCollectedProps = {
@@ -111,11 +111,5 @@ const BurgerStuff = ({ingredient, index}: IBurgerStuff) => {
         </div>
     )
 }
-
-
-// BurgerStuff.propTypes = {
-//     ingredient: PropTypes.object.isRequired,
-//     index: PropTypes.number.isRequired
-// }
 
 export default BurgerStuff;
