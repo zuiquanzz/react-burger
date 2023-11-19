@@ -1,14 +1,17 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
 import {useParams} from "react-router-dom";
-import {getAllIngredients} from "../../../../services/selectors";
 import {useSelector} from "react-redux";
+import {Iingredient} from "../../../../../types/types";
+import {getIngredientsData} from "../../../../services/selector";
 
 function IngredientDetails() {
 
-    const {ingredientId} = useParams();
-    const {ingredients} = useSelector(getAllIngredients);
-    const ingredient = ingredients.find(el => el._id === ingredientId);
+    const {ingredientId} = useParams<{ingredientId: string;}>();
+    const ingredients: Iingredient[] = useSelector(getIngredientsData)
+
+    // @ts-ignore
+    const ingredient:Iingredient = ingredients.find(el => el._id === ingredientId);
 
     return (
         <>

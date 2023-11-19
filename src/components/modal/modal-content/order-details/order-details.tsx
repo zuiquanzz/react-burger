@@ -5,17 +5,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {getOrder} from "../../../../services/orders/actions";
 import {getAllIngredients, getOrders} from "../../../../services/selectors";
 import {CLEAR_STUFF} from "../../../../services/ingredients/actions";
+import {IingredientKey} from "../../../../../types/types";
+import {getBurgerData} from "../../../../services/selector";
 
 function OrderDetails() {
 
-    const {burgerData} = useSelector(getAllIngredients);
+    const burgerData:IingredientKey[] = useSelector(getBurgerData)
 
     const {order, isLoading, error} = useSelector(getOrders)
 
     const dispatch = useDispatch();
 
     React.useEffect(() => {
-        dispatch(getOrder(burgerData))
+        dispatch<any>(getOrder(burgerData))
         dispatch({type: CLEAR_STUFF})
     }, [dispatch])
 

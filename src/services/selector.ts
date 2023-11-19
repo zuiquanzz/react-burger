@@ -5,10 +5,10 @@ type RootState = ReturnType<typeof store.getState>;
 
 export const getBurgerData = (store:RootState) => {
     // @ts-ignore
-    return store.ingredients.burgerData<IingredientKey>;
+    return store.ingredients.burgerData;
 };
 
 export const getIngredientsData = (store:RootState) => {
     // @ts-ignore
-    return store.ingredients.ingredients<Iingredient>;
+    return store.ingredients.ingredients;
 };
