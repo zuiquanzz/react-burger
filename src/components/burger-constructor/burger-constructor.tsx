@@ -6,7 +6,8 @@ import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/ingredients/actions";
-import {getAllIngredients, getAuth} from "../../services/selectors";
+import {getAuth} from "../../services/selectors";
+import {getBurgerData} from "../../services/selector"
 import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
 import BurgerStuff from "./burger-stuff/burger-stuff";
@@ -14,7 +15,7 @@ import {useNavigate} from "react-router-dom";
 import {Iingredient, IingredientKey} from "../../../types/types";
 
 function BurgerConstructor() {
-    const {burgerData} = useSelector(getAllIngredients)
+    const burgerData:IingredientKey[] = useSelector(getBurgerData)
     const {user} = useSelector(getAuth)
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -26,8 +27,9 @@ function BurgerConstructor() {
     useEffect(() => {
         if (burgerData.length) {
             if (!burgerBun) {
-                if (burgerData.find((ing: { type: string; }) => ing.type === 'bun')) {
-                    setBurgerBun(burgerData.find((ing: { type: string; }) => ing.type === 'bun'))
+                let bun = burgerData.find(ing => ing.type === 'bun');
+                if (bun) {
+                    setBurgerBun(bun)
                     setTooltip(false);
                 }
             }
@@ -42,7 +44,7 @@ function BurgerConstructor() {
 
     function getOrderPrice() {
         let pr = 0;
-        burgerData.map((item: { type: string; price: number; }) => {
+        burgerData.map(item => {
             if (item.type === 'bun') {
                 pr = pr + item.price;
             }
