@@ -58,7 +58,7 @@ export const ProfileEditPage = () => {
                     icon={'EditIcon'}
                     ref={inputRefName}
                     onIconClick={onIconClickName}
-                    name={'profileName'}
+                    name={'name'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
@@ -71,7 +71,7 @@ export const ProfileEditPage = () => {
                     icon={'EditIcon'}
                     ref={inputRefEmail}
                     onIconClick={onIconClickEmail}
-                    name={'profileEmail'}
+                    name={'email'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
@@ -85,7 +85,7 @@ export const ProfileEditPage = () => {
                     onChange={handleChange}
                     ref={inputRefPassword}
                     onIconClick={onIconClickPassword}
-                    name={'profilePassword'}
+                    name={'password'}
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}

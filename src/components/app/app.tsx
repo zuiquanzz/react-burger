@@ -42,15 +42,15 @@ const App = () => {
                 <AppHeader/>
                 <Routes location={background || location}>
                     <Route path='/' element={<MainPage/>}/>
-                    <Route path='/register' element={<ProtectedRoutes onlyUnAuth page={<RegistrationPage/>}/>}/>
-                    <Route path='/forgot-password' element={<ProtectedRoutes onlyUnAuth page={<ForgotPassword/>}/>}/>
-                    <Route path='/reset-password' element={<ProtectedRoutes onlyUnAuth page={<ResetPassword/>}/>}/>
-                    <Route path='/profile' element={<ProtectedRoutes page={<ProfilePage/>}/>}>
-                        <Route index element={<ProtectedRoutes page={<ProfileEditPage/>}/>}/>
-                        <Route path='orders' element={<ProtectedRoutes page={<OrdersPage/>}/>}/>
+                    <Route path='/register' element={<ProtectedRoutes onlyUnAuth={true} page={<RegistrationPage/>}/>}/>
+                    <Route path='/forgot-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ForgotPassword/>}/>}/>
+                    <Route path='/reset-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ResetPassword/>}/>}/>
+                    <Route path='/profile' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfilePage/>}/>}>
+                        <Route index element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileEditPage/>}/>}/>
+                        <Route path='orders' element={<ProtectedRoutes onlyUnAuth={false} page={<OrdersPage/>}/>}/>
                     </Route>
                     <Route path='/ingredients/:ingredientId' element={<IngredientDetails/>}/>
-                    <Route path='/sign-in' element={<ProtectedRoutes onlyUnAuth page={<SignInPage/>}/>}/>
+                    <Route path='/sign-in' element={<ProtectedRoutes onlyUnAuth={true} page={<SignInPage/>}/>}/>
                 </Routes>
                 {background && (
                     <Routes>

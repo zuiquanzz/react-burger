@@ -24,7 +24,7 @@ export const ResetPassword = () => {
 
 
     const {values, handleChange} = useForm({password: '', confirmCode: ''})
-    const newPass = values.password;
+    const password = values.password;
     const confirmCode = values.confirmCode;
 
 
@@ -37,8 +37,8 @@ export const ResetPassword = () => {
 
     const resetPassword = (e:SyntheticEvent) => {
         e.preventDefault();
-        if (newPass !== '' && confirmCode !== '') {
-            dispatch<any>(getResetPassword(newPass, confirmCode))
+        if (password !== '' && confirmCode !== '') {
+            dispatch<any>(getResetPassword(password, confirmCode))
             if (!forgotPassword) {
                 navigate('/');
             }
@@ -54,7 +54,7 @@ export const ResetPassword = () => {
                         type={'text'}
                         placeholder={'Введите новый пароль'}
                         onChange={handleChange}
-                        name={'newPass'}
+                        name={'password'}
                         error={false}
                         errorText={'Ошибка'}
                         size={'default'}
@@ -62,7 +62,7 @@ export const ResetPassword = () => {
                         ref={inputRef}
                         icon={'ShowIcon'}
                         onIconClick={onIconClick}
-                        value={newPass || ''}
+                        value={password || ''}
                     />
                     <Input
                         type={'text'}
