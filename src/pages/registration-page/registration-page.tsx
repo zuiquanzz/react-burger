@@ -1,6 +1,6 @@
 import styles from "./registration-page.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useRef} from 'react';
+import {SyntheticEvent, useRef} from 'react';
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {getAuthRegister} from '../../services/authorization/actions';
@@ -10,21 +10,22 @@ import {useForm} from "../../hooks/use-form";
 export const RegistrationPage = () => {
 
     const {values, handleChange} = useForm({name: '', email: '', password: ''})
-    const {name, email, password} = values;
+    const name = values.name;
+    const email = values.email;
+    const password = values.password;
 
-
-    const inputRef = useRef(null)
+    const inputRef = useRef<HTMLInputElement>(null)
     const dispatch = useDispatch();
 
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        inputRef.current.type === 'text' ? inputRef.current.type = 'password' : inputRef.current.type = 'text'
+        setTimeout(() => inputRef.current!.focus(), 0)
+        inputRef.current!.type === 'text' ? inputRef.current!.type = 'password' : inputRef.current!.type = 'text'
     }
 
-    const handleRegister = (e) => {
+    const handleRegister = (e: SyntheticEvent) => {
         e.preventDefault();
         if (name !== '' && email !== '' && password !== '') {
-            dispatch(getAuthRegister(name, email, password))
+            dispatch<any>(getAuthRegister(name, email, password))
         }
     }
 
@@ -42,7 +43,7 @@ export const RegistrationPage = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={name}
+                        value={name || ''}
                     />
                     <Input
                         type={'text'}
@@ -53,7 +54,7 @@ export const RegistrationPage = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={email}
+                        value={email || ''}
                     />
                     <Input
                         type={'text'}
@@ -67,7 +68,7 @@ export const RegistrationPage = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={password}
+                        value={password || ''}
                     />
                     <div className={`${styles.button} mt-6`}>
                         <Button htmlType="submit" type="primary" size="medium">

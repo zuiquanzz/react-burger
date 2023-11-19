@@ -1,6 +1,6 @@
 import styles from "./forgot-password.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useEffect} from 'react';
+import {FormEvent, useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {getForgotPassword} from "../../services/authorization/actions";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,7 +11,7 @@ import {useForm} from "../../hooks/use-form";
 export const ForgotPassword = () => {
 
     const {values, handleChange} = useForm({email: ''})
-    const {email} = values;
+    const email = values.email;
 
     const dispatch = useDispatch();
 
@@ -25,10 +25,10 @@ export const ForgotPassword = () => {
         }
     }, [dispatch]);
 
-    const handleForgotPassword = e => {
+    const handleForgotPassword = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (email !== '') {
-            dispatch(getForgotPassword(email))
+            dispatch<any>(getForgotPassword(email))
         }
     }
 
@@ -46,7 +46,7 @@ export const ForgotPassword = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={email}
+                        value={email || ''}
                     />
                     <div className={`${styles.button} mt-6`}>
                         <Button htmlType="submit" type="primary" size="medium">

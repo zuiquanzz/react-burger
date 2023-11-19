@@ -1,6 +1,6 @@
 import styles from "./sign-in-page.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useRef} from 'react';
+import {SyntheticEvent, useRef} from 'react';
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {getAuthLogin} from "../../services/authorization/actions";
@@ -12,18 +12,18 @@ export const SignInPage = () => {
     const {values, handleChange} = useForm({email: '', password: ''})
     const {email, password} = values;
 
-    const inputRef = useRef(null)
+    const inputRef = useRef<HTMLInputElement>(null)
     const dispatch = useDispatch();
 
     const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        inputRef.current.type === 'text' ? inputRef.current.type = 'password' : inputRef.current.type = 'text'
+        setTimeout(() => inputRef.current!.focus(), 0)
+        inputRef.current!.type === 'text' ? inputRef.current!.type = 'password' : inputRef.current!.type = 'text'
     }
 
-    const loginCheck = (e) => {
+    const loginCheck = (e: SyntheticEvent) => {
         if (email !== '' && password !== '') {
             e.preventDefault();
-            dispatch(getAuthLogin(email, password))
+            dispatch<any>(getAuthLogin(email, password))
         }
     }
 
@@ -41,7 +41,7 @@ export const SignInPage = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={email}
+                        value={email || ''}
                     />
                     <Input
                         type={'text'}
@@ -55,7 +55,7 @@ export const SignInPage = () => {
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="mt-6"
-                        value={password}
+                        value={password || ''}
                     />
                     <div className={`${styles.button} mt-6`}>
                         <Button htmlType="submit" type="primary" size="medium">
