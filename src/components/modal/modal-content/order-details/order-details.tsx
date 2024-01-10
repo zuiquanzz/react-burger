@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getOrder} from "../../../../services/orders/actions";
 import {getAllIngredients, getOrders} from "../../../../services/selectors";
 import {CLEAR_STUFF} from "../../../../services/ingredients/actions";
-import {IingredientKey} from "../../../../../types/types";
+import {IingredientKey} from "../../../../types/types";
 import {getBurgerData} from "../../../../services/selector";
 
 function OrderDetails() {
@@ -23,8 +23,10 @@ function OrderDetails() {
 
     return (
         <>
-            {!isLoading && !error && order &&
-            <div className={`${styles.price} mt-30 mb-8 text text_type_digits-large`}>{order.order.number}</div>
+            {!isLoading && !error && order
+                // &&
+                //todo orders
+            // <div className={`${styles.price} mt-30 mb-8 text text_type_digits-large`}>{order.order.number}</div>
             }
             {isLoading && <p className={`${styles.description} text text_type_main-medium`}>Загрузка...</p>}
             <div className={`${styles.description} text text_type_main-medium`}>идентификатор заказа</div>

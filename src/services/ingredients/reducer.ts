@@ -4,7 +4,7 @@ import {
     GET_INGREDIENTS_FAILURE,
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
-    SORT_STUFF
+    SORT_STUFF, TIngredientsAction
 } from "./actions";
 
 const initialState = {
@@ -15,7 +15,7 @@ const initialState = {
 }
 
 
-export default (state = initialState, action) => {
+export default (state = initialState, action:TIngredientsAction) => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {...state, isLoading: true, error: false}

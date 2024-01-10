@@ -4,7 +4,7 @@ import styles from './burger-ingredients.module.css'
 import Ingredient from "./ingredient/ingredient";
 import {useSelector} from "react-redux";
 import {useInView} from "react-intersection-observer";
-import {Iingredient} from "../../../types/types";
+import {Iingredient} from "../../types/types";
 import {getIngredientsData} from "../../services/selector";
 
 function BurgerIngredients() {

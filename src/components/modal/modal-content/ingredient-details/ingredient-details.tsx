@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './ingredient-details.module.css';
 import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {Iingredient} from "../../../../../types/types";
+import {Iingredient} from "../../../../types/types";
 import {getIngredientsData} from "../../../../services/selector";
 
 function IngredientDetails() {

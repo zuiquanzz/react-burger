@@ -1,4 +1,4 @@
-import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "./actions";
+import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, TOrderAction} from "./actions";
 
 const initialState = {
     isLoading: false,
@@ -6,7 +6,7 @@ const initialState = {
     order: null
 }
 
-export default (state = initialState, action) => {
+export default (state = initialState, action:TOrderAction) => {
     switch (action.type) {
         case GET_ORDER_REQUEST: {
             return {...state, isLoading: true, error: false}

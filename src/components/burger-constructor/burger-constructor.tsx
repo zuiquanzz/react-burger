@@ -12,7 +12,7 @@ import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
 import BurgerStuff from "./burger-stuff/burger-stuff";
 import {useNavigate} from "react-router-dom";
-import {Iingredient, IingredientKey} from "../../../types/types";
+import {Iingredient, IingredientKey} from "../../types/types";
 
 function BurgerConstructor() {
     const burgerData:IingredientKey[] = useSelector(getBurgerData)

@@ -4,7 +4,7 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 import {useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
-import {Iingredient, IingredientKey} from "../../../../types/types";
+import {Iingredient, IingredientKey} from "../../../types/types";
 import {getBurgerData} from "../../../services/selector";
 
 interface IBurgerIngredientProps  {

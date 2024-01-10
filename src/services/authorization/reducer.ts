@@ -5,18 +5,27 @@ import {
     GET_AUTH_LOGOUT_SUCCESS,
     GET_AUTH_USER_SUCCESS,
     GET_AUTH_REFRESH_TOKEN_SUCCESS,
-    GET_AUTH_FORGOT_PASSWORD_SUCCESS, GET_AUTH_RESET_PASSWORD_SUCCESS
+    GET_AUTH_FORGOT_PASSWORD_SUCCESS, GET_AUTH_RESET_PASSWORD_SUCCESS, TAuthAction
 } from "./actions";
+import {TUser} from "../../types/types";
 
 const initialState = {
     isLoading: false,
-    error: null,
+    error: false,
     user: null,
     isAuth: false,
     forgotPassword: null
 }
 
-export default (state = initialState, action) => {
+interface IinitialState {
+    isLoading: boolean
+    error: boolean
+    user: TUser | null
+    isAuth: boolean
+    forgotPassword: string | null
+}
+
+export default (state = initialState, action:TAuthAction):IinitialState => {
     switch (action.type) {
         case GET_AUTH_REQUEST: {
             return {...state, isLoading: true, error: false}

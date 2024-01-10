@@ -1,4 +1,4 @@
-import {IingredientKey} from "../../types/types";
+import {IingredientKey} from "../types/types";
 
 const serverUrl = "https://norma.nomoreparties.space/api"
 
@@ -33,7 +33,7 @@ export const getAllIngredients = () => {
     }
     return normaRequest(getIngredientsEndPoint, options);
 }
-export const postRegistration = (name:string, email:string, password:string) => {
+export const postRegistration = (name: string | undefined, email: string | undefined, password: string | undefined) => {
     return normaRequest(getAuthRegisterEndPoint, postOptions({
         "name": name,
         "email": email,
@@ -41,7 +41,7 @@ export const postRegistration = (name:string, email:string, password:string) => 
     }))
 }
 
-export const postLogin = (email:string, password:string) => {
+export const postLogin = (email: string | undefined, password: string | undefined) => {
     return normaRequest(getAuthLoginEndPoint, postOptions({
         "email": email,
         "password": password
@@ -52,18 +52,18 @@ export const postOrder = (burgerData: IingredientKey[]) => {
     return normaRequest(getOrderEndPoint, postOptions({"ingredients": burgerData}))
 }
 
-export const postForgotPassword = (email:string) => {
+export const postForgotPassword = (email: string) => {
     return normaRequest(getForgotPasswordEndPoint, postOptions({"email": email}))
 }
 
-export const postResetPassword = (password:string, confirmPass:string) => {
+export const postResetPassword = (password: string | undefined, confirmPass: string | undefined) => {
     return normaRequest(getResetPasswordEndPoint, postOptions({
         "password": password,
         "token": confirmPass
     }))
 }
 
-export const postLogout = (token:string) => {
+export const postLogout = (token: string) => {
     return normaRequest(getAuthLogOutEndPoint, postOptions({"token": token}))
 }
 
@@ -73,11 +73,11 @@ export const postRefreshToken = () => {
     }))
 }
 
-export const userOrRefresh = (token:string) => {
+export const userOrRefresh = (token: string) => {
     return normaRequest(getAuthUserEndPoint, tokenOptions(token))
 }
 
-export const editUserOrRefresh = (name:string, email:string, password:string, token:string) => {
+export const editUserOrRefresh = (name: string | undefined, email: string | undefined, password: string | undefined, token: any ) => {
     return normaRequest(getAuthUserEndPoint, editTokenOptions(name, email, password, token))
 }
 
@@ -89,7 +89,7 @@ const postOptions = (body: Object) => {
     };
 }
 
-const tokenOptions = (token:string) => {
+const tokenOptions = (token: string) => {
     return {
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
@@ -98,7 +98,7 @@ const tokenOptions = (token:string) => {
     }
 }
 
-const editTokenOptions = (name:string, email:string, password:string, token:string) => {
+const editTokenOptions = (name: string | undefined, email: string | undefined, password: string | undefined, token: any) => {
     return {
         method: "PATCH",
         headers: {
@@ -113,10 +113,10 @@ const editTokenOptions = (name:string, email:string, password:string, token:stri
     }
 }
 
-const normaRequest = (url:string, options: Object) => {
+const normaRequest = (url: string, options: Object) => {
     return fetch(serverUrl.concat(url), options).then(checkResponse)
 }
 
-const checkResponse = (res:Response) => {
+const checkResponse = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }

@@ -17,7 +17,8 @@ export const MainPage = () => {
     return (
         <>
             <DndProvider backend={HTML5Backend}>
-                {!isLoading && !error && ingredients.length &&
+                //@ts-ignore
+                {!isLoading && !error &&
                     <main className={mainPageStyles.main}>
                         <div className={'mr-10'}>
                             <BurgerIngredients/>

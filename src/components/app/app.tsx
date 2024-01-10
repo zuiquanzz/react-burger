@@ -3,7 +3,7 @@ import {MainPage} from "../../pages/main-page/main-page";
 import AppHeader from "../app-header/app-header";
 import {ProfilePage} from "../../pages/profile-page/profile-page";
 import {SignInPage} from "../../pages/sign-in-page/sign-in-page";
-import {useDispatch, useSelector} from "react-redux";
+// import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {getUserSession} from "../../services/authorization/actions";
 import {ProtectedRoutes} from "../../services/protected-routes/protected-routes";
@@ -16,6 +16,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../modal/modal-content/ingredient-details/ingredient-details";
 import {getAllIngredients} from "../../services/selectors";
 import {getIngredients} from "../../services/ingredients/actions";
+import {useDispatch, useSelector} from "../../types/types";
 
 
 const App = () => {
@@ -32,10 +33,11 @@ const App = () => {
     };
 
     useEffect(() => {
-        dispatch<any>(getIngredients());
-        dispatch<any>(getUserSession());
+        dispatch(getIngredients());
+        dispatch(getUserSession());
     }, [dispatch])
 
+    //@ts-ignore
     if (ingredients.length > 0) {
         return (
             <>
