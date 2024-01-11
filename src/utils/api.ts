@@ -52,6 +52,11 @@ export const postOrder = (burgerData: IingredientKey[]) => {
     return normaRequest(getOrderEndPoint, postOptions({"ingredients": burgerData}))
 }
 
+//todo check jwt expired
+export const postAuthOrder = (burgerData: IingredientKey[], token: any) => {
+    return normaRequest(getOrderEndPoint, postAuthOptions({"ingredients": burgerData}, token))
+}
+
 export const postForgotPassword = (email: string) => {
     return normaRequest(getForgotPasswordEndPoint, postOptions({"email": email}))
 }
@@ -88,6 +93,18 @@ const postOptions = (body: Object) => {
         body: JSON.stringify(body)
     };
 }
+
+const postAuthOptions = (body: Object, token: any) => {
+    return {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            authorization: token
+        },
+        body: JSON.stringify(body)
+    };
+}
+
 
 const tokenOptions = (token: string) => {
     return {

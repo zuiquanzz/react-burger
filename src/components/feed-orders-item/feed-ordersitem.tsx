@@ -1,11 +1,11 @@
-import styles from './feed-orders-item.css';
+import styles from './feed-ordersitem.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useMatch , useLocation } from 'react-router-dom';
 import {Iingredient, useSelector} from '../../types/types';
 import {getIngredientsData} from "../../services/selector";
 
 
-export const FeedOrdersItem = ({el}:any): JSX.Element => {
+export const FeedOrdersitem = ({el}:any): JSX.Element => {
 
     const ingredient: Iingredient[] = useSelector(getIngredientsData)
     // const ingredient  = useSelector(getIngrediensSelector);

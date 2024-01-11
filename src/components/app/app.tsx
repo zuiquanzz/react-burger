@@ -57,7 +57,7 @@ const App = () => {
                     <Route path='/feed/:feedId' element={<FeedId />} />
                     <Route path='/forgot-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ForgotPassword/>}/>}/>
                     <Route path='/reset-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ResetPassword/>}/>}/>
-                    <Route path='/profile/orders/:orderId' element={<ProtectedRoutes onlyUnAuth={true} page={<FeedId/>}/>}/>
+                    <Route path='/profile/orders/:orderId' element={<ProtectedRoutes onlyUnAuth={false} page={<FeedId/>}/>}/>
                     <Route path='/profile' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfilePage/>}/>}>
                         <Route index element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileEditPage/>}/>}/>
                         <Route path='orders' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileOrders/>}/>}/>

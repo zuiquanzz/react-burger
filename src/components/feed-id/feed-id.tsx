@@ -19,13 +19,15 @@ export const FeedId = () => {
     const [order, setOrder] = useState<IwebsocketItemOrderOrders | null>(null)
     const ingredients:Iingredient[]  = useSelector(getIngredientsData);
 
-    const feedId = useParams().feedId || "";
+    const feedId = useParams().feedId;
+    const orderId = useParams().orderId;
 
     const Data = new Date();
     const Day = Data.getDate();
 
     useEffect(() => {
-        fetch(`https://norma.nomoreparties.space/api/orders/${feedId}`).then(getResponse)
+        console.log("feed", feedId)
+        fetch(`https://norma.nomoreparties.space/api/orders/${feedId ? feedId : orderId}`).then(getResponse)
         .then((res) => {
             setOrder(res.orders[0]);
         });

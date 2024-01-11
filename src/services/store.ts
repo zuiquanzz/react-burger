@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
 import ingredientsReducer from "./ingredients/reducer";
-import ordersReducer from "./orders/reducer";
+import {ordersReducer} from "./orders/reducer";
 import authReducer from "./authorization/reducer";
 import {wsReducer} from "./websocket/reducers";
 import {socketMiddleware} from "./websocket/middleware";

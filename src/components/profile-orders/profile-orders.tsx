@@ -1,5 +1,5 @@
 import styles from './profile-orders.module.css';
-import { FeedOrdersItem } from '../feed-orders-item/feed-orders-item';
+import { FeedOrdersitem } from '../feed-orders-item/feed-ordersitem';
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from 'react';
 import { connect, disconnect } from "../../services/websocket/actions";
@@ -10,7 +10,7 @@ const accessTokenKey = localStorage.getItem('accessToken');
 if (accessTokenKey) {
     accessToken = accessTokenKey.replace(/^.{7}/, '')
 }
-
+//todo const
 export const urlWebSocket = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
 
 export const ProfileOrders = () => {
@@ -25,7 +25,7 @@ export const ProfileOrders = () => {
         return () => {
             dispatch(disconnect());
         }
-    }, []);
+    }, [dispatch]);
 
     // @ts-ignore
     if (ingredient !== [] && orders.success === true) {
@@ -34,7 +34,7 @@ export const ProfileOrders = () => {
             <>
                 <div className={`${styles.box} custom-scroll `}>
                     {orders.orders.map((el: any, index: any) =>
-                        <FeedOrdersItem el={el} key={index} />
+                        <FeedOrdersitem el={el} key={index} />
                     )}
                 </div>
             </>

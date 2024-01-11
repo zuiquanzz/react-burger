@@ -1,5 +1,6 @@
-import {postOrder} from "../../utils/api";
+import {postAuthOrder} from "../../utils/api";
 import {AppDispatch, IingredientKey} from "../../types/types";
+import {IgetOrderProjectApi} from "./reducer";
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST'
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS'
@@ -10,7 +11,7 @@ interface ILoadingOrderAction {
 }
 interface IGetOrderAction {
     readonly type: typeof GET_ORDER_SUCCESS;
-    readonly payload: Object;
+    readonly payload: IgetOrderProjectApi;
 }
 interface IFailureOrderAction {
     readonly type: typeof GET_ORDER_FAILURE;
@@ -19,10 +20,22 @@ export type TOrderAction =
     ILoadingOrderAction |
     IGetOrderAction |
     IFailureOrderAction;
+//
+// export const getOrder = (burgerData:IingredientKey[]) => (dispatch:AppDispatch) => {
+//     dispatch({type: GET_ORDER_REQUEST})
+//     postOrder(burgerData)
+//         .then(data => {
+//             dispatch({type: GET_ORDER_SUCCESS, payload: data})
+//         })
+//         .catch(e => {
+//             dispatch({type: GET_ORDER_FAILURE})
+//             console.error(e)
+//         });
+// }
 
-export const getOrder = (burgerData:IingredientKey[]) => (dispatch:AppDispatch) => {
+export const postOrder = (burgerData:IingredientKey[], token: any) => (dispatch:AppDispatch) => {
     dispatch({type: GET_ORDER_REQUEST})
-    postOrder(burgerData)
+    postAuthOrder(burgerData,token)
         .then(data => {
             dispatch({type: GET_ORDER_SUCCESS, payload: data})
         })
