@@ -17,6 +17,10 @@ import IngredientDetails from "../modal/modal-content/ingredient-details/ingredi
 import {getAllIngredients} from "../../services/selectors";
 import {getIngredients} from "../../services/ingredients/actions";
 import {useDispatch, useSelector} from "../../types/types";
+import {Feed, urlWebSocket} from "../../pages/feed/feed";
+import {connect, disconnect} from "../../services/websocket/actions";
+import {FeedId} from "../feed-id/feed-id";
+import {ProfileOrders} from "../profile-orders/profile-orders";
 
 
 const App = () => {
@@ -35,6 +39,10 @@ const App = () => {
     useEffect(() => {
         dispatch(getIngredients());
         dispatch(getUserSession());
+        dispatch(connect(urlWebSocket));
+        return()=>{
+            dispatch(disconnect());
+        }
     }, [dispatch])
 
     //@ts-ignore
@@ -45,17 +53,30 @@ const App = () => {
                 <Routes location={background || location}>
                     <Route path='/' element={<MainPage/>}/>
                     <Route path='/register' element={<ProtectedRoutes onlyUnAuth={true} page={<RegistrationPage/>}/>}/>
+                    <Route path='/feed' element={<Feed />} />
+                    <Route path='/feed/:feedId' element={<FeedId />} />
                     <Route path='/forgot-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ForgotPassword/>}/>}/>
                     <Route path='/reset-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ResetPassword/>}/>}/>
+                    <Route path='/profile/orders/:orderId' element={<ProtectedRoutes onlyUnAuth={true} page={<FeedId/>}/>}/>
                     <Route path='/profile' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfilePage/>}/>}>
                         <Route index element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileEditPage/>}/>}/>
-                        <Route path='orders' element={<ProtectedRoutes onlyUnAuth={false} page={<OrdersPage/>}/>}/>
+                        <Route path='orders' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileOrders/>}/>}/>
                     </Route>
                     <Route path='/ingredients/:ingredientId' element={<IngredientDetails/>}/>
                     <Route path='/sign-in' element={<ProtectedRoutes onlyUnAuth={true} page={<SignInPage/>}/>}/>
                 </Routes>
                 {background && (
                     <Routes>
+                        <Route path='/feed/:feedId' element={
+                            <Modal modalClose={handleModalClose}>
+                                <FeedId />
+                            </Modal>}
+                        />
+                        <Route path='/profile/orders/:orderId' element={
+                            <Modal modalClose={handleModalClose}>
+                                <FeedId />
+                            </Modal>}
+                        />
                         <Route
                             path='/ingredients/:ingredientId'
                             element={

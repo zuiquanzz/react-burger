@@ -71,7 +71,6 @@ export type TAuthAction =
 
 export const getUserSession = () => (dispatch: AppDispatch) => {
     if (localStorage.getItem("accessToken")) {
-        // getUserByToken(localStorage.getItem("accessToken"));
         dispatch({type: GET_AUTH_REQUEST})
         getOrRefresh(localStorage.getItem("accessToken"))
             .then(res => {
@@ -130,17 +129,17 @@ export const getResetPassword = (password: string | undefined, confirmPass: stri
     });
 }
 
-const getUserByToken = (token: any) => (dispatch: AppDispatch) => {
-    dispatch({type: GET_AUTH_REQUEST})
-    getOrRefresh(token)
-        .then(res => {
-            dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
-        })
-        .catch(e => {
-            dispatch({type: GET_AUTH_FAILURE})
-            console.error(e)
-        });
-}
+// const getUserByToken = (token: any) => (dispatch: AppDispatch) => {
+//     dispatch({type: GET_AUTH_REQUEST})
+//     getOrRefresh(token)
+//         .then(res => {
+//             dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
+//         })
+//         .catch(e => {
+//             dispatch({type: GET_AUTH_FAILURE})
+//             console.error(e)
+//         });
+// }
 
 export const editUserByToken = (name: string | undefined, email: string | undefined, password: string | undefined, token: any) => (dispatch: AppDispatch) => {
     dispatch({type: GET_AUTH_REQUEST})

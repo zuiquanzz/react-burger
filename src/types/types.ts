@@ -11,6 +11,7 @@ import {store} from "../services/store";
 import {TOrderAction} from "../services/orders/actions";
 import {TIngredientsAction} from "../services/ingredients/actions";
 import {TAuthAction} from "../services/authorization/actions";
+import {TWs} from "../services/websocket/actions";
 
 export interface Iingredient {
     _id: string;
@@ -43,19 +44,32 @@ export interface IingredientKey extends Iingredient {
     uniqId: string;
 }
 
+export interface WebsocketOrders{
+
+}
+export enum WebsocketStatus{
+    CONNECTING = 'CONNECTING...',
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE'
+}
+
+
 export type TActions =
     TOrderAction |
     TIngredientsAction |
-    TAuthAction;
+    TAuthAction |
+    TWs;
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TActions>>;
+export type AppThunk<TReturn = void> = ThunkAction<
+    TReturn,
+    RootState,
+    unknown,
+    TActions
+    >;
 
-export type AppDispatch = Dispatch<TActions>;
+export type AppDispatch<TReturnType = void> = (action :TActions| AppThunk<TReturnType>) => TReturnType;
 
+// @ts-ignore
+export const useDispatch: () => AppDispatch = dispatchHook;
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;
-export const useDispatch = () => {
-    //todo
-    // @ts-ignore
-    return dispatchHook<AppDispatch | AppThunk>();
-};

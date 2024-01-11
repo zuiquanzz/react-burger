@@ -11,3 +11,8 @@ export const getIngredientsData = (store: RootState) => {
     // @ts-ignore
     return store.ingredients.ingredients;
 };
+
+export const getWsData = (store: RootState) => {
+    // @ts-ignore
+    return store.wsReducer;
+};
