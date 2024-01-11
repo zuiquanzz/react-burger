@@ -8,8 +8,8 @@ import {Iingredient} from "../../types/types";
 import {getIngredientsData} from "../../services/selector";
 
 function BurgerIngredients() {
-
     const ingredients: Iingredient[] = useSelector(getIngredientsData)
+
 
     const [currentTab, setCurrentTab] = useState('bun');
 

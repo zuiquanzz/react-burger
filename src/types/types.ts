@@ -47,6 +47,39 @@ export interface IingredientKey extends Iingredient {
 export interface WebsocketOrders{
 
 }
+
+export interface IwebsocketOrders {
+    success: boolean;
+    orders:IwebsocketOrdersOrders[];
+    total: string;
+    totalToday: string;
+}
+export interface IwebsocketOrdersOrders{
+    _id: string;
+    ingredients: string[];
+    status: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    number: string;
+}
+export interface IwebsocketItemOrder{
+    orders: IwebsocketItemOrderOrders[];
+    success: boolean;
+}
+
+export interface IwebsocketItemOrderOrders{
+    createdAt:string;
+    ingredients: string[];
+    name: string;
+    number: number;
+    owner: string;
+    status:string;
+    updatedAt:string;
+    __v:number;
+    _id:string;
+}
+
 export enum WebsocketStatus{
     CONNECTING = 'CONNECTING...',
     ONLINE = 'ONLINE',

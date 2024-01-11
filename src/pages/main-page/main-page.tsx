@@ -17,7 +17,6 @@ export const MainPage = () => {
     return (
         <>
             <DndProvider backend={HTML5Backend}>
-                //@ts-ignore
                 {!isLoading && !error &&
                     <main className={mainPageStyles.main}>
                         <div className={'mr-10'}>

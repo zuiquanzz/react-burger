@@ -1,103 +1,120 @@
 import styles from './feed-id.module.css';
-import bun from '../../images/logo.svg';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useParams } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import {Iingredient, useSelector} from '../../types/types';
 import { getIngredientsData } from '../../services/selector';
-import {getWsData} from "../../services/selector";
+// import { getProjectOrder } from '../../utils/ingredient-api';
+import {IwebsocketItemOrderOrders} from '../../types/types'
 
+const getResponse = (res:Response):Promise<any> => {
+    if (res.ok) {
+        return res.json()
+    }
+    return Promise.reject(`Ошибка ${res.status}`);
+
+}
 
 export const FeedId = () => {
+    const [order, setOrder] = useState<IwebsocketItemOrderOrders | null>(null)
+    const ingredients:Iingredient[]  = useSelector(getIngredientsData);
 
-    const {feedId} = useParams();
-    const {orders} = useSelector(getWsData);
-    const elem = orders.orders.find((el: { _id: string | undefined; }) => el._id === feedId);
-
-    const { ingredient } = useSelector(getIngredientsData);
-    const priceArr: any[] = [];
-    for (let i = 0; i < elem.ingredients.length; i++) {
-        let elems = elem.ingredients[i]
-        ingredient.map((j: { _id: any; price: any; }) => j._id == elems && priceArr.push(j.price))
-    }
-    const sumOfNumbers = priceArr.reduce((acc, number) => acc + number, 0);
-    const dateOrder = elem.updatedAt.slice(0, -8);
+    const feedId = useParams().feedId || "";
 
     const Data = new Date();
     const Day = Data.getDate();
 
-    return (
-        <>
-            <div className={styles.box}>
-                <div className={`${styles.number} text text_type_digits-default pt-8`}>#{elem.number}</div>
-                <h3 className='text text_type_main-medium mb-3 mt-10'>{elem.name}</h3>
-                <p className='text text_type_main-default text_color_inactive mb-15'>{elem.status == 'done'? 'Выполнен': 'Готовться'}</p>
-                <p className='text text_type_main-medium mb-6'>Состав:</p>
-                <div className={`${styles.ingredient} custom-scroll`}>
-                    <div className={styles.item}>
-                        <div className={styles.flex}>
-                            <div className={styles.img}>
-                                <img src={bun} alt="img" />
+    useEffect(() => {
+        fetch(`https://norma.nomoreparties.space/api/orders/${feedId}`).then(getResponse)
+        .then((res) => {
+            setOrder(res.orders[0]);
+        });
+    }, []);
+
+
+
+
+
+    if (!order) {
+        return (
+            <>
+                <p>Загрузка...</p>
+            </>
+        )
+    } else {
+
+
+        const priceArr: number[] = [];
+        for (let i = 0; i < order.ingredients.length; i++) {
+            let elems = order.ingredients[i]
+            ingredients.map(j => j._id == elems && priceArr.push(j.price))
+        }
+        const sum = priceArr.reduce((acc, number) => acc + number, 0);
+        const dateOrder = order.updatedAt.slice(0, -8);
+
+        const duplicates = order.ingredients.filter((number, index, numbers) => {
+            return numbers.indexOf(number) !== index;
+        });
+
+
+        const resObject = order.ingredients.reduce((acc:Record<string,number>, i) => {
+            if (acc.hasOwnProperty(i)) {
+                acc[i] += 1;
+            } else {
+                acc[i] = 1;
+            }
+            return acc;
+        }, {})
+
+        const ordersObject:Array<any>[] = Object.entries(resObject);
+
+        for (let i = 0; i < ordersObject.length; i++) {
+            let elems = ordersObject[i]
+            ingredients.map(j => j._id == elems[0] && elems.push(j.price))
+        }
+        for (let i = 0; i < ordersObject.length; i++) {
+            let elems = ordersObject[i]
+            ingredients.map(j => j._id == elems[0] && elems.push(j.image_mobile))
+        }
+        for (let i = 0; i < ordersObject.length; i++) {
+            let elems = ordersObject[i]
+            ingredients.map(j => j._id == elems[0] && elems.push(j.name))
+        }
+
+        return (
+            <>
+                <div className={styles.box}>
+                    <div className={`${styles.number} text text_type_digits-default pt-8`}>#{order.number}</div>
+                    <h3 className='text text_type_main-medium mb-3 mt-10'>{order.name}</h3>
+                    <p className='text text_type_main-default text_color_inactive mb-15'>{order.status === 'done' ? 'Выполнен' : 'Готовиться'}</p>
+                    <p className='text text_type_main-medium mb-6'>Состав:</p>
+                    <div className={`${styles.ingredient} custom-scroll`}>
+                        {ordersObject.map((item, index) =>
+                            <div className={styles.item} key={index}>
+                                <div className={styles.flex}>
+                                    <div className={styles.img}>
+                                        <img src={item[3]} alt="img" />
+                                    </div>
+                                    <p className="text text_type_main-default ml-4">{item[4]}</p>
+                                </div>
+                                <div className={styles.discription}>
+                                    <p className='text text_type_digits-default mr-2'>{item[1]}</p>
+                                    <p className="text text_type_digits-default mr-2">x</p>
+                                    <p className="text text_type_digits-default mr-2">{item[2] * item[1]}</p>
+                                    <CurrencyIcon type="primary" />
+                                </div>
                             </div>
-                            <p className="text text_type_main-default ml-4">Филе Люминесцентного тетраодонтимформа</p>
-                        </div>
-                        <div className={styles.discription}>
-                            <p className='text text_type_digits-default mr-2'>1</p>
-                            <p className="text text_type_digits-default mr-2">x</p>
-                            <p className="text text_type_digits-default mr-2">400</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
+                        )}
                     </div>
-                    <div className={styles.item}>
-                        <div className={styles.flex}>
-                            <div className={styles.img}>
-                                <img src={bun} alt="img" />
-                            </div>
-                            <p className="text text_type_main-default ml-4">Филе Люминесцентного тетраодонтимформа</p>
-                        </div>
-                        <div className={styles.discription}>
-                            <p className='text text_type_digits-default mr-2'>1</p>
-                            <p className="text text_type_digits-default mr-2">x</p>
-                            <p className="text text_type_digits-default mr-2">400</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                    </div>
-                    <div className={styles.item}>
-                        <div className={styles.flex}>
-                            <div className={styles.img}>
-                                <img src={bun} alt="img" />
-                            </div>
-                            <p className="text text_type_main-default ml-4">Филе Люминесцентного тетраодонтимформа</p>
-                        </div>
-                        <div className={styles.discription}>
-                            <p className='text text_type_digits-default mr-2'>1</p>
-                            <p className="text text_type_digits-default mr-2">x</p>
-                            <p className="text text_type_digits-default mr-2">400</p>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                    </div>
-                    <div className={styles.item}>
-                        <div className={styles.flex}>
-                            <div className={styles.img}>
-                                <img src={bun} alt="img" />
-                            </div>
-                            <p className="text text_type_main-default ml-4">Филе Люминесцентного тетраодонтимформа</p>
-                        </div>
-                        <div className={styles.discription}>
-                            <p className='text text_type_digits-default mr-2'>1</p>
-                            <p className="text text_type_digits-default mr-2">x</p>
-                            <p className="text text_type_digits-default mr-2">400</p>
+                    <div className={`${styles.bottom} mt-10 pb-8`}>
+                        <p className='text text_type_main-default text_color_inactive'>{Number(dateOrder.slice(8, 10)) == Day ? 'Сегодня' : (Number(dateOrder.slice(8, 10)) - Day) > 1 ? (Number(dateOrder.slice(8, 10)) - Day) + "дня(-ей) назад" : "Вчера"}, {dateOrder.slice(11)}</p>
+                        <div className={styles.total}>
+                            <p className='text text_type_digits-default mr-2'>{sum}</p>
                             <CurrencyIcon type="primary" />
                         </div>
                     </div>
                 </div>
-                <div className={`${styles.bottom} mt-10 pb-8`}>
-                    <p className='text text_type_main-default text_color_inactive'>{dateOrder.slice(8,10) == Day ? 'Сегодня' : (dateOrder.slice(8,10) - Day ) > 1  ? (dateOrder.slice(8,10) - Day) + "дня(-ей) назад" : "Вчера" }, {dateOrder.slice(11)}</p>
-                    <div className={styles.total}>
-                        <p className='text text_type_digits-default mr-2'>{sumOfNumbers}</p>
-                        <CurrencyIcon type="primary" />
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+            </>
+        )
+    }
 }
