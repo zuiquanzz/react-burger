@@ -5,6 +5,7 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
+import {Loader} from "../../utils/loader/loader";
 
 export const MainPage = () => {
 
@@ -26,7 +27,7 @@ export const MainPage = () => {
                 }
                 {isLoading &&
                     <>
-                        <p>Загрузка..</p>
+                        <Loader size='large'/>
                     </>}
             </DndProvider>
         </>

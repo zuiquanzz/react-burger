@@ -4,13 +4,13 @@ import {useDispatch, useSelector} from "../../types/types";
 import {useEffect} from 'react';
 import {connect, disconnect} from "../../services/websocket/actions";
 import {getWsData} from "../../services/selector";
+import {Loader} from "../../utils/loader/loader";
 
 let accessToken = '';
 const accessTokenKey = localStorage.getItem('accessToken');
 if (accessTokenKey) {
     accessToken = accessTokenKey.replace(/^.{7}/, '')
 }
-//todo const
 export const urlWebSocket = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
 
 export const ProfileOrders = () => {
@@ -41,7 +41,7 @@ export const ProfileOrders = () => {
     } else {
         return (
             <>
-                <p>Загрузка...</p>
+                <Loader size='large'/>
             </>
         )
     }

@@ -1,12 +1,6 @@
-import {Dispatch} from "redux";
 import {ThunkAction} from 'redux-thunk';
-import {Action, ActionCreator} from 'redux';
 
-import {
-    TypedUseSelectorHook,
-    useDispatch as dispatchHook,
-    useSelector as selectorHook
-} from 'react-redux';
+import {TypedUseSelectorHook, useDispatch as dispatchHook, useSelector as selectorHook} from 'react-redux';
 import {store} from "../services/store";
 import {TOrderAction} from "../services/orders/actions";
 import {TIngredientsAction} from "../services/ingredients/actions";
@@ -44,17 +38,18 @@ export interface IingredientKey extends Iingredient {
     uniqId: string;
 }
 
-export interface WebsocketOrders{
+export interface WebsocketOrders {
 
 }
 
 export interface IwebsocketOrders {
     success: boolean;
-    orders:IwebsocketOrdersOrders[];
+    orders: IwebsocketOrdersOrders[];
     total: string;
     totalToday: string;
 }
-export interface IwebsocketOrdersOrders{
+
+export interface IwebsocketOrdersOrders {
     _id: string;
     ingredients: string[];
     status: string;
@@ -63,24 +58,25 @@ export interface IwebsocketOrdersOrders{
     updatedAt: string;
     number: string;
 }
-export interface IwebsocketItemOrder{
+
+export interface IwebsocketItemOrder {
     orders: IwebsocketItemOrderOrders[];
     success: boolean;
 }
 
-export interface IwebsocketItemOrderOrders{
-    createdAt:string;
+export interface IwebsocketItemOrderOrders {
+    createdAt: string;
     ingredients: string[];
     name: string;
     number: number;
     owner: string;
-    status:string;
-    updatedAt:string;
-    __v:number;
-    _id:string;
+    status: string;
+    updatedAt: string;
+    __v: number;
+    _id: string;
 }
 
-export enum WebsocketStatus{
+export enum WebsocketStatus {
     CONNECTING = 'CONNECTING...',
     ONLINE = 'ONLINE',
     OFFLINE = 'OFFLINE'
@@ -94,15 +90,13 @@ export type TActions =
     TWs;
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<TReturn = void> = ThunkAction<
-    TReturn,
+export type AppThunk<TReturn = void> = ThunkAction<TReturn,
     RootState,
     unknown,
-    TActions
-    >;
+    TActions>;
 
-export type AppDispatch<TReturnType = void> = (action :TActions| AppThunk<TReturnType>) => TReturnType;
-//todo hook and store
+export type AppDispatch<TReturnType = void> = (action: TActions | AppThunk<TReturnType>) => TReturnType;
+
 // @ts-ignore
 export const useDispatch: () => AppDispatch = dispatchHook;
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;

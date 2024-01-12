@@ -2,8 +2,6 @@ import {store} from "./store";
 
 type RootState = ReturnType<typeof store.getState>;
 
-
-//todo in one selector
 export const getBurgerData = (store: RootState) => {
     // @ts-ignore
     return store.ingredients.burgerData;

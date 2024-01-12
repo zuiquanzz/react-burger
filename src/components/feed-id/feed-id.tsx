@@ -1,13 +1,12 @@
 import styles from './feed-id.module.css';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import {Iingredient, useSelector} from '../../types/types';
-import { getIngredientsData } from '../../services/selector';
-// import { getProjectOrder } from '../../utils/ingredient-api';
-import {IwebsocketItemOrderOrders} from '../../types/types'
+import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {useParams} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {Iingredient, IwebsocketItemOrderOrders, useSelector} from '../../types/types';
+import {getIngredientsData} from '../../services/selector';
+import {Loader} from "../../utils/loader/loader";
 
-const getResponse = (res:Response):Promise<any> => {
+const getResponse = (res: Response): Promise<any> => {
     if (res.ok) {
         return res.json()
     }
@@ -17,30 +16,25 @@ const getResponse = (res:Response):Promise<any> => {
 
 export const FeedId = () => {
     const [order, setOrder] = useState<IwebsocketItemOrderOrders | null>(null)
-    const ingredients:Iingredient[]  = useSelector(getIngredientsData);
+    const ingredients: Iingredient[] = useSelector(getIngredientsData);
 
     const feedId = useParams().feedId;
     const orderId = useParams().orderId;
 
     const Data = new Date();
     const Day = Data.getDate();
-    //todo
+
     useEffect(() => {
-        console.log("feed", feedId)
         fetch(`https://norma.nomoreparties.space/api/orders/${feedId ? feedId : orderId}`).then(getResponse)
-        .then((res) => {
-            setOrder(res.orders[0]);
-        });
+            .then((res) => {
+                setOrder(res.orders[0]);
+            });
     }, []);
-
-
-
-
 
     if (!order) {
         return (
             <>
-                <p>Загрузка...</p>
+                <Loader size='large'/>
             </>
         )
     } else {
@@ -59,7 +53,7 @@ export const FeedId = () => {
         });
 
 
-        const resObject = order.ingredients.reduce((acc:Record<string,number>, i) => {
+        const resObject = order.ingredients.reduce((acc: Record<string, number>, i) => {
             if (acc.hasOwnProperty(i)) {
                 acc[i] += 1;
             } else {
@@ -68,7 +62,7 @@ export const FeedId = () => {
             return acc;
         }, {})
 
-        const ordersObject:Array<any>[] = Object.entries(resObject);
+        const ordersObject: Array<any>[] = Object.entries(resObject);
 
         for (let i = 0; i < ordersObject.length; i++) {
             let elems = ordersObject[i]
@@ -95,7 +89,7 @@ export const FeedId = () => {
                             <div className={styles.item} key={index}>
                                 <div className={styles.flex}>
                                     <div className={styles.img}>
-                                        <img src={item[3]} alt="img" />
+                                        <img src={item[3]} alt="img"/>
                                     </div>
                                     <p className="text text_type_main-default ml-4">{item[4]}</p>
                                 </div>
@@ -103,7 +97,7 @@ export const FeedId = () => {
                                     <p className='text text_type_digits-default mr-2'>{item[1]}</p>
                                     <p className="text text_type_digits-default mr-2">x</p>
                                     <p className="text text_type_digits-default mr-2">{item[2] * item[1]}</p>
-                                    <CurrencyIcon type="primary" />
+                                    <CurrencyIcon type="primary"/>
                                 </div>
                             </div>
                         )}
@@ -112,7 +106,7 @@ export const FeedId = () => {
                         <p className='text text_type_main-default text_color_inactive'>{Number(dateOrder.slice(8, 10)) == Day ? 'Сегодня' : (Number(dateOrder.slice(8, 10)) - Day) > 1 ? (Number(dateOrder.slice(8, 10)) - Day) + "дня(-ей) назад" : "Вчера"}, {dateOrder.slice(11)}</p>
                         <div className={styles.total}>
                             <p className='text text_type_digits-default mr-2'>{sum}</p>
-                            <CurrencyIcon type="primary" />
+                            <CurrencyIcon type="primary"/>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ export const ProfilePage = () => {
     const handleLogout = () =>{
         dispatch(logout(localStorage.getItem("refreshToken")))
     }
-    //todo center visualiztion
+
     return (
         <>
             <div className={styles.box}>

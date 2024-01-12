@@ -6,13 +6,15 @@ import {useSelector} from "react-redux";
 import {connect, disconnect} from "../../services/websocket/actions";
 import {useEffect} from 'react';
 import {getWsData} from "../../services/selector";
+import {Loader} from "../../utils/loader/loader";
+import {urlWebSocket} from "../../utils/api";
 
-export const urlWebSocket = 'wss://norma.nomoreparties.space/orders/all';
+// export const urlWebSocket = 'wss://norma.nomoreparties.space/orders/all';
 
 export const Feed = () => {
     const dispatch = useDispatch();
 
-    const {status, orders} = useSelector(getWsData);
+    const {orders} = useSelector(getWsData);
 
     useEffect(() => {
         dispatch(connect(urlWebSocket));
@@ -34,6 +36,6 @@ export const Feed = () => {
             </>
         )
     } else {
-        return (<p>ЗАгрузка</p>)
+        return (<Loader size='large'/>)
     }
 }

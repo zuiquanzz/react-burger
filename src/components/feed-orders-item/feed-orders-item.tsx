@@ -4,7 +4,7 @@ import { Link, useMatch , useLocation } from 'react-router-dom';
 import {Iingredient, useSelector} from '../../types/types';
 import {getIngredientsData} from "../../services/selector";
 
-//todo FC like Ingredient.tsx
+
 export const FeedOrdersItem = ({el}:any): JSX.Element => {
 
     const ingredient: Iingredient[] = useSelector(getIngredientsData)

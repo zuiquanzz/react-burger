@@ -15,10 +15,12 @@ import IngredientDetails from "../modal/modal-content/ingredient-details/ingredi
 import {getAllIngredients} from "../../services/selectors";
 import {getIngredients} from "../../services/ingredients/actions";
 import {useDispatch, useSelector} from "../../types/types";
-import {Feed, urlWebSocket} from "../../pages/feed/feed";
+import {Feed} from "../../pages/feed/feed";
 import {connect, disconnect} from "../../services/websocket/actions";
 import {FeedId} from "../feed-id/feed-id";
 import {ProfileOrders} from "../profile-orders/profile-orders";
+import {Loader} from "../../utils/loader/loader";
+import {urlWebSocket} from "../../utils/api";
 
 
 const App = () => {
@@ -87,7 +89,7 @@ const App = () => {
             </>
         )
     } else {
-        return <p>Загрузка Ингредиентов...</p>
+        return <Loader size='large'/>
     }
 }
 

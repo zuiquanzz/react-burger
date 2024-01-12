@@ -1,6 +1,7 @@
 import {IingredientKey} from "../types/types";
 
 const serverUrl = "https://norma.nomoreparties.space/api"
+export const urlWebSocket = 'wss://norma.nomoreparties.space/orders/all';
 
 const ingredientsEndpoint = "/ingredients"
 const orderEndpoint = "/orders"
@@ -48,11 +49,6 @@ export const postLogin = (email: string | undefined, password: string | undefine
     }))
 }
 
-export const postOrder = (burgerData: IingredientKey[]) => {
-    return normaRequest(getOrderEndPoint, postOptions({"ingredients": burgerData}))
-}
-
-//todo check jwt expired
 export const postAuthOrder = (burgerData: IingredientKey[], token: any) => {
     return normaRequest(getOrderEndPoint, postAuthOptions({"ingredients": burgerData}, token))
 }
