@@ -1,14 +1,10 @@
 import styles from "./feed.module.css";
-import { FeedOrders } from '../../components/feed-orders/feed-orders';
-import { FeedList } from '../../components/feed-list/feed-list';
-import Typography from '@ya.praktikum/react-developer-burger-ui-components'
-import Box from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from "../../types/types";
-import { useSelector } from "react-redux";
-import { store } from "../../services/store";
+import {FeedOrders} from '../../components/feed-orders/feed-orders';
+import {FeedList} from '../../components/feed-list/feed-list';
+import {useDispatch} from "../../types/types";
+import {useSelector} from "react-redux";
 import {connect, disconnect} from "../../services/websocket/actions";
-import { useEffect } from 'react';
-import {socketMiddleware} from '../../services/websocket/middleware';
+import {useEffect} from 'react';
 import {getWsData} from "../../services/selector";
 
 export const urlWebSocket = 'wss://norma.nomoreparties.space/orders/all';
@@ -20,7 +16,7 @@ export const Feed = () => {
 
     useEffect(() => {
         dispatch(connect(urlWebSocket));
-        return()=>{
+        return () => {
             dispatch(disconnect());
         }
     }, [dispatch]);
@@ -38,6 +34,6 @@ export const Feed = () => {
             </>
         )
     } else {
-        return ( <p>ЗАгрузка</p>)
+        return (<p>ЗАгрузка</p>)
     }
 }

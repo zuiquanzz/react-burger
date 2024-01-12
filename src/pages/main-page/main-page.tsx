@@ -9,7 +9,6 @@ import BurgerConstructor from "../../components/burger-constructor/burger-constr
 export const MainPage = () => {
 
     const {
-        ingredients,
         isLoading,
         error,
     } = useSelector(getAllIngredients)

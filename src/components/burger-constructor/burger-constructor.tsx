@@ -4,7 +4,7 @@ import styles from "./burger-constructor.module.css"
 import Modal from "../modal/modal"
 import OrderDetails from "../modal/modal-content/order-details/order-details"
 import {useModal} from "../../hooks/use-modal";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../types/types";
 import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/ingredients/actions";
 import {getAuth} from "../../services/selectors";
 import {getBurgerData} from "../../services/selector"

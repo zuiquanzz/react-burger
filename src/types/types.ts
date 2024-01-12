@@ -102,7 +102,7 @@ export type AppThunk<TReturn = void> = ThunkAction<
     >;
 
 export type AppDispatch<TReturnType = void> = (action :TActions| AppThunk<TReturnType>) => TReturnType;
-
+//todo hook and store
 // @ts-ignore
 export const useDispatch: () => AppDispatch = dispatchHook;
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;

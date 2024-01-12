@@ -1,5 +1,5 @@
 import styles from './feed-orders.module.css';
-import { FeedOrdersitem } from '../feed-orders-item/feed-ordersitem';
+import { FeedOrdersItem } from '../feed-orders-item/feed-orders-item';
 import { useSelector } from '../../types/types'
 import { Key } from 'react';
 import {getWsData} from "../../services/selector";
@@ -12,7 +12,7 @@ export const FeedOrders = () => {
         <>
             <div className={`${styles.box} custom-scroll `}>
                 {orders?.orders.map((el: any, index: Key | null | undefined) =>
-                    <FeedOrdersitem el={el} key = {index}/>
+                    <FeedOrdersItem el={el} key = {index}/>
                 )}
             </div>
         </>

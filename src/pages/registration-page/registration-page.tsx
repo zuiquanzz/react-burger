@@ -2,7 +2,7 @@ import styles from "./registration-page.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {SyntheticEvent, useRef} from 'react';
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch} from "../../types/types";
 import {getAuthRegister} from '../../services/authorization/actions';
 import {useForm} from "../../hooks/use-form";
 
@@ -25,7 +25,7 @@ export const RegistrationPage = () => {
     const handleRegister = (e: SyntheticEvent) => {
         e.preventDefault();
         if (name !== '' && email !== '' && password !== '') {
-            dispatch<any>(getAuthRegister(name, email, password))
+            dispatch(getAuthRegister(name, email, password))
         }
     }
 

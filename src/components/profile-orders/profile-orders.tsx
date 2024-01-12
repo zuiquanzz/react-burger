@@ -1,6 +1,6 @@
 import styles from './profile-orders.module.css';
-import { FeedOrdersitem } from '../feed-orders-item/feed-ordersitem';
-import { useSelector, useDispatch } from "react-redux";
+import { FeedOrdersItem } from '../feed-orders-item/feed-orders-item';
+import { useSelector, useDispatch } from "../../types/types";
 import { useEffect } from 'react';
 import { connect, disconnect } from "../../services/websocket/actions";
 import {getIngredientsData, getWsData} from "../../services/selector";
@@ -27,14 +27,14 @@ export const ProfileOrders = () => {
         }
     }, [dispatch]);
 
-    // @ts-ignore
-    if (ingredient !== [] && orders.success === true) {
+
+    if (orders.success === true) {
 
         return (
             <>
                 <div className={`${styles.box} custom-scroll `}>
                     {orders.orders.map((el: any, index: any) =>
-                        <FeedOrdersitem el={el} key={index} />
+                        <FeedOrdersItem el={el} key={index} />
                     )}
                 </div>
             </>

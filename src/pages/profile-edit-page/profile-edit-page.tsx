@@ -1,6 +1,6 @@
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {SyntheticEvent, useRef} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from '../../types/types';
 import {editUserByToken} from '../../services/authorization/actions';
 import {getUser} from "../../services/selectors";
 import {useForm} from "../../hooks/use-form";
@@ -37,9 +37,9 @@ export const ProfileEditPage = () => {
     const handleEdit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (password !== '') {
-            dispatch<any>(editUserByToken(name, email, password, token))
+            dispatch(editUserByToken(name, email, password, token))
         } else {
-            dispatch<any>(editUserByToken(name, email, password, token))
+            dispatch(editUserByToken(name, email, password, token))
         }
     }
 

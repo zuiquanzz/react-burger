@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './order-details.module.css';
 import doneIcon from '../../../../images/done.svg'
-import {Iingredient, useDispatch, useSelector} from "../../../../types/types";
+import {useDispatch, useSelector} from "../../../../types/types";
 import {postOrder} from "../../../../services/orders/actions";
-import {getAllIngredients, getOrders} from "../../../../services/selectors";
+import {getOrders} from "../../../../services/selectors";
 import {CLEAR_STUFF} from "../../../../services/ingredients/actions";
 import {IingredientKey} from "../../../../types/types";
 import {getBurgerData} from "../../../../services/selector";
@@ -11,7 +11,7 @@ import {getBurgerData} from "../../../../services/selector";
 
 function OrderDetails() {
 
-    const burgerData:IingredientKey[] = useSelector(getBurgerData)
+    const burgerData: IingredientKey[] = useSelector(getBurgerData)
 
     const {order, isLoading, error} = useSelector(getOrders)
 
@@ -19,14 +19,14 @@ function OrderDetails() {
 
     React.useEffect(() => {
         // dispatch(getOrder(burgerData))
-        dispatch(postOrder(burgerData,localStorage.getItem('accessToken')))
+        dispatch(postOrder(burgerData, localStorage.getItem('accessToken')))
         dispatch({type: CLEAR_STUFF})
     }, [dispatch])
 
     return (
         <>
             {!isLoading && !error && order !== null &&
-            <div className={`${styles.price} mt-30 mb-8 text text_type_digits-large`}>{order.order.number}</div>
+                <div className={`${styles.price} mt-30 mb-8 text text_type_digits-large`}>{order.order.number}</div>
             }
             {isLoading && <p className={`${styles.description} text text_type_main-medium`}>Загрузка...</p>}
             <div className={`${styles.description} text text_type_main-medium`}>идентификатор заказа</div>
