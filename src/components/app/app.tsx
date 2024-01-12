@@ -24,7 +24,7 @@ import {ProfileOrders} from "../profile-orders/profile-orders";
 const App = () => {
 
     const dispatch = useDispatch();
-    const {ingredients} = useSelector(getAllIngredients)
+    const {isLoading} = useSelector(getAllIngredients)
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -43,8 +43,7 @@ const App = () => {
         }
     }, [dispatch])
 
-    //@ts-ignore
-    if (ingredients.length > 0) {
+    if (!isLoading) {
         return (
             <>
                 <AppHeader/>

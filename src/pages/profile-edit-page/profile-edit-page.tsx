@@ -1,3 +1,4 @@
+import styles from "./profile-edit-page.module.css"
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {SyntheticEvent, useRef} from 'react';
 import {useDispatch, useSelector} from '../../types/types';
@@ -50,7 +51,7 @@ export const ProfileEditPage = () => {
 
     return (
         <>
-            <form onSubmit={handleEdit}>
+            <form onSubmit={handleEdit} className={styles.form}>
                 <Input
                     type={'text'}
                     placeholder={'Имя'}

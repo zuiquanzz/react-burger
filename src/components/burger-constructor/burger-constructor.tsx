@@ -13,6 +13,7 @@ import {nanoid} from "@reduxjs/toolkit";
 import BurgerStuff from "./burger-stuff/burger-stuff";
 import {useNavigate} from "react-router-dom";
 import {Iingredient, IingredientKey} from "../../types/types";
+import {postOrder} from "../../services/orders/actions";
 
 function BurgerConstructor() {
     const burgerData:IingredientKey[] = useSelector(getBurgerData)
@@ -76,6 +77,7 @@ function BurgerConstructor() {
     const handleOffer = () => {
         if (user) {
             if (burgerBun) {
+                dispatch(postOrder(burgerData, localStorage.getItem('accessToken')))
                 openModal()
             } else {
                 setTooltip(true)

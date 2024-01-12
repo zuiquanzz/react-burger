@@ -7,6 +7,10 @@
     display: flex;
     justify-content: space-between;
 }
+.form{
+    margin-top: 80px;
+    width: 480px;
+}
 
 .box_right {
     width: 480px;

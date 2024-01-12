@@ -24,7 +24,7 @@ export const FeedId = () => {
 
     const Data = new Date();
     const Day = Data.getDate();
-
+    //todo
     useEffect(() => {
         console.log("feed", feedId)
         fetch(`https://norma.nomoreparties.space/api/orders/${feedId ? feedId : orderId}`).then(getResponse)

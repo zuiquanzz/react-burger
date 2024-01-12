@@ -1,25 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './order-details.module.css';
 import doneIcon from '../../../../images/done.svg'
 import {useDispatch, useSelector} from "../../../../types/types";
-import {postOrder} from "../../../../services/orders/actions";
 import {getOrders} from "../../../../services/selectors";
 import {CLEAR_STUFF} from "../../../../services/ingredients/actions";
-import {IingredientKey} from "../../../../types/types";
-import {getBurgerData} from "../../../../services/selector";
 
 
 function OrderDetails() {
-
-    const burgerData: IingredientKey[] = useSelector(getBurgerData)
 
     const {order, isLoading, error} = useSelector(getOrders)
 
     const dispatch = useDispatch();
 
-    React.useEffect(() => {
-        // dispatch(getOrder(burgerData))
-        dispatch(postOrder(burgerData, localStorage.getItem('accessToken')))
+    useEffect(() => {
         dispatch({type: CLEAR_STUFF})
     }, [dispatch])
 

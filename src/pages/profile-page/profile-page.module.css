@@ -1,19 +1,20 @@
 .box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 860px;
+    margin-top: 40px;
+    margin-left: calc((100% - 900px)/2);
     display: flex;
+    width: 1090px;
     justify-content: space-between;
 }
 
 .box_right {
-    width: 480px;
+    box-sizing: border-box;
+    width: calc(100% - 390px);
 }
 
 .box_left {
+    margin-top: 80px;
     width: 320px;
+    flex-shrink: 0;
 }
 
 .tab {

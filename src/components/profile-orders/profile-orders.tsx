@@ -1,9 +1,9 @@
 import styles from './profile-orders.module.css';
-import { FeedOrdersItem } from '../feed-orders-item/feed-orders-item';
-import { useSelector, useDispatch } from "../../types/types";
-import { useEffect } from 'react';
-import { connect, disconnect } from "../../services/websocket/actions";
-import {getIngredientsData, getWsData} from "../../services/selector";
+import {FeedOrdersItem} from '../feed-orders-item/feed-orders-item';
+import {useDispatch, useSelector} from "../../types/types";
+import {useEffect} from 'react';
+import {connect, disconnect} from "../../services/websocket/actions";
+import {getWsData} from "../../services/selector";
 
 let accessToken = '';
 const accessTokenKey = localStorage.getItem('accessToken');
@@ -17,8 +17,7 @@ export const ProfileOrders = () => {
 
     const dispatch = useDispatch();
 
-    const { orders } = useSelector(getWsData);
-    const { ingredient } = useSelector(getIngredientsData)
+    const {orders} = useSelector(getWsData);
 
     useEffect(() => {
         dispatch(connect(urlWebSocket));
@@ -34,7 +33,7 @@ export const ProfileOrders = () => {
             <>
                 <div className={`${styles.box} custom-scroll `}>
                     {orders.orders.map((el: any, index: any) =>
-                        <FeedOrdersItem el={el} key={index} />
+                        <FeedOrdersItem el={el} key={index}/>
                     )}
                 </div>
             </>
