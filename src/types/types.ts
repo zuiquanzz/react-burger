@@ -1,4 +1,4 @@
-import {ThunkAction} from 'redux-thunk';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
 import {TypedUseSelectorHook, useDispatch as dispatchHook, useSelector as selectorHook} from 'react-redux';
 import {rootReducer, store} from "../services/store";
@@ -135,13 +135,8 @@ export type TActions =
     TWs;
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<TReturn = void> = ThunkAction<TReturn,
-    RootState,
-    unknown,
-    TActions>;
 
-export type AppDispatch<TReturnType = void> = (action: TActions | AppThunk<TReturnType>) => TReturnType;
+export type AppDispatch = ThunkDispatch<RootState, never, TActions>;
 
-// @ts-ignore
-export const useDispatch: () => AppDispatch = dispatchHook;
+export const useDispatch = () => dispatchHook<AppDispatch>();
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;
