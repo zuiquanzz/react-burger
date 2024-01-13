@@ -2,7 +2,7 @@ import styles from './feed-orders-item.module.css';
 import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {Link, useLocation} from 'react-router-dom';
 import {Iingredient, useSelector} from '../../types/types';
-import {getIngredientsData} from "../../services/selector";
+import {getIngredientsData} from "../../services/selectors";
 
 export const FeedOrdersItem = ({el}: any): JSX.Element => {
 

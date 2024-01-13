@@ -1,11 +1,9 @@
 import {RootState} from '../types/types'
 
-export const getAllIngredients = (state:RootState) => state.ingredients
-export const getOrders = (state:RootState) => state.orders
-
-export const getAuth = (state:RootState) => state.auth
-
-export const getUser = (state:RootState) => {
-    // @ts-ignore
-    return state.auth.user;
-}
+export const getAllIngredients = (state:RootState) => state.ingredientsReducer
+export const getOrders = (state:RootState) => state.ordersReducer
+export const getAuth = (state:RootState) => state.authReducer
+export const getUser = (state:RootState) => state.authReducer.user;
+export const getBurgerData = (state: RootState) => state.ingredientsReducer.burgerData;
+export const getIngredientsData = (state: RootState) => state.ingredientsReducer.ingredients;
+export const getWsData = (state: RootState) => state.wsReducer;

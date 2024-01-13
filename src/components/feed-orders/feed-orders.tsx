@@ -1,7 +1,7 @@
 import styles from './feed-orders.module.css';
 import {FeedOrdersItem} from '../feed-orders-item/feed-orders-item';
 import {useSelector} from '../../types/types'
-import {getWsData} from "../../services/selector";
+import {getWsData} from "../../services/selectors";
 
 export const FeedOrders = () => {
 

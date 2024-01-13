@@ -8,8 +8,8 @@ import {useForm} from "../../hooks/use-form";
 
 
 export const ProfileEditPage = () => {
-    const userName = useSelector(getUser).name;
-    const userEmail = useSelector(getUser).email;
+    const userName = useSelector(getUser)?.name;
+    const userEmail = useSelector(getUser)?.email;
 
 
     const {values, handleChange, formChanged, setFormChanged, setValues} = useForm({name: userName, email: userEmail, password: ''})

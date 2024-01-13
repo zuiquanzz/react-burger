@@ -1,11 +1,12 @@
 import {ThunkAction} from 'redux-thunk';
 
 import {TypedUseSelectorHook, useDispatch as dispatchHook, useSelector as selectorHook} from 'react-redux';
-import {store} from "../services/store";
+import {rootReducer, store} from "../services/store";
 import {TOrderAction} from "../services/orders/actions";
 import {TIngredientsAction} from "../services/ingredients/actions";
 import {TAuthAction} from "../services/authorization/actions";
 import {TWs} from "../services/websocket/actions";
+import {Dispatch} from "redux";
 
 export interface Iingredient {
     _id: string;

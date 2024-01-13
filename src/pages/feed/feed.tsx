@@ -4,7 +4,7 @@ import {FeedList} from '../../components/feed-list/feed-list';
 import {useDispatch, useSelector} from "../../types/types";
 import {connect, disconnect} from "../../services/websocket/actions";
 import {useEffect} from 'react';
-import {getWsData} from "../../services/selector";
+import {getWsData} from "../../services/selectors";
 import {Loader} from "../../utils/loader/loader";
 import {urlWebSocket} from "../../utils/api";
 

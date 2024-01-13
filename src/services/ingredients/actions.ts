@@ -1,5 +1,5 @@
 import {getAllIngredients} from "../../utils/api";
-import {AppDispatch} from "../../types/types";
+import {AppDispatch, Iingredient, IingredientKey} from "../../types/types";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST'
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS'
@@ -16,7 +16,7 @@ interface ILoadingIngredientsAction {
 
 interface IGetIngredientsAction {
     readonly type: typeof GET_INGREDIENTS_SUCCESS;
-    readonly payload: Object;
+    readonly payload: Iingredient[];
 }
 
 interface IFailureIngredientsAction {
@@ -25,7 +25,7 @@ interface IFailureIngredientsAction {
 
 interface IAddIngredientAction {
     readonly type: typeof ADD_INGREDIENT;
-    readonly payload: Object;
+    readonly payload: IingredientKey;
 }
 
 interface IDeleteIngredientAction {

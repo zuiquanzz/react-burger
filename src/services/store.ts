@@ -1,12 +1,11 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
-import ingredientsReducer from "./ingredients/reducer";
 import {ordersReducer} from "./orders/reducer";
-import authReducer from "./authorization/reducer";
+import {ingredientsReducer} from "./ingredients/reducer";
+import {authReducer} from "./authorization/reducer";
 import {wsReducer} from "./websocket/reducers";
-import {socketMiddleware} from "./websocket/middleware";
-// import {composeWithDevTools} from "@reduxjs/toolkit/dist/devtoolsExtension";
 
+import {socketMiddleware} from "./websocket/middleware";
 import {
     connect as liveConnect,
     disconnect as liveDisconnect,
@@ -28,10 +27,10 @@ const liveSocketMiddleware = socketMiddleware({
     error: liveError
 })
 
-const rootReducer = combineReducers({
-    ingredients: ingredientsReducer,
-    orders: ordersReducer,
-    auth: authReducer,
+export const rootReducer = combineReducers({
+    ingredientsReducer,
+    ordersReducer,
+    authReducer,
     wsReducer
 })
 

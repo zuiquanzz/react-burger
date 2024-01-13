@@ -40,7 +40,7 @@ const App = () => {
         dispatch(getIngredients());
         dispatch(getUserSession());
         dispatch(connect(urlWebSocket));
-        return()=>{
+        return () => {
             dispatch(disconnect());
         }
     }, [dispatch])
@@ -52,14 +52,14 @@ const App = () => {
                 <Routes location={background || location}>
                     <Route path='/' element={<MainPage/>}/>
                     <Route path='/register' element={<ProtectedRoutes onlyUnAuth={true} page={<RegistrationPage/>}/>}/>
-                    <Route path='/feed' element={<Feed />} />
-                    <Route path='/feed/:feedId' element={<FeedId />} />
+                    <Route path='/feed' element={<Feed/>}/>
+                    {/*<Route path='/feed/:feedId' element={<FeedId/>}/>*/}
                     <Route path='/forgot-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ForgotPassword/>}/>}/>
                     <Route path='/reset-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ResetPassword/>}/>}/>
-                    <Route path='/profile/orders/:orderId' element={<ProtectedRoutes onlyUnAuth={false} page={<FeedId/>}/>}/>
+                    {/*<Route path='/profile/orders/:feedId' element={<ProtectedRoutes onlyUnAuth={false} page={<FeedId/>}/>}/>*/}
                     <Route path='/profile' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfilePage/>}/>}>
                         <Route index element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileEditPage/>}/>}/>
-                        <Route path='orders' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileOrders/>}/>}/>
+                        <Route path='/profile/orders' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileOrders/>}/>}/>
                     </Route>
                     <Route path='/ingredients/:ingredientId' element={<IngredientDetails/>}/>
                     <Route path='/sign-in' element={<ProtectedRoutes onlyUnAuth={true} page={<SignInPage/>}/>}/>
@@ -68,12 +68,12 @@ const App = () => {
                     <Routes>
                         <Route path='/feed/:feedId' element={
                             <Modal modalClose={handleModalClose}>
-                                <FeedId />
+                                <FeedId/>
                             </Modal>}
                         />
-                        <Route path='/profile/orders/:orderId' element={
+                        <Route path='/profile/orders/:feedId' element={
                             <Modal modalClose={handleModalClose}>
-                                <FeedId />
+                                <FeedId/>
                             </Modal>}
                         />
                         <Route

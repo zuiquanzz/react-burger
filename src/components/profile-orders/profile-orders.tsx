@@ -3,7 +3,7 @@ import {FeedOrdersItem} from '../feed-orders-item/feed-orders-item';
 import {useDispatch, useSelector} from "../../types/types";
 import {useEffect} from 'react';
 import {connect, disconnect} from "../../services/websocket/actions";
-import {getWsData} from "../../services/selector";
+import {getWsData} from "../../services/selectors";
 import {Loader} from "../../utils/loader/loader";
 import {ACCESS_TOKEN} from "../../utils/api";
 
@@ -27,14 +27,12 @@ export const ProfileOrders = () => {
         }
     }, [dispatch]);
 
-
     if (orders?.success === true) {
-
         return (
             <>
                 <div className={`${styles.box} custom-scroll `}>
                     {orders.orders.map((el, index) =>
-                        <FeedOrdersItem el={el} key={index}/>
+                         <FeedOrdersItem el={el} key={index}/>
                     )}
                 </div>
             </>

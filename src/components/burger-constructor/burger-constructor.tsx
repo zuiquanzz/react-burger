@@ -7,7 +7,7 @@ import {useModal} from "../../hooks/use-modal";
 import {useDispatch, useSelector} from "../../types/types";
 import {ADD_INGREDIENT, DELETE_INGREDIENT} from "../../services/ingredients/actions";
 import {getAuth} from "../../services/selectors";
-import {getBurgerData} from "../../services/selector"
+import {getBurgerData} from "../../services/selectors"
 import {useDrop} from "react-dnd";
 import {nanoid} from "@reduxjs/toolkit";
 import BurgerStuff from "./burger-stuff/burger-stuff";
@@ -68,7 +68,7 @@ function BurgerConstructor() {
                     dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nano}})
                     setBurgerBun({...item, uniqId: nano})
                 } else {
-                    dispatch({type: ADD_INGREDIENT, payload: {...item, nano}})
+                    dispatch({type: ADD_INGREDIENT, payload: {...item, uniqId: nano}})
                 }
             }
         },

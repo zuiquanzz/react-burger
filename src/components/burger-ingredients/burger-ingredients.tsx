@@ -5,7 +5,7 @@ import Ingredient from "./ingredient/ingredient";
 import {useSelector} from "../../types/types";
 import {useInView} from "react-intersection-observer";
 import {Iingredient} from "../../types/types";
-import {getIngredientsData} from "../../services/selector";
+import {getIngredientsData} from "../../services/selectors";
 
 function BurgerIngredients() {
     const ingredients: Iingredient[] = useSelector(getIngredientsData)

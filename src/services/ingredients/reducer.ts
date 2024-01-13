@@ -1,21 +1,31 @@
 import {
-    ADD_INGREDIENT, CLEAR_STUFF,
+    ADD_INGREDIENT,
+    CLEAR_STUFF,
     DELETE_INGREDIENT,
     GET_INGREDIENTS_FAILURE,
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
-    SORT_STUFF, TIngredientsAction
+    SORT_STUFF,
+    TIngredientsAction
 } from "./actions";
+import {Iingredient, IingredientKey} from "../../types/types";
 
-const initialState = {
+interface IIngredientsStore {
+    ingredients: Iingredient[],
+    isLoading: boolean,
+    error: boolean,
+    burgerData: IingredientKey[],
+}
+
+const initialState: IIngredientsStore = {
     ingredients: [],
     isLoading: false,
-    error: null,
+    error: false,
     burgerData: [],
 }
 
 
-export default (state = initialState, action:TIngredientsAction) => {
+export const ingredientsReducer = (state = initialState, action: TIngredientsAction): IIngredientsStore => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {...state, isLoading: true, error: false}
@@ -32,7 +42,7 @@ export default (state = initialState, action:TIngredientsAction) => {
         case DELETE_INGREDIENT: {
             return {...state, burgerData: state.burgerData.filter(({uniqId}) => uniqId !== action.payload)}
         }
-        case CLEAR_STUFF:{
+        case CLEAR_STUFF: {
             return {...state, burgerData: []}
         }
         case SORT_STUFF: {

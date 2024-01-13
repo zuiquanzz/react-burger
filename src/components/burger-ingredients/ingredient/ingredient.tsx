@@ -5,7 +5,7 @@ import {useSelector} from "../../../types/types";
 import {useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
 import {Iingredient, IingredientKey} from "../../../types/types";
-import {getBurgerData} from "../../../services/selector";
+import {getBurgerData} from "../../../services/selectors";
 
 interface IBurgerIngredientProps  {
     ingredient: Iingredient;

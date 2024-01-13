@@ -1,15 +1,17 @@
 import {
     GET_AUTH_FAILURE,
-    GET_AUTH_REQUEST,
-    GET_AUTH_SUCCESS,
+    GET_AUTH_FORGOT_PASSWORD_SUCCESS,
     GET_AUTH_LOGOUT_SUCCESS,
-    GET_AUTH_USER_SUCCESS,
     GET_AUTH_REFRESH_TOKEN_SUCCESS,
-    GET_AUTH_FORGOT_PASSWORD_SUCCESS, GET_AUTH_RESET_PASSWORD_SUCCESS, TAuthAction
+    GET_AUTH_REQUEST,
+    GET_AUTH_RESET_PASSWORD_SUCCESS,
+    GET_AUTH_SUCCESS,
+    GET_AUTH_USER_SUCCESS,
+    TAuthAction
 } from "./actions";
 import {TUser} from "../../types/types";
 
-const initialState = {
+const initialState: IAuthStore = {
     isLoading: false,
     error: false,
     user: null,
@@ -17,7 +19,7 @@ const initialState = {
     forgotPassword: null
 }
 
-interface IinitialState {
+interface IAuthStore {
     isLoading: boolean
     error: boolean
     user: TUser | null
@@ -25,7 +27,7 @@ interface IinitialState {
     forgotPassword: string | null
 }
 
-export default (state = initialState, action:TAuthAction):IinitialState => {
+export const authReducer = (state = initialState, action: TAuthAction): IAuthStore => {
     switch (action.type) {
         case GET_AUTH_REQUEST: {
             return {...state, isLoading: true, error: false}
@@ -36,10 +38,10 @@ export default (state = initialState, action:TAuthAction):IinitialState => {
             return {...state, user: action.payload.user, isLoading: false, error: false, isAuth: true}
         }
         case GET_AUTH_FORGOT_PASSWORD_SUCCESS: {
-            return {...state, isLoading: false,error: false,forgotPassword: action.payload.message}
+            return {...state, isLoading: false, error: false, forgotPassword: action.payload.message}
         }
         case GET_AUTH_RESET_PASSWORD_SUCCESS: {
-            return {...state, isLoading: false,error: false,forgotPassword: null}
+            return {...state, isLoading: false, error: false, forgotPassword: null}
         }
         case GET_AUTH_REFRESH_TOKEN_SUCCESS: {
             localStorage.setItem("accessToken", action.payload.accessToken);

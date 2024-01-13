@@ -3,7 +3,7 @@ import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {Iingredient, TOrderData, useSelector} from '../../types/types';
-import {getIngredientsData} from '../../services/selector';
+import {getIngredientsData} from '../../services/selectors';
 import {Loader} from "../../utils/loader/loader";
 import {getAuthOrder} from "../../utils/api";
 
@@ -11,18 +11,18 @@ export const FeedId = () => {
     const [order, setOrder] = useState<TOrderData | null>(null)
     const ingredients: Iingredient[] = useSelector(getIngredientsData);
 
-    const feedId = useParams().feedId;
-    const orderId = useParams().orderId;
+    const feedId = useParams().feedId || '';
 
     const Data = new Date();
     const Day = Data.getDate();
 
     useEffect(() => {
-        getAuthOrder(feedId ? feedId : orderId ? orderId : '')
+        console.log("req")
+        getAuthOrder(feedId)
             .then((res) => {
                 setOrder(res.orders[0]);
             });
-    });
+    }, []);
 
     if (!order) {
         return (
