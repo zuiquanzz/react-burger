@@ -1,4 +1,4 @@
-import {IingredientKey, TAuthResponse, TIngredientResponse, TMessageResponse, TOrderResponse, TRefreshResponse} from "../types/types";
+import {IingredientKey, TAuthResponse, TIngredientResponse, TMessageResponse, TOrderResponse, TRefreshResponse, TUserOrderResponse} from "../types/types";
 
 const serverUrl = "https://norma.nomoreparties.space/api"
 export const urlWebSocket = 'wss://norma.nomoreparties.space/orders/all';
@@ -32,16 +32,18 @@ export const ACCESS_TOKEN = localStorage.getItem('accessToken');
 export const REFRESH_TOKEN = localStorage.getItem('refreshToken');
 //ingredients
 export const getAllIngredients = (): Promise<TIngredientResponse> => {
-    const options = {
-        headers: {'Content-Type': 'application/json;charset=utf-8'}
-    }
-    return normaRequest<TIngredientResponse>(getIngredientsEndPoint, options);
+    return normaRequest<TIngredientResponse>(getIngredientsEndPoint, baseOptions);
 }
 
 //orders
 export const postAuthOrder = (burgerData: IingredientKey[]): Promise<TOrderResponse> => {
     return normaRequest<TOrderResponse>(getOrderEndPoint, postAuthOptions({"ingredients": burgerData}))
 }
+
+export const getAuthOrder = (orderId: string): Promise<TUserOrderResponse> => {
+    return normaRequest<TUserOrderResponse>(getOrderEndPoint.concat('/').concat(orderId), baseOptions);
+}
+
 //auth
 export const postRegistration = (name?: string, email?: string, password?: string): Promise<TAuthResponse> => {
     return normaRequest<TAuthResponse>(getAuthRegisterEndPoint, postOptions({
@@ -58,7 +60,7 @@ export const postLogin = (email?: string, password?: string): Promise<TAuthRespo
     }))
 }
 
-export const postForgotPassword = (email: string): Promise<TMessageResponse> => {
+export const postForgotPassword = (email?: string): Promise<TMessageResponse> => {
     return normaRequest<TMessageResponse>(getForgotPasswordEndPoint, postOptions({"email": email}))
 }
 
@@ -89,6 +91,9 @@ export const editUserOrRefresh = (name?: string, email?: string, password?: stri
 
 //options
 
+const baseOptions = {
+    headers: {'Content-Type': 'application/json;charset=utf-8'}
+}
 const postOptions = (body: Object) => {
     return {
         method: 'POST',

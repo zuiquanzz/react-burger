@@ -1,7 +1,7 @@
 import React, {FC, useMemo} from 'react';
 import styles from './ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useSelector} from "react-redux";
+import {useSelector} from "../../../types/types";
 import {useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
 import {Iingredient, IingredientKey} from "../../../types/types";

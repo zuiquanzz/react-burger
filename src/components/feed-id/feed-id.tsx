@@ -2,20 +2,13 @@ import styles from './feed-id.module.css';
 import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {Iingredient, IwebsocketItemOrderOrders, useSelector} from '../../types/types';
+import {Iingredient, TOrderData, useSelector} from '../../types/types';
 import {getIngredientsData} from '../../services/selector';
 import {Loader} from "../../utils/loader/loader";
-
-const getResponse = (res: Response): Promise<any> => {
-    if (res.ok) {
-        return res.json()
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
-
-}
+import {getAuthOrder} from "../../utils/api";
 
 export const FeedId = () => {
-    const [order, setOrder] = useState<IwebsocketItemOrderOrders | null>(null)
+    const [order, setOrder] = useState<TOrderData | null>(null)
     const ingredients: Iingredient[] = useSelector(getIngredientsData);
 
     const feedId = useParams().feedId;
@@ -25,11 +18,11 @@ export const FeedId = () => {
     const Day = Data.getDate();
 
     useEffect(() => {
-        fetch(`https://norma.nomoreparties.space/api/orders/${feedId ? feedId : orderId}`).then(getResponse)
+        getAuthOrder(feedId ? feedId : orderId ? orderId : '')
             .then((res) => {
                 setOrder(res.orders[0]);
             });
-    }, []);
+    });
 
     if (!order) {
         return (

@@ -85,11 +85,11 @@ export type TAuthResponse = {
     message: string
 }
 
-//WebSocket
-
-export interface WebsocketOrders {
-
+export type TUserOrderResponse = {
+    orders: Array<TOrderData>
 }
+
+//WebSocket
 
 export interface IwebsocketOrders {
     success: boolean;
@@ -106,11 +106,6 @@ export interface IwebsocketOrdersOrders {
     createdAt: string;
     updatedAt: string;
     number: string;
-}
-
-export interface IwebsocketItemOrder {
-    orders: IwebsocketItemOrderOrders[];
-    success: boolean;
 }
 
 export interface IwebsocketItemOrderOrders {

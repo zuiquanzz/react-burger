@@ -28,8 +28,7 @@ export const ForgotPassword = () => {
     const handleForgotPassword = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (email !== '') {
-            //@ts-ignore
-            dispatch<any>(getForgotPassword(email))
+            dispatch(getForgotPassword(email))
         }
     }
 

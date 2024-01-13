@@ -1,4 +1,4 @@
-import {useSelector} from "react-redux";
+import {useSelector} from "../../types/types";
 import {Navigate, useLocation} from "react-router-dom";
 import {getAuth} from "../selectors";
 import {FC, ReactElement} from "react";

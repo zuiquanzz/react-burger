@@ -1,7 +1,6 @@
 import styles from './feed-orders.module.css';
-import { FeedOrdersItem } from '../feed-orders-item/feed-orders-item';
-import { useSelector } from '../../types/types'
-import { Key } from 'react';
+import {FeedOrdersItem} from '../feed-orders-item/feed-orders-item';
+import {useSelector} from '../../types/types'
 import {getWsData} from "../../services/selector";
 
 export const FeedOrders = () => {
@@ -11,7 +10,7 @@ export const FeedOrders = () => {
     return (
         <>
             <div className={`${styles.box} custom-scroll `}>
-                {orders?.orders.map((el: any, index: Key | null | undefined) =>
+                {orders?.orders.map((el, index) =>
                     <FeedOrdersItem el={el} key = {index}/>
                 )}
             </div>

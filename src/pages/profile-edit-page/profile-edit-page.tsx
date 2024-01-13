@@ -20,7 +20,6 @@ export const ProfileEditPage = () => {
     const inputRefEmail = useRef<HTMLInputElement>(null);
     const inputRefPassword = useRef<HTMLInputElement>(null);
 
-    const token = localStorage.getItem('accessToken');
     const dispatch = useDispatch();
 
     const onIconClickName = () => {

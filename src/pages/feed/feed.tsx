@@ -1,15 +1,12 @@
 import styles from "./feed.module.css";
 import {FeedOrders} from '../../components/feed-orders/feed-orders';
 import {FeedList} from '../../components/feed-list/feed-list';
-import {useDispatch} from "../../types/types";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../types/types";
 import {connect, disconnect} from "../../services/websocket/actions";
 import {useEffect} from 'react';
 import {getWsData} from "../../services/selector";
 import {Loader} from "../../utils/loader/loader";
 import {urlWebSocket} from "../../utils/api";
-
-// export const urlWebSocket = 'wss://norma.nomoreparties.space/orders/all';
 
 export const Feed = () => {
     const dispatch = useDispatch();
@@ -23,7 +20,7 @@ export const Feed = () => {
         }
     }, [dispatch]);
 
-    if (orders.success === true) {
+    if (orders?.success === true) {
         return (
             <>
                 <div className={styles.container}>

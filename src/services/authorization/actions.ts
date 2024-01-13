@@ -107,7 +107,7 @@ export const getAuthLogin = (email?: string, password?: string) => (dispatch: Ap
         });
 }
 
-export const getForgotPassword = (email: string) => (dispatch: AppDispatch) => {
+export const getForgotPassword = (email?: string) => (dispatch: AppDispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
     postForgotPassword(email)
         .then(data => {
@@ -156,7 +156,7 @@ export const logout = () => (dispatch: AppDispatch) => {
 const getOrRefresh = async (): Promise<TAuthResponse> => {
     try {
         return await userOrRefresh()
-    } catch (err: any) {
+    } catch (err) {
         if ((err as { message: string }).message === 'jwt expired') {
             const refreshData = await postRefreshToken();
             if (!refreshData.success) {

@@ -1,4 +1,4 @@
-import {useSelector} from "react-redux";
+import {useSelector} from "../../types/types";
 import {getAllIngredients} from "../../services/selectors";
 import mainPageStyles from "./main-page.module.css"
 import {DndProvider} from "react-dnd";

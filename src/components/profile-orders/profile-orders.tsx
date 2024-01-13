@@ -5,9 +5,10 @@ import {useEffect} from 'react';
 import {connect, disconnect} from "../../services/websocket/actions";
 import {getWsData} from "../../services/selector";
 import {Loader} from "../../utils/loader/loader";
+import {ACCESS_TOKEN} from "../../utils/api";
 
 let accessToken = '';
-const accessTokenKey = localStorage.getItem('accessToken');
+const accessTokenKey = ACCESS_TOKEN;
 if (accessTokenKey) {
     accessToken = accessTokenKey.replace(/^.{7}/, '')
 }
@@ -27,12 +28,12 @@ export const ProfileOrders = () => {
     }, [dispatch]);
 
 
-    if (orders.success === true) {
+    if (orders?.success === true) {
 
         return (
             <>
                 <div className={`${styles.box} custom-scroll `}>
-                    {orders.orders.map((el: any, index: any) =>
+                    {orders.orders.map((el, index) =>
                         <FeedOrdersItem el={el} key={index}/>
                     )}
                 </div>
