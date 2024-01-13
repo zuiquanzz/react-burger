@@ -38,9 +38,9 @@ export const ProfileEditPage = () => {
     const handleEdit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (password !== '') {
-            dispatch(editUserByToken(name, email, password, token))
+            dispatch(editUserByToken(name, email, password))
         } else {
-            dispatch(editUserByToken(name, email, password, token))
+            dispatch(editUserByToken(name, email, password))
         }
     }
 

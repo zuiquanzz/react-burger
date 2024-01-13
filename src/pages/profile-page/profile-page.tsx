@@ -9,7 +9,7 @@ export const ProfilePage = () => {
     const dispatch = useDispatch();
 
     const handleLogout = () =>{
-        dispatch(logout(localStorage.getItem("refreshToken")))
+        dispatch(logout())
     }
 
     return (

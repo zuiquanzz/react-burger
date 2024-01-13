@@ -77,7 +77,7 @@ function BurgerConstructor() {
     const handleOffer = () => {
         if (user) {
             if (burgerBun) {
-                dispatch(postOrder(burgerData, localStorage.getItem('accessToken')))
+                dispatch(postOrder(burgerData))
                 openModal()
             } else {
                 setTooltip(true)

@@ -21,10 +21,61 @@ export interface Iingredient {
     image_large: string;
 }
 
+export interface IingredientKey extends Iingredient {
+    uniqId: string;
+}
+
 export type TUser = {
     email: string
     name: string
     password: string
+}
+
+export type TOrderData = {
+    _id: string
+    ingredients: Array<string>
+    status: string
+    name: string
+    createdAt: string | number | Date
+    updatedAt: string
+    number: number
+}
+
+//NormaResponses
+
+export type TOrderResponse = {
+    name: string;
+    order: {
+        createdAt: string;
+        ingredients: Iingredient[];
+        name: string;
+        number: number;
+        owner: {
+            name: string;
+            email: string;
+            createdAt: string;
+            updatedAt: string;
+        }
+        price: number;
+        status: string;
+        updatedAt: string;
+        _id: string;
+
+    }
+}
+
+export type TIngredientResponse = {
+    data: Array<Iingredient>
+}
+
+export type TMessageResponse = {
+    message: string
+}
+
+export type TRefreshResponse = {
+    success: boolean
+    accessToken: string
+    refreshToken: string
 }
 
 export type TAuthResponse = {
@@ -34,9 +85,7 @@ export type TAuthResponse = {
     message: string
 }
 
-export interface IingredientKey extends Iingredient {
-    uniqId: string;
-}
+//WebSocket
 
 export interface WebsocketOrders {
 

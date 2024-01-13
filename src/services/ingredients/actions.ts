@@ -1,5 +1,4 @@
 import {getAllIngredients} from "../../utils/api";
-import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "../orders/actions";
 import {AppDispatch} from "../../types/types";
 
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST'
@@ -14,13 +13,16 @@ export const CLEAR_STUFF = 'CLEAR_STUFF'
 interface ILoadingIngredientsAction {
     readonly type: typeof GET_INGREDIENTS_REQUEST;
 }
+
 interface IGetIngredientsAction {
     readonly type: typeof GET_INGREDIENTS_SUCCESS;
     readonly payload: Object;
 }
+
 interface IFailureIngredientsAction {
     readonly type: typeof GET_INGREDIENTS_FAILURE;
 }
+
 interface IAddIngredientAction {
     readonly type: typeof ADD_INGREDIENT;
     readonly payload: Object;
@@ -50,7 +52,7 @@ export type TIngredientsAction =
     ISortStuffAction |
     ICleatStuffAction;
 
-export const getIngredients = () => (dispatch:AppDispatch) => {
+export const getIngredients = () => (dispatch: AppDispatch) => {
     dispatch({type: GET_INGREDIENTS_REQUEST})
     getAllIngredients()
         .then(data => {

@@ -9,7 +9,9 @@ export const FeedList = () => {
     const doneOrder = orders?.orders.filter((elem: { status: string; }) => {
         return elem.status == 'done'
     })
-
+    const pendingOrder = orders?.orders.filter((elem: { status: string; }) => {
+        return elem.status == 'pending'
+    })
 
     return (
         <>
@@ -18,10 +20,16 @@ export const FeedList = () => {
                     <h3 className='text text_type_main-medium mb-6'>Готовы:</h3>
                     <div className={styles.ready}>
                         {doneOrder?.map((el: { number: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }, index: Key | null | undefined) =>
-                            <p key={index} className='text text_type_digits-default text_color_inactive mb-2 mr-2'>{el.number}</p>
+                            <p key={index} className={`${styles.doneNumber} text text_type_digits-default mb-2 mr-2`}>{el.number}</p>
                         )}
                     </div>
 
+                    <h3 className='text text_type_main-medium mb-6'>В работе:</h3>
+                    <div className={styles.ready}>
+                        {pendingOrder?.map((el: { number: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }, index: Key | null | undefined) =>
+                                <p key={index} className='text text_type_digits-default mb-2 mr-2'>{el.number}</p>
+                            )}
+                    </div>
                 </div>
                 <div className={styles.readyall}>
                     <h3 className='text text_type_main-medium mt-15'> Выполнено за все время: </h3>

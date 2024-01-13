@@ -1,4 +1,5 @@
 import {
+    ACCESS_TOKEN,
     editUserOrRefresh,
     postForgotPassword,
     postLogin,
@@ -8,8 +9,7 @@ import {
     postResetPassword,
     userOrRefresh
 } from "../../utils/api";
-import {GET_INGREDIENTS_REQUEST} from "../ingredients/actions";
-import {AppDispatch, TAuthResponse} from "../../types/types";
+import {AppDispatch, TAuthResponse, TMessageResponse} from "../../types/types";
 
 export const GET_AUTH_REQUEST = 'GET_AUTH_REQUEST'
 
@@ -43,12 +43,12 @@ interface IGetRefreshTokenAction {
 
 interface IGetForgotPasswordAction {
     readonly type: typeof GET_AUTH_FORGOT_PASSWORD_SUCCESS;
-    readonly payload: TAuthResponse;
+    readonly payload: TMessageResponse;
 }
 
 interface IGetResetPasswordAction {
     readonly type: typeof GET_AUTH_RESET_PASSWORD_SUCCESS;
-    readonly payload: TAuthResponse;
+    readonly payload: TMessageResponse;
 }
 
 interface IGetLogOutAction {
@@ -70,9 +70,9 @@ export type TAuthAction =
     IAuthFailure;
 
 export const getUserSession = () => (dispatch: AppDispatch) => {
-    if (localStorage.getItem("accessToken")) {
+    if (ACCESS_TOKEN) {
         dispatch({type: GET_AUTH_REQUEST})
-        getOrRefresh(localStorage.getItem("accessToken"))
+        getOrRefresh()
             .then(res => {
                 dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
             })
@@ -83,7 +83,7 @@ export const getUserSession = () => (dispatch: AppDispatch) => {
     }
 }
 
-export const getAuthRegister = (name: string | undefined, email: string | undefined, password: string | undefined) => (dispatch: AppDispatch) => {
+export const getAuthRegister = (name?: string, email?: string, password?: string) => (dispatch: AppDispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
     postRegistration(name, email, password)
         .then(data => {
@@ -95,7 +95,7 @@ export const getAuthRegister = (name: string | undefined, email: string | undefi
         });
 }
 
-export const getAuthLogin = (email: string | undefined, password: string | undefined ) => (dispatch: AppDispatch) => {
+export const getAuthLogin = (email?: string, password?: string) => (dispatch: AppDispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
     postLogin(email, password)
         .then(data => {
@@ -118,7 +118,7 @@ export const getForgotPassword = (email: string) => (dispatch: AppDispatch) => {
     });
 }
 
-export const getResetPassword = (password: string | undefined, confirmPass: string | undefined) => (dispatch: AppDispatch) => {
+export const getResetPassword = (password?: string, confirmPass?: string) => (dispatch: AppDispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
     postResetPassword(password, confirmPass)
         .then(data => {
@@ -129,21 +129,9 @@ export const getResetPassword = (password: string | undefined, confirmPass: stri
     });
 }
 
-// const getUserByToken = (token: any) => (dispatch: AppDispatch) => {
-//     dispatch({type: GET_AUTH_REQUEST})
-//     getOrRefresh(token)
-//         .then(res => {
-//             dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
-//         })
-//         .catch(e => {
-//             dispatch({type: GET_AUTH_FAILURE})
-//             console.error(e)
-//         });
-// }
-
-export const editUserByToken = (name: string | undefined, email: string | undefined, password: string | undefined, token: any) => (dispatch: AppDispatch) => {
+export const editUserByToken = (name?: string, email?: string, password?: string) => (dispatch: AppDispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
-    editOrRefresh(name, email, password, token)
+    editOrRefresh(name, email, password)
         .then(res => {
             dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
         })
@@ -153,9 +141,9 @@ export const editUserByToken = (name: string | undefined, email: string | undefi
         });
 }
 
-export const logout = (token: any) => (dispatch: AppDispatch) => {
+export const logout = () => (dispatch: AppDispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
-    postLogout(token)
+    postLogout()
         .then(res => {
             dispatch({type: GET_AUTH_LOGOUT_SUCCESS})
         })
@@ -165,38 +153,36 @@ export const logout = (token: any) => (dispatch: AppDispatch) => {
         });
 };
 
-const getOrRefresh = async (token: any) => {
+const getOrRefresh = async (): Promise<TAuthResponse> => {
     try {
-        return await userOrRefresh(token)
+        return await userOrRefresh()
     } catch (err: any) {
-        if (err.message === "jwt expired") {
+        if ((err as { message: string }).message === 'jwt expired') {
             const refreshData = await postRefreshToken();
             if (!refreshData.success) {
                 return Promise.reject(refreshData);
             }
             localStorage.setItem("accessToken", refreshData.accessToken);
             localStorage.setItem("refreshToken", refreshData.refreshToken);
-            token = refreshData.accessToken;
-            return await userOrRefresh(token);
+            return await userOrRefresh();
         } else {
             return Promise.reject(err);
         }
     }
 };
 
-const editOrRefresh = async (name: string | undefined, email: string | undefined, password: string | undefined, token: any) => {
+const editOrRefresh = async (name?: string, email?: string, password?: string):Promise<TAuthResponse> => {
     try {
-        return await editUserOrRefresh(name, email, password, token)
-    } catch (err: any) {
-        if (err.message === "jwt expired") {
+        return await editUserOrRefresh(name, email, password)
+    } catch (err) {
+        if ((err as { message: string }).message === 'jwt expired') {
             const refreshData = await postRefreshToken();
             if (!refreshData.success) {
                 return Promise.reject(refreshData);
             }
             localStorage.setItem("refreshToken", refreshData.refreshToken);
             localStorage.setItem("accessToken", refreshData.accessToken);
-            token.headers.authorization = refreshData.accessToken;
-            return editUserOrRefresh(name, email, password, token)
+            return editUserOrRefresh(name, email, password)
         } else {
             return Promise.reject(err);
         }
