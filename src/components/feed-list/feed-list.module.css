@@ -1,0 +1,15 @@
+.box{
+    width: 100%;
+    height: calc(100vh - 200px);
+}
+
+.doneNumber {
+    color: var(--interface-success, #0cc);
+}
+
+
+.ready{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}

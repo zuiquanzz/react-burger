@@ -3,7 +3,7 @@ import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components'
 import {FormEvent, useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {getForgotPassword} from "../../services/authorization/actions";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../types/types";
 import {getAuth} from "../../services/selectors";
 import {useForm} from "../../hooks/use-form";
 
@@ -28,7 +28,7 @@ export const ForgotPassword = () => {
     const handleForgotPassword = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (email !== '') {
-            dispatch<any>(getForgotPassword(email))
+            dispatch(getForgotPassword(email))
         }
     }
 

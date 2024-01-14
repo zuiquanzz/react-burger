@@ -28,10 +28,11 @@ const AppHeader = () => {
                             </>
                         )}
                 </NavLink>
-                <div className={styles.button}>
+
+                <NavLink to ="/feed" className={styles.button}>
                     <ListIcon type="primary"/>
                     <p className="text_type_main-default ml-2">Лента заказов</p>
-                </div>
+                </NavLink>
             </nav>
             <Logo/>
             <nav className={styles.right_menu}>

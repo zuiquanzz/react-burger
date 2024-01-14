@@ -1,7 +1,8 @@
-import {useSelector} from "react-redux";
+import {useSelector} from "../../types/types";
 import {Navigate, useLocation} from "react-router-dom";
 import {getAuth} from "../selectors";
 import {FC, ReactElement} from "react";
+import {Loader} from "../../utils/loader/loader";
 
 interface IProtectedRouteProps  {
     onlyUnAuth: boolean;
@@ -19,7 +20,7 @@ export const ProtectedRoutes:FC<IProtectedRouteProps> = ({onlyUnAuth = false, pa
     if (isLoading) {
         return (
             <>
-                <p>Загрузка..</p>
+                <Loader size='large'/>
             </>);
     }
 

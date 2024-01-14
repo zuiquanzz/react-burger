@@ -8,6 +8,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 11;
+    padding: 0 40px;
+    box-sizing: border-box;
 }
 
 .close{

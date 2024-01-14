@@ -1,0 +1,14 @@
+
+.container{
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+}
+.box{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.left{
+    width: calc(50% - 30px);
+}

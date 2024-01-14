@@ -1,15 +1,15 @@
-import {useSelector} from "react-redux";
+import {useSelector} from "../../types/types";
 import {getAllIngredients} from "../../services/selectors";
 import mainPageStyles from "./main-page.module.css"
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
+import {Loader} from "../../utils/loader/loader";
 
 export const MainPage = () => {
 
     const {
-        ingredients,
         isLoading,
         error,
     } = useSelector(getAllIngredients)
@@ -17,7 +17,7 @@ export const MainPage = () => {
     return (
         <>
             <DndProvider backend={HTML5Backend}>
-                {!isLoading && !error && ingredients.length &&
+                {!isLoading && !error &&
                     <main className={mainPageStyles.main}>
                         <div className={'mr-10'}>
                             <BurgerIngredients/>
@@ -27,7 +27,7 @@ export const MainPage = () => {
                 }
                 {isLoading &&
                     <>
-                        <p>Загрузка..</p>
+                        <Loader size='large'/>
                     </>}
             </DndProvider>
         </>

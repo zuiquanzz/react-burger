@@ -1,12 +1,20 @@
-import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "./actions";
+import {GET_ORDER_FAILURE, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, TOrderAction} from "./actions";
+import {Iingredient, TOrderResponse} from "../../types/types";
 
-const initialState = {
+
+interface IOrdersStore{
+    order: null | TOrderResponse;
+    isLoading: boolean;
+    error: boolean;
+}
+
+const initialState: IOrdersStore = {
     isLoading: false,
-    error: null,
+    error: false,
     order: null
 }
 
-export default (state = initialState, action) => {
+export const ordersReducer = (state = initialState, action:TOrderAction):IOrdersStore => {
     switch (action.type) {
         case GET_ORDER_REQUEST: {
             return {...state, isLoading: true, error: false}

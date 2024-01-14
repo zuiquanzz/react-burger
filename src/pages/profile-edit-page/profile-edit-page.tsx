@@ -1,14 +1,15 @@
+import styles from "./profile-edit-page.module.css"
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {SyntheticEvent, useRef} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from '../../types/types';
 import {editUserByToken} from '../../services/authorization/actions';
 import {getUser} from "../../services/selectors";
 import {useForm} from "../../hooks/use-form";
 
 
 export const ProfileEditPage = () => {
-    const userName = useSelector(getUser).name;
-    const userEmail = useSelector(getUser).email;
+    const userName = useSelector(getUser)?.name;
+    const userEmail = useSelector(getUser)?.email;
 
 
     const {values, handleChange, formChanged, setFormChanged, setValues} = useForm({name: userName, email: userEmail, password: ''})
@@ -19,7 +20,6 @@ export const ProfileEditPage = () => {
     const inputRefEmail = useRef<HTMLInputElement>(null);
     const inputRefPassword = useRef<HTMLInputElement>(null);
 
-    const token = localStorage.getItem('accessToken');
     const dispatch = useDispatch();
 
     const onIconClickName = () => {
@@ -37,9 +37,9 @@ export const ProfileEditPage = () => {
     const handleEdit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (password !== '') {
-            dispatch<any>(editUserByToken(name, email, password, token))
+            dispatch(editUserByToken(name, email, password))
         } else {
-            dispatch<any>(editUserByToken(name, email, password, token))
+            dispatch(editUserByToken(name, email, password))
         }
     }
 
@@ -50,7 +50,7 @@ export const ProfileEditPage = () => {
 
     return (
         <>
-            <form onSubmit={handleEdit}>
+            <form onSubmit={handleEdit} className={styles.form}>
                 <Input
                     type={'text'}
                     placeholder={'Имя'}

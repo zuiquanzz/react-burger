@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useRef} from 'react';
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {useDispatch} from "react-redux";
+import {useDispatch} from "../../../types/types";
 import {DELETE_INGREDIENT, SORT_STUFF} from "../../../services/ingredients/actions";
 import styles from "./burger-stuff.module.css"
 import {useDrag, useDrop} from "react-dnd";
-import {IingredientKey} from "../../../../types/types";
+import {IingredientKey} from "../../../types/types";
 import {Identifier} from 'dnd-core';
 
 interface IBurgerStuff {

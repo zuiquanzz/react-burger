@@ -2,7 +2,7 @@ import styles from "./sign-in-page.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {SyntheticEvent, useRef} from 'react';
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch} from "../../types/types";
 import {getAuthLogin} from "../../services/authorization/actions";
 import {useForm} from "../../hooks/use-form";
 
@@ -23,7 +23,7 @@ export const SignInPage = () => {
     const loginCheck = (e: SyntheticEvent) => {
         if (email !== '' && password !== '') {
             e.preventDefault();
-            dispatch<any>(getAuthLogin(email, password))
+            dispatch(getAuthLogin(email, password))
         }
     }
 

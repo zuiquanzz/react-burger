@@ -2,7 +2,7 @@ import styles from "./reset-password.module.css";
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {SyntheticEvent, useEffect, useRef} from 'react';
 import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../types/types";
 import {getAuth} from "../../services/selectors";
 import {getResetPassword} from "../../services/authorization/actions";
 import {useForm} from "../../hooks/use-form";
@@ -38,7 +38,7 @@ export const ResetPassword = () => {
     const resetPassword = (e:SyntheticEvent) => {
         e.preventDefault();
         if (password !== '' && confirmCode !== '') {
-            dispatch<any>(getResetPassword(password, confirmCode))
+            dispatch(getResetPassword(password, confirmCode))
             if (!forgotPassword) {
                 navigate('/');
             }

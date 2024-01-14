@@ -1,6 +1,7 @@
-import {IingredientKey} from "../../types/types";
+import {IingredientKey, TAuthResponse, TIngredientResponse, TMessageResponse, TOrderResponse, TRefreshResponse, TUserOrderResponse} from "../types/types";
 
 const serverUrl = "https://norma.nomoreparties.space/api"
+export const urlWebSocket = 'wss://norma.nomoreparties.space/orders/all';
 
 const ingredientsEndpoint = "/ingredients"
 const orderEndpoint = "/orders"
@@ -27,60 +28,72 @@ const getAuthLogOutEndPoint = authEndpoint.concat(authLogout);
 const getAuthRefreshTokenEndPoint = authEndpoint.concat(authToken);
 const getAuthUserEndPoint = authEndpoint.concat(authUser);
 
-export const getAllIngredients = () => {
-    const options = {
-        headers: {'Content-Type': 'application/json;charset=utf-8'}
-    }
-    return normaRequest(getIngredientsEndPoint, options);
+export const ACCESS_TOKEN = localStorage.getItem('accessToken');
+export const REFRESH_TOKEN = localStorage.getItem('refreshToken');
+//ingredients
+export const getAllIngredients = (): Promise<TIngredientResponse> => {
+    return normaRequest<TIngredientResponse>(getIngredientsEndPoint, baseOptions);
 }
-export const postRegistration = (name:string, email:string, password:string) => {
-    return normaRequest(getAuthRegisterEndPoint, postOptions({
+
+//orders
+export const postAuthOrder = (burgerData: IingredientKey[]): Promise<TOrderResponse> => {
+    return normaRequest<TOrderResponse>(getOrderEndPoint, postAuthOptions({"ingredients": burgerData}))
+}
+
+export const getAuthOrder = (orderId: string): Promise<TUserOrderResponse> => {
+    return normaRequest<TUserOrderResponse>(getOrderEndPoint.concat('/').concat(orderId), baseOptions);
+}
+
+//auth
+export const postRegistration = (name?: string, email?: string, password?: string): Promise<TAuthResponse> => {
+    return normaRequest<TAuthResponse>(getAuthRegisterEndPoint, postOptions({
         "name": name,
         "email": email,
         "password": password
     }))
 }
 
-export const postLogin = (email:string, password:string) => {
-    return normaRequest(getAuthLoginEndPoint, postOptions({
+export const postLogin = (email?: string, password?: string): Promise<TAuthResponse> => {
+    return normaRequest<TAuthResponse>(getAuthLoginEndPoint, postOptions({
         "email": email,
         "password": password
     }))
 }
 
-export const postOrder = (burgerData: IingredientKey[]) => {
-    return normaRequest(getOrderEndPoint, postOptions({"ingredients": burgerData}))
+export const postForgotPassword = (email?: string): Promise<TMessageResponse> => {
+    return normaRequest<TMessageResponse>(getForgotPasswordEndPoint, postOptions({"email": email}))
 }
 
-export const postForgotPassword = (email:string) => {
-    return normaRequest(getForgotPasswordEndPoint, postOptions({"email": email}))
-}
-
-export const postResetPassword = (password:string, confirmPass:string) => {
-    return normaRequest(getResetPasswordEndPoint, postOptions({
+export const postResetPassword = (password?: string, confirmPass?: string): Promise<TMessageResponse> => {
+    return normaRequest<TMessageResponse>(getResetPasswordEndPoint, postOptions({
         "password": password,
         "token": confirmPass
     }))
 }
 
-export const postLogout = (token:string) => {
-    return normaRequest(getAuthLogOutEndPoint, postOptions({"token": token}))
+export const postLogout = () => {
+    return normaRequest<TMessageResponse>(getAuthLogOutEndPoint, postOptions({"token": REFRESH_TOKEN}))
 }
 
-export const postRefreshToken = () => {
-    return normaRequest(getAuthRefreshTokenEndPoint, postOptions({
-        token: localStorage.getItem("refreshToken"),
+export const postRefreshToken = (): Promise<TRefreshResponse> => {
+    return normaRequest<TRefreshResponse>(getAuthRefreshTokenEndPoint, postOptions({
+        token: REFRESH_TOKEN,
     }))
 }
 
-export const userOrRefresh = (token:string) => {
-    return normaRequest(getAuthUserEndPoint, tokenOptions(token))
+export const userOrRefresh = (): Promise<TAuthResponse> => {
+    return normaRequest<TAuthResponse>(getAuthUserEndPoint, tokenOptions())
 }
 
-export const editUserOrRefresh = (name:string, email:string, password:string, token:string) => {
-    return normaRequest(getAuthUserEndPoint, editTokenOptions(name, email, password, token))
+export const editUserOrRefresh = (name?: string, email?: string, password?: string): Promise<TAuthResponse> => {
+    return normaRequest<TAuthResponse>(getAuthUserEndPoint, editTokenOptions(name, email, password))
 }
 
+//options
+
+const baseOptions = {
+    headers: {'Content-Type': 'application/json;charset=utf-8'}
+}
 const postOptions = (body: Object) => {
     return {
         method: 'POST',
@@ -89,21 +102,32 @@ const postOptions = (body: Object) => {
     };
 }
 
-const tokenOptions = (token:string) => {
+const postAuthOptions = (body: Object) => {
+    return {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            authorization: ACCESS_TOKEN
+        },
+        body: JSON.stringify(body)
+    };
+}
+
+const tokenOptions = () => {
     return {
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: token
+            authorization: ACCESS_TOKEN
         }
     }
 }
 
-const editTokenOptions = (name:string, email:string, password:string, token:string) => {
+const editTokenOptions = (name?: string, email?: string, password?: string) => {
     return {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: token
+            authorization: ACCESS_TOKEN
         },
         body: JSON.stringify({
             "name": name,
@@ -113,10 +137,12 @@ const editTokenOptions = (name:string, email:string, password:string, token:stri
     }
 }
 
-const normaRequest = (url:string, options: Object) => {
-    return fetch(serverUrl.concat(url), options).then(checkResponse)
+//BaseRequest
+
+const normaRequest = <T>(url: string, options: Object): Promise<T> => {
+    return fetch(serverUrl.concat(url), options).then(checkResponse<T>)
 }
 
-const checkResponse = (res:Response) => {
+const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }
