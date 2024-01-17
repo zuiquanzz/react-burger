@@ -8,7 +8,7 @@ interface IOrdersStore{
     error: boolean;
 }
 
-const initialState: IOrdersStore = {
+export const initialState: IOrdersStore = {
     isLoading: false,
     error: false,
     order: null

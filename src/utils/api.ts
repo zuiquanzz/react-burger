@@ -143,6 +143,6 @@ const normaRequest = <T>(url: string, options: Object): Promise<T> => {
     return fetch(serverUrl.concat(url), options).then(checkResponse<T>)
 }
 
-const checkResponse = <T>(res: Response): Promise<T> => {
+export const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }

@@ -17,7 +17,6 @@ export const FeedId = () => {
     const Day = Data.getDate();
 
     useEffect(() => {
-        console.log("req")
         getAuthOrder(feedId)
             .then((res) => {
                 setOrder(res.orders[0]);
