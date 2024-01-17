@@ -1,6 +1,14 @@
 import {authReducer, initialState} from './reducer';
-import {GET_AUTH_FAILURE, GET_AUTH_LOGOUT_SUCCESS, GET_AUTH_REQUEST, GET_AUTH_RESET_PASSWORD_SUCCESS, GET_AUTH_SUCCESS, GET_AUTH_USER_SUCCESS} from "./actions";
-import {TUser} from "../../types/types";
+import {
+    GET_AUTH_FAILURE,
+    GET_AUTH_LOGOUT_SUCCESS,
+    GET_AUTH_REQUEST,
+    GET_AUTH_FORGOT_PASSWORD_SUCCESS,
+    GET_AUTH_RESET_PASSWORD_SUCCESS,
+    GET_AUTH_SUCCESS,
+    GET_AUTH_USER_SUCCESS
+} from "./actions";
+import {authResponse, error, forgotPassword, isAuth, isLoading, messageResponse, user} from "../../utils/test-data";
 
 
 describe('Redux store authReducer', () => {
@@ -22,124 +30,64 @@ describe('Redux store authReducer', () => {
     })
 
     test('test auth isLoading', () => {
-        let isLoading = true
         expect(authReducer(initialState, {type: GET_AUTH_REQUEST})).toEqual(
             {
+                ...initialState,
                 isLoading: isLoading,
-                error: false,
-                user: null,
-                isAuth: false,
-                forgotPassword: null
             }
         )
     })
 
     test('test auth error', () => {
-        let error = true
         expect(authReducer(initialState, {type: GET_AUTH_FAILURE, payload: error})).toEqual(
             {
-                isLoading: false,
+                ...initialState,
                 error: error,
-                user: null,
-                isAuth: false,
-                forgotPassword: null
             }
         )
     })
 
     test('test auth success', () => {
-        let user =
+        expect(authReducer(initialState, {type: GET_AUTH_SUCCESS, payload: authResponse})).toEqual(
             {
-                email: "test@test.com",
-                name: "testovich",
-                password: "test"
-            }
-
-        let res = {
-            user: user,
-            accessToken: 'blabla',
-            refreshToken: 'refbla',
-            message: 'hmmm'
-        }
-        expect(authReducer(initialState, {type: GET_AUTH_SUCCESS, payload: res})).toEqual(
-            {
-                error: false,
-                forgotPassword: null,
-                isAuth: true,
-                isLoading: false,
-                user: user
+                ...initialState,
+                user: user,
+                isAuth: isAuth,
             }
         )
     })
 
     test('test auth user success', () => {
-        let user =
+        expect(authReducer(initialState, {type: GET_AUTH_USER_SUCCESS, payload: authResponse})).toEqual(
             {
-                email: "test@test.com",
-                name: "testovich",
-                password: "test"
-            }
-        let res = {
-            user: user,
-            accessToken: 'blabla',
-            refreshToken: 'refbla',
-            message: 'hmmm'
-        }
-
-        expect(authReducer(initialState, {type: GET_AUTH_USER_SUCCESS, payload: res})).toEqual(
-            {
-                error: false,
-                forgotPassword: null,
-                isAuth: true,
-                isLoading: false,
-                user: user
+                ...initialState,
+                user: user,
+                isAuth: isAuth
             }
         )
     })
 
     test('test auth forgot password success', () => {
-        let forgotPass = 'some_uniq_code'
-        expect(authReducer(initialState, {type: "GET_AUTH_FORGOT_PASSWORD_SUCCESS", payload: forgotPass})).toEqual(
+        expect(authReducer(initialState, {type: GET_AUTH_FORGOT_PASSWORD_SUCCESS, payload: messageResponse})).toEqual(
             {
-                isLoading: false,
-                error: false,
-                user: null,
-                isAuth: false,
-            }
-        )
+                ...initialState,
+                forgotPassword: forgotPassword
+            })
     })
 
     test('test auth reset password success', () => {
-        expect(authReducer(initialState, {type: "GET_AUTH_RESET_PASSWORD_SUCCESS"})).toEqual({
-            error: false,
-            forgotPassword: null,
-            isAuth: false,
-            isLoading: false,
-            user: null
-        })
+        expect(authReducer(initialState, {type: GET_AUTH_RESET_PASSWORD_SUCCESS})).toEqual(initialState)
     })
 
     test('test auth logOut', () => {
-        expect(authReducer(initialState, {type: GET_AUTH_LOGOUT_SUCCESS})).toEqual(
-            {
-                isLoading: false,
-                error: false,
-                user: null,
-                isAuth: false,
-                forgotPassword: null
-            }
-        )
+        expect(authReducer(initialState, {type: GET_AUTH_LOGOUT_SUCCESS})).toEqual(initialState)
     })
 
     test('test auth Failure', () => {
-        let error = true;
         expect(authReducer(initialState, {type: GET_AUTH_FAILURE})).toEqual(
             {
-                isLoading: false,
+                ...initialState,
                 error: error,
-                user: null,
-                isAuth: false,
-                forgotPassword: null
             }
         )
     })
