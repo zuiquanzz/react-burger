@@ -29,8 +29,8 @@ const Modal: FC<IModalProps> = ({children, modalClose}) => {
     return createPortal((
         <>
             <ModalOverlay modalClose={modalClose}/>
-            <div className={styles.modal}>
-                <div className={styles.close} onClick={modalClose}>
+            <div className={styles.modal} data-cy='modal'>
+                <div className={styles.close} onClick={modalClose} data-cy='close'>
                     <CloseIcon type="primary"/>
                 </div>
                 {children}

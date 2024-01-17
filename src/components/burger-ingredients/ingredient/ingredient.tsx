@@ -42,7 +42,7 @@ const Ingredient: FC<IBurgerIngredientProps> = ({ingredient }) => {
                 state={{background: location}}
                 className={styles.link}
             >
-                <li className={`${styles.container} ${isDrag} mb-8`} ref={dragRef}>
+                <li className={`${styles.container} ${isDrag} mb-8`} ref={dragRef} data-cy={`ingredient${ingredientId}`}>
                     <div className={styles.counter}>
                         {counter > 0 &&
                             <Counter count={counter} size="default"

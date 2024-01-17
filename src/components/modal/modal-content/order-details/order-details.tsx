@@ -19,7 +19,7 @@ function OrderDetails() {
     return (
         <>
             {!isLoading && !error && order !== null &&
-                <div className={`${styles.price} mt-30 mb-8 text text_type_digits-large`}>{order.order.number}</div>
+                <div className={`${styles.price} mt-30 mb-8 text text_type_digits-large`} data-testid='order-number'>{order.order.number}</div>
             }
             {isLoading && <p className={`${styles.description} text text_type_main-medium`}>Загрузка...</p>}
             <div className={`${styles.description} text text_type_main-medium`}>идентификатор заказа</div>

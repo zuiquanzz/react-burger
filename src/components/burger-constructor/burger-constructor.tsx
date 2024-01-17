@@ -93,7 +93,7 @@ function BurgerConstructor() {
         </Modal>;
 
     return (
-        <div className={styles.table} ref={dropTarget}>
+        <div className={styles.table} ref={dropTarget} data-cy='constructor'>
             <div className="p-15"/>
             <div className="ml-5">
                 {burgerBun &&
@@ -133,7 +133,7 @@ function BurgerConstructor() {
                 <div className={'mr-10'}>
                     <CurrencyIcon type="primary"/>
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={handleOffer}>
+                <Button htmlType="button" type="primary" size="medium" onClick={handleOffer} data-cy='submit'>
                     Оформить заказ
                 </Button>
 
