@@ -28,8 +28,9 @@ const getAuthLogOutEndPoint = authEndpoint.concat(authLogout);
 const getAuthRefreshTokenEndPoint = authEndpoint.concat(authToken);
 const getAuthUserEndPoint = authEndpoint.concat(authUser);
 
-export const ACCESS_TOKEN = localStorage.getItem('accessToken');
-export const REFRESH_TOKEN = localStorage.getItem('refreshToken');
+export const ACCESS_TOKEN = 'accessToken';
+export const REFRESH_TOKEN = 'refreshToken';
+
 //ingredients
 export const getAllIngredients = (): Promise<TIngredientResponse> => {
     return normaRequest<TIngredientResponse>(getIngredientsEndPoint, baseOptions);
@@ -37,7 +38,7 @@ export const getAllIngredients = (): Promise<TIngredientResponse> => {
 
 //orders
 export const postAuthOrder = (burgerData: IingredientKey[]): Promise<TOrderResponse> => {
-    return normaRequest<TOrderResponse>(getOrderEndPoint, postAuthOptions({"ingredients": burgerData}))
+    return normaRequestWithRefresh<TOrderResponse>(getOrderEndPoint, postAuthOptions({"ingredients": burgerData}))
 }
 
 export const getAuthOrder = (orderId: string): Promise<TUserOrderResponse> => {
@@ -77,16 +78,16 @@ export const postLogout = () => {
 
 export const postRefreshToken = (): Promise<TRefreshResponse> => {
     return normaRequest<TRefreshResponse>(getAuthRefreshTokenEndPoint, postOptions({
-        token: REFRESH_TOKEN,
+        token: localStorage.getItem(REFRESH_TOKEN),
     }))
 }
 
 export const userOrRefresh = (): Promise<TAuthResponse> => {
-    return normaRequest<TAuthResponse>(getAuthUserEndPoint, tokenOptions())
+    return normaRequestWithRefresh<TAuthResponse>(getAuthUserEndPoint, tokenOptions())
 }
 
 export const editUserOrRefresh = (name?: string, email?: string, password?: string): Promise<TAuthResponse> => {
-    return normaRequest<TAuthResponse>(getAuthUserEndPoint, editTokenOptions(name, email, password))
+    return normaRequestWithRefresh<TAuthResponse>(getAuthUserEndPoint, editTokenOptions(name, email, password))
 }
 
 //options
@@ -107,7 +108,7 @@ const postAuthOptions = (body: Object) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: ACCESS_TOKEN
+            authorization: localStorage.getItem(ACCESS_TOKEN)
         },
         body: JSON.stringify(body)
     };
@@ -117,7 +118,7 @@ const tokenOptions = () => {
     return {
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: ACCESS_TOKEN
+            authorization: localStorage.getItem(ACCESS_TOKEN)
         }
     }
 }
@@ -127,7 +128,7 @@ const editTokenOptions = (name?: string, email?: string, password?: string) => {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: ACCESS_TOKEN
+            authorization: localStorage.getItem(ACCESS_TOKEN)
         },
         body: JSON.stringify({
             "name": name,
@@ -139,10 +140,31 @@ const editTokenOptions = (name?: string, email?: string, password?: string) => {
 
 //BaseRequest
 
+export const normaRequestWithRefresh = async <T>(
+    endpoint: string,
+    options?: any
+) => {
+    try {
+        return await normaRequest<T>(endpoint, options)
+    } catch (err) {
+        if ((err as { message: string }).message === 'jwt expired') {
+            const refreshData = await postRefreshToken()
+            if (!refreshData.success) {
+                return Promise.reject(refreshData);
+            }
+            localStorage.setItem("refreshToken", refreshData.refreshToken);
+            localStorage.setItem("accessToken", refreshData.accessToken);
+            return await normaRequest<T>(endpoint, options)
+        } else {
+            return Promise.reject(err)
+        }
+    }
+}
+
 const normaRequest = <T>(url: string, options: Object): Promise<T> => {
     return fetch(serverUrl.concat(url), options).then(checkResponse<T>)
 }
 
-const checkResponse = <T>(res: Response): Promise<T> => {
+export const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }

@@ -53,10 +53,10 @@ const App = () => {
                     <Route path='/' element={<MainPage/>}/>
                     <Route path='/register' element={<ProtectedRoutes onlyUnAuth={true} page={<RegistrationPage/>}/>}/>
                     <Route path='/feed' element={<Feed/>}/>
-                    {/*<Route path='/feed/:feedId' element={<FeedId/>}/>*/}
+                    <Route path='/feed/:feedId' element={<FeedId/>}/>
                     <Route path='/forgot-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ForgotPassword/>}/>}/>
                     <Route path='/reset-password' element={<ProtectedRoutes onlyUnAuth={true} page={<ResetPassword/>}/>}/>
-                    {/*<Route path='/profile/orders/:feedId' element={<ProtectedRoutes onlyUnAuth={false} page={<FeedId/>}/>}/>*/}
+                    <Route path='/profile/orders/:feedId' element={<ProtectedRoutes onlyUnAuth={false} page={<FeedId/>}/>}/>
                     <Route path='/profile' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfilePage/>}/>}>
                         <Route index element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileEditPage/>}/>}/>
                         <Route path='/profile/orders' element={<ProtectedRoutes onlyUnAuth={false} page={<ProfileOrders/>}/>}/>

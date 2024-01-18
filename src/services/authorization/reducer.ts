@@ -11,7 +11,7 @@ import {
 } from "./actions";
 import {TUser} from "../../types/types";
 
-const initialState: IAuthStore = {
+export const initialState: IAuthStore = {
     isLoading: false,
     error: false,
     user: null,

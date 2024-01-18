@@ -17,7 +17,7 @@ interface IIngredientsStore {
     burgerData: IingredientKey[],
 }
 
-const initialState: IIngredientsStore = {
+export const initialState: IIngredientsStore = {
     ingredients: [],
     isLoading: false,
     error: false,
