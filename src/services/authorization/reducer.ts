@@ -49,8 +49,6 @@ export const authReducer = (state = initialState, action: TAuthAction): IAuthSto
             return {...state, user: null, isLoading: false, error: false, isAuth: true}
         }
         case GET_AUTH_USER_SUCCESS: {
-            localStorage.setItem("accessToken", action.payload.accessToken);
-            localStorage.setItem("refreshToken", action.payload.refreshToken);
             return {...state, user: action.payload.user, isLoading: false, error: false, isAuth: true}
         }
         case GET_AUTH_LOGOUT_SUCCESS: {
