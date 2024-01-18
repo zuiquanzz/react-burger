@@ -8,7 +8,7 @@ import {Loader} from "../../utils/loader/loader";
 import {ACCESS_TOKEN} from "../../utils/api";
 
 let accessToken = '';
-const accessTokenKey = ACCESS_TOKEN;
+const accessTokenKey = localStorage.getItem(ACCESS_TOKEN);
 if (accessTokenKey) {
     accessToken = accessTokenKey.replace(/^.{7}/, '')
 }

@@ -28,8 +28,8 @@ const getAuthLogOutEndPoint = authEndpoint.concat(authLogout);
 const getAuthRefreshTokenEndPoint = authEndpoint.concat(authToken);
 const getAuthUserEndPoint = authEndpoint.concat(authUser);
 
-export const ACCESS_TOKEN = localStorage.getItem('accessToken');
-export const REFRESH_TOKEN = localStorage.getItem('refreshToken');
+export const ACCESS_TOKEN = 'accessToken';
+export const REFRESH_TOKEN = 'refreshToken';
 
 //ingredients
 export const getAllIngredients = (): Promise<TIngredientResponse> => {
@@ -78,7 +78,7 @@ export const postLogout = () => {
 
 export const postRefreshToken = (): Promise<TRefreshResponse> => {
     return normaRequest<TRefreshResponse>(getAuthRefreshTokenEndPoint, postOptions({
-        token: REFRESH_TOKEN,
+        token: localStorage.getItem(REFRESH_TOKEN),
     }))
 }
 
@@ -108,7 +108,7 @@ const postAuthOptions = (body: Object) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: ACCESS_TOKEN
+            authorization: localStorage.getItem(ACCESS_TOKEN)
         },
         body: JSON.stringify(body)
     };
@@ -118,7 +118,7 @@ const tokenOptions = () => {
     return {
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: ACCESS_TOKEN
+            authorization: localStorage.getItem(ACCESS_TOKEN)
         }
     }
 }
@@ -128,7 +128,7 @@ const editTokenOptions = (name?: string, email?: string, password?: string) => {
         method: "PATCH",
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            authorization: ACCESS_TOKEN
+            authorization: localStorage.getItem(ACCESS_TOKEN)
         },
         body: JSON.stringify({
             "name": name,

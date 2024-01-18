@@ -60,7 +60,7 @@ export type TAuthAction =
     IAuthFailure;
 
 export const getUserSession = () => (dispatch: AppDispatch) => {
-    if (ACCESS_TOKEN) {
+    if (localStorage.getItem(ACCESS_TOKEN)) {
         dispatch({type: GET_AUTH_REQUEST})
         userOrRefresh()
             .then(res => {
@@ -142,40 +142,3 @@ export const logout = () => (dispatch: AppDispatch) => {
             console.error(e)
         });
 };
-
-// const getOrRefresh = async (): Promise<TAuthResponse> => {
-//     try {
-//         return await userOrRefresh()
-//     } catch (err) {
-//         if ((err as { message: string }).message === 'jwt expired') {
-//             const refreshData = await postRefreshToken();
-//             if (!refreshData.success) {
-//                 return Promise.reject(refreshData);
-//             }
-//             localStorage.setItem("accessToken", refreshData.accessToken);
-//             localStorage.setItem("refreshToken", refreshData.refreshToken);
-//             return await userOrRefresh();
-//         } else {
-//             return Promise.reject(err);
-//         }
-//     }
-// };
-
-// const editOrRefresh = async (name?: string, email?: string, password?: string):Promise<TAuthResponse> => {
-//     // try {
-//         return await editUserOrRefresh(name, email, password)
-//     // } catch (err) {
-//     //     if ((err as { message: string }).message === 'jwt expired') {
-//     //         const refreshData = await postRefreshToken();
-//     //         if (!refreshData.success) {
-//     //             return Promise.reject(refreshData);
-//     //         }
-//     //         localStorage.setItem("refreshToken", refreshData.refreshToken);
-//     //         localStorage.setItem("accessToken", refreshData.accessToken);
-//     //         return editUserOrRefresh(name, email, password)
-//     //     } else {
-//     //         return Promise.reject(err);
-//     //     }
-//     // }
-//
-// };
