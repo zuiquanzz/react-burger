@@ -30,6 +30,7 @@ const getAuthUserEndPoint = authEndpoint.concat(authUser);
 
 export const ACCESS_TOKEN = localStorage.getItem('accessToken');
 export const REFRESH_TOKEN = localStorage.getItem('refreshToken');
+
 //ingredients
 export const getAllIngredients = (): Promise<TIngredientResponse> => {
     return normaRequest<TIngredientResponse>(getIngredientsEndPoint, baseOptions);
@@ -37,7 +38,7 @@ export const getAllIngredients = (): Promise<TIngredientResponse> => {
 
 //orders
 export const postAuthOrder = (burgerData: IingredientKey[]): Promise<TOrderResponse> => {
-    return normaRequest<TOrderResponse>(getOrderEndPoint, postAuthOptions({"ingredients": burgerData}))
+    return normaRequestWithRefresh<TOrderResponse>(getOrderEndPoint, postAuthOptions({"ingredients": burgerData}))
 }
 
 export const getAuthOrder = (orderId: string): Promise<TUserOrderResponse> => {
@@ -82,11 +83,11 @@ export const postRefreshToken = (): Promise<TRefreshResponse> => {
 }
 
 export const userOrRefresh = (): Promise<TAuthResponse> => {
-    return normaRequest<TAuthResponse>(getAuthUserEndPoint, tokenOptions())
+    return normaRequestWithRefresh<TAuthResponse>(getAuthUserEndPoint, tokenOptions())
 }
 
 export const editUserOrRefresh = (name?: string, email?: string, password?: string): Promise<TAuthResponse> => {
-    return normaRequest<TAuthResponse>(getAuthUserEndPoint, editTokenOptions(name, email, password))
+    return normaRequestWithRefresh<TAuthResponse>(getAuthUserEndPoint, editTokenOptions(name, email, password))
 }
 
 //options
@@ -138,6 +139,27 @@ const editTokenOptions = (name?: string, email?: string, password?: string) => {
 }
 
 //BaseRequest
+
+export const normaRequestWithRefresh = async <T>(
+    endpoint: string,
+    options?: any
+) => {
+    try {
+        return await normaRequest<T>(endpoint, options)
+    } catch (err) {
+        if ((err as { message: string }).message === 'jwt expired') {
+            const refreshData = await postRefreshToken()
+            if (!refreshData.success) {
+                return Promise.reject(refreshData);
+            }
+            localStorage.setItem("refreshToken", refreshData.refreshToken);
+            localStorage.setItem("accessToken", refreshData.accessToken);
+            return await normaRequest<T>(endpoint, options)
+        } else {
+            return Promise.reject(err)
+        }
+    }
+}
 
 const normaRequest = <T>(url: string, options: Object): Promise<T> => {
     return fetch(serverUrl.concat(url), options).then(checkResponse<T>)

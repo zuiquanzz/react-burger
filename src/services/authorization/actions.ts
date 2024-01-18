@@ -1,14 +1,4 @@
-import {
-    ACCESS_TOKEN,
-    editUserOrRefresh,
-    postForgotPassword,
-    postLogin,
-    postLogout,
-    postRefreshToken,
-    postRegistration,
-    postResetPassword,
-    userOrRefresh
-} from "../../utils/api";
+import {ACCESS_TOKEN, editUserOrRefresh, postForgotPassword, postLogin, postLogout, postRegistration, postResetPassword, userOrRefresh} from "../../utils/api";
 import {AppDispatch, TAuthResponse, TMessageResponse} from "../../types/types";
 
 export const GET_AUTH_REQUEST = 'GET_AUTH_REQUEST'
@@ -72,7 +62,7 @@ export type TAuthAction =
 export const getUserSession = () => (dispatch: AppDispatch) => {
     if (ACCESS_TOKEN) {
         dispatch({type: GET_AUTH_REQUEST})
-        getOrRefresh()
+        userOrRefresh()
             .then(res => {
                 dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
             })
@@ -131,7 +121,7 @@ export const getResetPassword = (password?: string, confirmPass?: string) => (di
 
 export const editUserByToken = (name?: string, email?: string, password?: string) => (dispatch: AppDispatch) => {
     dispatch({type: GET_AUTH_REQUEST})
-    editOrRefresh(name, email, password)
+    editUserOrRefresh(name, email, password)
         .then(res => {
             dispatch({type: GET_AUTH_USER_SUCCESS, payload: res})
         })
@@ -153,38 +143,39 @@ export const logout = () => (dispatch: AppDispatch) => {
         });
 };
 
-const getOrRefresh = async (): Promise<TAuthResponse> => {
-    try {
-        return await userOrRefresh()
-    } catch (err) {
-        if ((err as { message: string }).message === 'jwt expired') {
-            const refreshData = await postRefreshToken();
-            if (!refreshData.success) {
-                return Promise.reject(refreshData);
-            }
-            localStorage.setItem("accessToken", refreshData.accessToken);
-            localStorage.setItem("refreshToken", refreshData.refreshToken);
-            return await userOrRefresh();
-        } else {
-            return Promise.reject(err);
-        }
-    }
-};
+// const getOrRefresh = async (): Promise<TAuthResponse> => {
+//     try {
+//         return await userOrRefresh()
+//     } catch (err) {
+//         if ((err as { message: string }).message === 'jwt expired') {
+//             const refreshData = await postRefreshToken();
+//             if (!refreshData.success) {
+//                 return Promise.reject(refreshData);
+//             }
+//             localStorage.setItem("accessToken", refreshData.accessToken);
+//             localStorage.setItem("refreshToken", refreshData.refreshToken);
+//             return await userOrRefresh();
+//         } else {
+//             return Promise.reject(err);
+//         }
+//     }
+// };
 
-const editOrRefresh = async (name?: string, email?: string, password?: string):Promise<TAuthResponse> => {
-    try {
-        return await editUserOrRefresh(name, email, password)
-    } catch (err) {
-        if ((err as { message: string }).message === 'jwt expired') {
-            const refreshData = await postRefreshToken();
-            if (!refreshData.success) {
-                return Promise.reject(refreshData);
-            }
-            localStorage.setItem("refreshToken", refreshData.refreshToken);
-            localStorage.setItem("accessToken", refreshData.accessToken);
-            return editUserOrRefresh(name, email, password)
-        } else {
-            return Promise.reject(err);
-        }
-    }
-};
+// const editOrRefresh = async (name?: string, email?: string, password?: string):Promise<TAuthResponse> => {
+//     // try {
+//         return await editUserOrRefresh(name, email, password)
+//     // } catch (err) {
+//     //     if ((err as { message: string }).message === 'jwt expired') {
+//     //         const refreshData = await postRefreshToken();
+//     //         if (!refreshData.success) {
+//     //             return Promise.reject(refreshData);
+//     //         }
+//     //         localStorage.setItem("refreshToken", refreshData.refreshToken);
+//     //         localStorage.setItem("accessToken", refreshData.accessToken);
+//     //         return editUserOrRefresh(name, email, password)
+//     //     } else {
+//     //         return Promise.reject(err);
+//     //     }
+//     // }
+//
+// };
